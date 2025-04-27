@@ -10,7 +10,7 @@ class ListaFiltrosWidget extends StatelessWidget {
         thumbVisibility: WidgetStatePropertyAll(false),
         radius: Radius.circular(20),
         thickness: WidgetStatePropertyAll(5),
-        thumbColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.tertiary),
+        thumbColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.primary),
         mainAxisMargin: 8,
       ),
       child:
