@@ -16,7 +16,7 @@ class ListaFiltrosWidget extends StatelessWidget {
       child:
         Scrollbar(
           child: Padding(
-            padding: EdgeInsets.only(bottom: 12),
+            padding: EdgeInsets.only(bottom: 12, top: 10),
             child:SingleChildScrollView(
               scrollDirection: Axis.horizontal,
               padding: EdgeInsets.only(left: 8, right: 5),
@@ -57,7 +57,8 @@ class _ItemFiltroWidgetState extends State<ItemFiltroWidget> {
         });
       },
       child:
-        Container(
+        AnimatedContainer(
+          duration: Duration(milliseconds: 100),
           height: 35,
           margin: EdgeInsets.only(right: 4),
           padding: EdgeInsets.only(left: 3, right: 3),
