@@ -1,3 +1,4 @@
+import 'package:arthub/widgets/navbar.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -56,6 +57,7 @@ class TelaInicial extends StatelessWidget {
         ),
       ),
       body: Column(children: [PublicacaoWidget(), PublicacaoWidget()]),
+      bottomNavigationBar: Navbar(),
     );
   }
 }
