@@ -1,5 +1,6 @@
 import 'package:arthub/config/themeApp.dart';
-import 'package:arthub/pages/post.dart';
+import 'package:arthub/pages/tela_inicial.dart';
+import 'package:arthub/pages/tela_post.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -15,7 +16,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ArtHub',
       theme: ThemeApp.theme,
-      home: PostScreen(),
+      home: TelaInicial(),
     );
   }
 }

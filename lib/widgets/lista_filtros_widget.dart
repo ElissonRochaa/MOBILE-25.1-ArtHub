@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FilterListWidget extends StatelessWidget {
-  const FilterListWidget({super.key});
+class ListaFiltrosWidget extends StatelessWidget {
+  const ListaFiltrosWidget({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +22,12 @@ class FilterListWidget extends StatelessWidget {
               padding: EdgeInsets.only(left: 8, right: 5),
               child: Row(
                 children: [
-                  SingleItemFilterWidget("Todos"),
-                  SingleItemFilterWidget("Poemas"),
-                  SingleItemFilterWidget("Pinturas"),
-                  SingleItemFilterWidget("Músicas"),
-                  SingleItemFilterWidget("Desenhos"),
-                  SingleItemFilterWidget("Esculturas"),
+                  ItemFiltroWidget("Todos"),
+                  ItemFiltroWidget("Poemas"),
+                  ItemFiltroWidget("Pinturas"),
+                  ItemFiltroWidget("Músicas"),
+                  ItemFiltroWidget("Desenhos"),
+                  ItemFiltroWidget("Esculturas"),
                 ],
               ),
             ),
@@ -37,15 +37,15 @@ class FilterListWidget extends StatelessWidget {
   }
 }
 
-class SingleItemFilterWidget extends StatefulWidget {
+class ItemFiltroWidget extends StatefulWidget {
   final String name;
-  const SingleItemFilterWidget(this.name, {super.key});
+  const ItemFiltroWidget(this.name, {super.key});
 
   @override
-  State<SingleItemFilterWidget> createState() => _SingleItemFilterWidgetState();
+  State<ItemFiltroWidget> createState() => _ItemFiltroWidgetState();
 }
 
-class _SingleItemFilterWidgetState extends State<SingleItemFilterWidget> {
+class _ItemFiltroWidgetState extends State<ItemFiltroWidget> {
   bool isSelected = false;
 
   @override

@@ -1,8 +1,8 @@
-import 'package:arthub/widgets/filter_list_widget.dart';
+import 'package:arthub/widgets/lista_filtros_widget.dart';
 import 'package:flutter/material.dart';
 
-class PostScreen extends StatelessWidget {
-  const PostScreen({super.key});
+class TelaPost extends StatelessWidget {
+  const TelaPost({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +12,7 @@ class PostScreen extends StatelessWidget {
       body: SingleChildScrollView(
           child: Column(
             children: [
-              FilterListWidget(),
+              ListaFiltrosWidget(),
             ],
           )
         ),
