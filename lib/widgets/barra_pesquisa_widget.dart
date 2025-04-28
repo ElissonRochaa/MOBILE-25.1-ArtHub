@@ -1,38 +1,43 @@
+import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
 
-class BarraPesquisaWidget extends StatelessWidget {
+class BarraPesquisaWidget extends StatefulWidget {
   const BarraPesquisaWidget({super.key});
 
+  @override
+  State<BarraPesquisaWidget> createState() => _BarraPesquisaWidgetState();
+}
+
+class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
   @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
+        SizedBox(
           height: 31,
           width: 246,
-          child: TextField(
-            decoration: InputDecoration(
-              prefixIcon: new Icon(
-                Icons.search,
-                color: Theme.of(context).colorScheme.primary,
+          child: SearchBar(
+            //onChanged:
+            hintText: '',
+            leading: Icon(
+              Icons.search,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            backgroundColor: MaterialStatePropertyAll(
+              Theme.of(context).colorScheme.surface,
+            ),
+            side: MaterialStatePropertyAll(
+              BorderSide(
+                color: Theme.of(context).colorScheme.tertiary,
+                width: 2,
               ),
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.surface,
-              enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.tertiary,
-                  width: 2,
-                ),
-              ),
-              focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(15),
-                borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.tertiary,
-                  width: 2,
-                ),
-              ),
+            ),
+            shape: MaterialStatePropertyAll(
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+            ),
+            padding: const MaterialStatePropertyAll(
+              EdgeInsets.symmetric(horizontal: 10),
             ),
           ),
         ),

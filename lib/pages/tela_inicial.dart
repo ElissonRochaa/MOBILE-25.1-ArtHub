@@ -14,7 +14,7 @@ class TelaInicial extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: BarraPesquisaWidget(),
       ),
-      body: Column(
+      body: ListView(
         children: [
           ListaFiltrosWidget(),
           PublicacaoWidget(),
