@@ -61,6 +61,7 @@ flutter:
   assets:
     - assets/images/hannah.jpg
     - assets/images/cat.jpeg
+    - assets/images/snoopy.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

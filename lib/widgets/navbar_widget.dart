@@ -1,3 +1,6 @@
+import 'package:arthub/pages/tela_de_perfil.dart';
+import 'package:arthub/pages/tela_de_pesquisa.dart';
+import 'package:arthub/pages/tela_inicial.dart';
 import 'package:flutter/material.dart';
 
 class Navbar extends StatefulWidget {
@@ -8,7 +11,19 @@ class Navbar extends StatefulWidget {
 }
 
 class _NavbarState extends State<Navbar> {
-  int selectedIndex = 0;
+  int _currentIndex = 0;
+
+  final List<Widget> _children = [
+    TelaDePesquisa(),
+    TelaInicial(),
+    TelaDePerfil(),
+  ];
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
