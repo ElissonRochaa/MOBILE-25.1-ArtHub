@@ -1,4 +1,5 @@
 import 'package:arthub/config/themeApp.dart';
+import 'package:arthub/pages/tela_apresentacao.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,6 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'ArtHub',
       theme: ThemeApp.theme,
+      home: TelaApresentacao(),
     );
   }
 }
