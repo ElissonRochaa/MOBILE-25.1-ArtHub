@@ -1,4 +1,5 @@
 import 'package:arthub/config/themeApp.dart';
+import 'package:arthub/pages/editar_perfil.dart';
 import 'package:arthub/pages/tela_inicial.dart';
 import 'package:arthub/pages/tela_post.dart';
 import 'package:flutter/material.dart';
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ArtHub',
       theme: ThemeApp.theme,
-      home: TelaInicial(),
+      home: EditarPerfil(),
     );
   }
 }
