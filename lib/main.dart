@@ -2,6 +2,7 @@ import 'package:arthub/config/themeApp.dart';
 import 'package:arthub/pages/tela_inicial.dart';
 import 'package:arthub/pages/tela_post.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
+import 'package:arthub/widgets/main_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -26,7 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ArtHub',
       theme: ThemeApp.theme,
-      home: TelaInicial(),
+      home: MainScreen(),
     );
   }
 }

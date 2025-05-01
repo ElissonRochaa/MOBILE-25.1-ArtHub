@@ -1,7 +1,6 @@
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/lista_filtros_widget.dart';
-import 'package:arthub/widgets/navbar_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
@@ -69,7 +68,6 @@ class TelaInicial extends StatelessWidget {
             ),
         ],
       ),
-      bottomNavigationBar: Navbar(),
     );
   }
 }
