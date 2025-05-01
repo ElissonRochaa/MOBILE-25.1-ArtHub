@@ -20,18 +20,51 @@ class TelaInicial extends StatelessWidget {
       ),
       body: Stack(
         children: [
-          ListView(
-            children: const [
-              ListaFiltrosWidget(),
-              PublicacaoWidget(),
-              PublicacaoWidget(),
+          CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildListDelegate([ListaFiltrosWidget()]),
+              ),
+              SliverPadding(
+                padding: EdgeInsets.only(left: 15, right: 12, top: 5),
+                sliver: SliverGrid(
+                  delegate: SliverChildListDelegate([
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                  ]),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 2,
+                    crossAxisSpacing: 2,
+                  ),
+                ),
+              ),
             ],
           ),
           if (pesquisa != null && pesquisa.isNotEmpty)
             Positioned.fill(
               child: Container(
-                color: Colors.white.withOpacity(0.95), // leve opacidade
-                child: PerfilPesquisaWidget(pesquisa: pesquisa),
+                color: Colors.white.withOpacity(0.95),
+                child: Column(
+                  children: [
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                  ],
+                ),
               ),
             ),
         ],
