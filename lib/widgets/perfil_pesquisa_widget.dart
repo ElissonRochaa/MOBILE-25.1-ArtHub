@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PerfilPesquisaWidget extends StatelessWidget {
-  const PerfilPesquisaWidget({super.key});
+  final String pesquisa;
+
+  const PerfilPesquisaWidget({super.key, required this.pesquisa});
 
   @override
   Widget build(BuildContext context) {
