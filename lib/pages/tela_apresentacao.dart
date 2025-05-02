@@ -1,5 +1,5 @@
 import 'dart:ui';
-
+import 'package:arthub/widgets/botao_avancar_widget.dart';
 import 'package:flutter/material.dart';
 
 class TelaApresentacao extends StatelessWidget {
@@ -72,36 +72,9 @@ class TelaApresentacao extends StatelessWidget {
                             ),
                           ),
                         ),
-                        Column(
-                          children: [
-                            Container(
-                              width: 55,
-                              height: 55,
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.all(
-                                  Radius.circular(55),
-                                ),
-                              ),
-                              child: IconButton(
-                                icon: Icon(
-                                  Icons.arrow_forward,
-                                  color: Theme.of(context).colorScheme.primary,
-                                ),
-                                onPressed: () {
-                                  //Navigator.pushNamed(context, '/login'); //Aqui fazer a rota para o Login
-                                },
-                              ),
-                            ),
-                            Text(
-                              "Avançar",
-                              style: TextStyle(
-                                fontSize: 12,
-                                color: Theme.of(context).colorScheme.onPrimary,
-                                decoration: TextDecoration.none,
-                              ),
-                            ),
-                          ],
+                        BotaoAvancarWidget(
+                          texto: "Avançar",
+                          rota: "/tela_logotipo", //Organizar as rotas depois!
                         ),
                       ],
                     ),
