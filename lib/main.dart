@@ -1,10 +1,21 @@
 import 'package:arthub/config/themeApp.dart';
-import 'package:arthub/pages/tela_perfil_usuario.dart';
+import 'package:arthub/pages/tela_inicial.dart';
 import 'package:arthub/pages/tela_post.dart';
+import 'package:arthub/provider/barra_pesquisa_provider.dart';
+import 'package:arthub/widgets/main_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => BarraPesquisaProvider()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -16,7 +27,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ArtHub',
       theme: ThemeApp.theme,
-      home: TelaPerfilUsuario(),
+      home: MainScreen(),
     );
   }
 }
