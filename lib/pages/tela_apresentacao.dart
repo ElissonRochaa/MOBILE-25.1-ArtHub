@@ -40,32 +40,73 @@ class TelaApresentacao extends StatelessWidget {
               ),
             ),
             child: SingleChildScrollView(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  Padding(
-                    //Serve pra dar um espaçamento entre o texto e a borda
-                    padding: const EdgeInsets.all(36),
-                    child: Text(
-                      "Um universo de arte na palma da sua mão.",
-                      style: TextStyle(
-                        fontSize: 32,
-                        color: Theme.of(context).colorScheme.onPrimary,
+              child: Padding(
+                padding: const EdgeInsets.all(36),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Container(
+                      child: Text(
+                        "Um universo de arte na palma da sua mão.",
+                        textAlign: TextAlign.left,
+                        style: TextStyle(
+                          fontSize: 32,
+                          color: Theme.of(context).colorScheme.onPrimary,
+                          decoration: TextDecoration.none,
+                        ),
                       ),
-                      textAlign: TextAlign.left,
                     ),
-                  ),
-                  SizedBox(height: 16),
-                  Row(
-                    children: [
-                      // Image.asset(
-                      //   'assets/images/upe_logo.png',
-                      //   width: 74,
-                      //   height: 33,
-                      // ),
-                    ],
-                  ),
-                ],
+                    const SizedBox(height: 50),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Container(
+                          width: 75,
+                          height: 33,
+                          decoration: BoxDecoration(
+                            color:
+                                Theme.of(context).colorScheme.primaryContainer,
+                            image: DecorationImage(
+                              image: AssetImage('assets/images/logo_upe.png'),
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Column(
+                          children: [
+                            Container(
+                              width: 55,
+                              height: 55,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.all(
+                                  Radius.circular(55),
+                                ),
+                              ),
+                              child: IconButton(
+                                icon: Icon(
+                                  Icons.arrow_forward,
+                                  color: Theme.of(context).colorScheme.primary,
+                                ),
+                                onPressed: () {
+                                  //Navigator.pushNamed(context, '/login'); //Aqui fazer a rota para o Login
+                                },
+                              ),
+                            ),
+                            Text(
+                              "Avançar",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Theme.of(context).colorScheme.onPrimary,
+                                decoration: TextDecoration.none,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
