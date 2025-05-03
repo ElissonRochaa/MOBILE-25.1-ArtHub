@@ -7,7 +7,7 @@ class PublicacaoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/post');
+        Navigator.pushNamed(context, '/publicacao');
       },
       child: Container(
         decoration: BoxDecoration(

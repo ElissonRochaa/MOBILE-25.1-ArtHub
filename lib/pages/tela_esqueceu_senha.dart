@@ -10,19 +10,16 @@ class TelaEsqueceuSenha extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0,
-        leading: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(60),
+        leading: IconButton.filled(
+          style: IconButton.styleFrom(
+            backgroundColor: Colors.white,
           ),
-          child: IconButton(
-            onPressed: () {
-              print("Botão de voltar apertado");
-            },
-            icon: Icon(
-              Icons.arrow_back,
-              color: Theme.of(context).colorScheme.tertiary,
-            ),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).colorScheme.primary,
           ),
         ),
       ),

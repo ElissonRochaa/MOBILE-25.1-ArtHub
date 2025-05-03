@@ -95,7 +95,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       ),
                       GestureDetector(
                         onTap: () => {
-                          print("Esqueceu a senha foi apertado")
+                          Navigator.pushNamed(context, '/esqueceu-senha')
                         },
                         child: Text(
                           'Esqueceu a senha?',
@@ -148,7 +148,7 @@ class _TelaLoginState extends State<TelaLogin> {
           ),
           Positioned(
             top: 600,
-            left: 55,
+            left: MediaQuery.of(context).size.width / 2 - 150,
             child: Row(
               children: [
                 Text(
