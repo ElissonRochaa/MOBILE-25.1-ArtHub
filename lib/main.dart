@@ -1,6 +1,4 @@
 import 'package:arthub/config/themeApp.dart';
-import 'package:arthub/pages/tela_inicial.dart';
-import 'package:arthub/pages/tela_post.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/main_screen.dart';
 import 'package:flutter/material.dart';
