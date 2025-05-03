@@ -55,7 +55,7 @@ class TelaInicial extends StatelessWidget {
           if (pesquisa != null && pesquisa.isNotEmpty)
             Positioned.fill(
               child: Container(
-                color: Colors.white.withOpacity(0.95),
+                color: Colors.white.withValues(alpha: 0.95),
                 child: Column(
                   children: [
                     PerfilPesquisaWidget(pesquisa: pesquisa),
