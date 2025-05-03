@@ -1,4 +1,5 @@
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
+import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 
 class TelaPerfilUsuario extends StatelessWidget {
@@ -166,24 +167,6 @@ class TelaPerfilUsuario extends StatelessWidget {
     );
   }
 
-  Widget formatadorDeImage(BuildContext context){
-    return Container(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10)
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: AspectRatio(
-          aspectRatio: 1,
-          child: Image.asset(
-            'assets/images/hannah.jpg',
-            fit: BoxFit.cover,
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -192,34 +175,33 @@ class TelaPerfilUsuario extends StatelessWidget {
           backgroundColor: Theme.of(context).colorScheme.primary,
           title: BarraPesquisaWidget()
       ),
-      body: Column(
-        children: [
-          informacoesPerfil(context),
-          Expanded(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                left: 15,
-                right: 12,
-                top: 30
-              ),
-              child: GridView.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 2,
-                crossAxisSpacing: 2,
-                physics: BouncingScrollPhysics(),
-                children: [
-                  formatadorDeImage(context),
-                  formatadorDeImage(context),
-                  formatadorDeImage(context),
-                  formatadorDeImage(context),
-                  formatadorDeImage(context),
-                  formatadorDeImage(context),
-                ],
-              ),
+      body: CustomScrollView(
+        slivers: [
+          SliverList(
+            delegate: SliverChildListDelegate([informacoesPerfil(context)]),
+          ),
+          SliverPadding(padding: const EdgeInsets.only(
+              left: 15,
+              right: 12,
+              top: 30,
+              bottom: 10
+          ),
+            sliver: SliverGrid(
+                delegate: SliverChildListDelegate([
+                  PublicacaoWidget(),
+                  PublicacaoWidget(),
+                  PublicacaoWidget(),
+                  PublicacaoWidget(),
+                ]),
+                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 2,
+                  crossAxisSpacing: 2,
+                )
             ),
           )
         ],
-      )
+      ),
     );
   }
 }
