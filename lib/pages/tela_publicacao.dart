@@ -1,14 +1,14 @@
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
 
-class TelaPost extends StatefulWidget {
-  const TelaPost({super.key});
+class TelaPublicacao extends StatefulWidget {
+  const TelaPublicacao({super.key});
 
   @override
-  State<TelaPost> createState() => _TelaPostState();
+  State<TelaPublicacao> createState() => _TelaPublicacaoState();
 }
 
-class _TelaPostState extends State<TelaPost> {
+class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool isCurtido = false;
   bool isImagemAberta = false;
 
@@ -35,7 +35,7 @@ class _TelaPostState extends State<TelaPost> {
                        child: AspectRatio(
                          aspectRatio: 1,
                          child: Image.asset(
-                           'assets/images/gato_horizontal.jpg',
+                           'assets/images/cat.jpeg',
                            fit: BoxFit.cover,
                          ),
                        ),
@@ -119,7 +119,9 @@ class _TelaPostState extends State<TelaPost> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
-        title: BarraPesquisaWidget()),
+        title: BarraPesquisaWidget(),
+        automaticallyImplyLeading: false,
+      ),
       body: Stack(
         children: [
           SingleChildScrollView(
@@ -127,7 +129,9 @@ class _TelaPostState extends State<TelaPost> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(
-                      onPressed: () => {print("Botão de voltar apertado")},
+                      onPressed: () => {
+                        Navigator.pop(context)
+                      },
                       icon: Icon(
                         Icons.arrow_back,
                         color: Theme.of(context).colorScheme.primary,
@@ -140,6 +144,7 @@ class _TelaPostState extends State<TelaPost> {
                         comentario(context, "Um texto curtinho"),
                         comentario(context, "Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo"),
                         comentario(context, "Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo"),
+                        comentario(context, "Um texto curtinho"),
                         comentario(context, "Um texto curtinho"),
                       ],
                     ),
@@ -165,7 +170,7 @@ class _TelaPostState extends State<TelaPost> {
                       Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
                         child: Image.asset(
-                          'assets/images/gato_horizontal.jpg',
+                          'assets/images/cat.jpeg',
                         ),
                       ),
                     ],
