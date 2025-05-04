@@ -74,7 +74,7 @@ class TelaApresentacao extends StatelessWidget {
                         ),
                         BotaoAvancarWidget(
                           texto: "Avançar",
-                          rota: "/tela_logotipo", //Organizar as rotas depois!
+                          rota: "/login", //Organizar as rotas depois!
                         ),
                       ],
                     ),
