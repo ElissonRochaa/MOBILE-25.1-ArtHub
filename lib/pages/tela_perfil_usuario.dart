@@ -103,7 +103,7 @@ class TelaPerfilUsuario extends StatelessWidget {
                     Transform.translate(
                       offset: Offset(10, 0),
                       child: IconButton(
-                        onPressed: () {print("Botão de editar foi apertado");},
+                        onPressed: () {Navigator.pushNamed(context, '/editar-perfil');},
                         icon: Icon(Icons.edit_outlined),
                         style: ButtonStyle(
                             iconSize: WidgetStatePropertyAll(30)

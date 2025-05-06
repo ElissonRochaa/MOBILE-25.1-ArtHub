@@ -1,4 +1,5 @@
 import 'package:arthub/config/themeApp.dart';
+import 'package:arthub/pages/editar_perfil.dart';
 import 'package:arthub/pages/tela_esqueceu_senha.dart';
 import 'package:arthub/pages/tela_inicial.dart';
 import 'package:arthub/pages/tela_login.dart';
@@ -38,6 +39,7 @@ class MyApp extends StatelessWidget {
         '/login' : (context) => const TelaLogin(),
         '/home' : (context) => const TelaInicial(),
         '/perfil' : (context) => const TelaPerfilUsuario(),
+        '/editar-perfil' : (context) => const EditarPerfil(),
       },
     );
   }

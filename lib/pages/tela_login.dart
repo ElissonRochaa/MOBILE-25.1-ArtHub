@@ -133,7 +133,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 )
               ),
               child: Text(
-                'Fazer Longin',
+                'Fazer Login',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
