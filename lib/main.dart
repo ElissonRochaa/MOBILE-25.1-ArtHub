@@ -1,5 +1,6 @@
 import 'package:arthub/config/themeApp.dart';
 import 'package:arthub/pages/tela_apresentacao.dart';
+import 'package:arthub/pages/tela_editar_perfil.dart';
 import 'package:arthub/pages/tela_esqueceu_senha.dart';
 import 'package:arthub/pages/tela_inicial.dart';
 import 'package:arthub/pages/tela_login.dart';
@@ -41,8 +42,9 @@ class MyApp extends StatelessWidget {
         '/publicacao': (context) => const TelaPublicacao(),
         '/esqueceu-senha': (context) => const TelaEsqueceuSenha(),
         '/login': (context) => const TelaLogin(),
-        '/home': (context) => const TelaInicial(),
+        '/home': (context) => const TelaPrincipal(),
         '/perfil': (context) => const TelaPerfilUsuario(),
+        '/editar-perfil': (context) => const TelaEditarPerfil(),
       },
     );
   }

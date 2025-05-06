@@ -127,7 +127,7 @@ class _TelaLoginState extends State<TelaLogin> {
             top: 500,
             left: (MediaQuery.of(context).size.width - 165) / 2,
             child: ElevatedButton(
-              onPressed: () => {print('O botão foi apertado')},
+              onPressed: () => {Navigator.pushNamed(context, "/home")},
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(165, 46),
                 backgroundColor: ThemeApp.theme.colorScheme.tertiary,
@@ -137,7 +137,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 ),
               ),
               child: Text(
-                'Fazer Longin',
+                'Fazer Login',
                 style: TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -172,7 +172,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 ),
                 SizedBox(width: 3),
                 GestureDetector(
-                  onTap: () => {print("Botão de se registrar foi clicado")},
+                  onTap: () => {Navigator.pushNamed(context, '/registro')},
                   child: Text(
                     'Registre-se',
                     style: TextStyle(
@@ -195,7 +195,7 @@ class _TelaLoginState extends State<TelaLogin> {
             left: 10,
             top: 10,
             child: IconButton.filled(
-              onPressed: () => {print('voltar')},
+              onPressed: () => {Navigator.pop(context)},
               style: IconButton.styleFrom(backgroundColor: Colors.white),
               icon: Icon(
                 Icons.arrow_back,
