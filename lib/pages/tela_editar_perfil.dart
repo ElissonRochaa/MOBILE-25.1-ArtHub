@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 
-class EditarPerfil extends StatelessWidget {
-  const EditarPerfil({super.key});
+class TelaEditarPerfil extends StatelessWidget {
+  const TelaEditarPerfil({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +26,10 @@ class EditarPerfil extends StatelessWidget {
                   radius: 40,
                   backgroundImage: AssetImage('assets/images/hannah.jpg'),
                 ),
-                InkWell(
+                GestureDetector(
                   onTap: () {
-                    _mostrarPopup(context, 'Editar Foto de Perfil');
+                    {print("Ícone de edição foto de perfil clicado");}
                   },
-                  customBorder: const CircleBorder(),
                   child: const CircleAvatar(
                     radius: 14,
                     backgroundColor: Colors.white,
@@ -90,11 +88,10 @@ class EditarPerfil extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            InkWell(
+                            GestureDetector(
                               onTap: () {
-                                _mostrarPopup(context, 'Editar Banner');
+                                {print("Ícone de edição banner clicado");}
                               },
-                              customBorder: const CircleBorder(),
                               child: const CircleAvatar(
                                 radius: 14,
                                 backgroundColor: Colors.white,
