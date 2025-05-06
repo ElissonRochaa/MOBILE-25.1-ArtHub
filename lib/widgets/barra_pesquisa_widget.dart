@@ -1,5 +1,7 @@
+import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class BarraPesquisaWidget extends StatefulWidget {
   const BarraPesquisaWidget({super.key});
@@ -9,6 +11,8 @@ class BarraPesquisaWidget extends StatefulWidget {
 }
 
 class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
+  final TextEditingController controller = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -18,7 +22,10 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
           height: 31,
           width: 246,
           child: SearchBar(
-            //onChanged:
+            controller: controller,
+            onChanged:
+                (value) =>
+                    context.read<BarraPesquisaProvider>().setTexto(value),
             hintText: '',
             leading: Icon(
               Icons.search,
