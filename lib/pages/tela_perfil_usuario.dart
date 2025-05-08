@@ -167,14 +167,7 @@ class TelaPerfilUsuario extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        title: BarraPesquisaWidget(),
-      ),
-      body: CustomScrollView(
+    return CustomScrollView(
         slivers: [
           SliverList(
             delegate: SliverChildListDelegate([informacoesPerfil(context)]),
@@ -201,7 +194,6 @@ class TelaPerfilUsuario extends StatelessWidget {
             ),
           ),
         ],
-      ),
-    );
+      );
   }
 }
