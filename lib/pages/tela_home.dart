@@ -1,8 +1,5 @@
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
-import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/lista_filtros_widget.dart';
-import 'package:arthub/widgets/tela_com_navbar.dart';
-import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -48,20 +45,6 @@ class TelaHome extends StatelessWidget {
             ),
           ],
         ),
-        if (pesquisa != null && pesquisa.isNotEmpty)
-          Positioned.fill(
-            child: Container(
-              color: Colors.white.withValues(alpha: 0.95),
-              child: Column(
-                children: [
-                  PerfilPesquisaWidget(pesquisa: pesquisa),
-                  PerfilPesquisaWidget(pesquisa: pesquisa),
-                  PerfilPesquisaWidget(pesquisa: pesquisa),
-                  PerfilPesquisaWidget(pesquisa: pesquisa),
-                ],
-              ),
-            ),
-          ),
       ],
     );
   }

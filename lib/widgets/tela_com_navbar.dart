@@ -1,9 +1,10 @@
 import 'package:arthub/pages/tela_home.dart';
 import 'package:arthub/pages/tela_perfil_usuario.dart';
+import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
-
-import '../pages/tela_ver_perfil_usuario.dart';
+import 'package:provider/provider.dart';
+import '../provider/barra_pesquisa_provider.dart';
 import 'barra_pesquisa_widget.dart';
 
 class TelaComNavbar extends StatefulWidget {
@@ -25,6 +26,8 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
 
   @override
   Widget build(BuildContext context) {
+    var pesquisa = context.watch<BarraPesquisaProvider>().texto;
+
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -46,12 +49,29 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
         onTap: (index) => {
           setState(() {
             currentPageIndex = index;
-            print(currentPageIndex);
           }),
         },
         letIndexChange: (index) => true,
       ),
-      body: _pages[currentPageIndex]
+      body: Stack(
+        children: [
+          _pages[currentPageIndex],
+          if (pesquisa.isNotEmpty)
+            Positioned.fill(
+              child: Container(
+                color: Colors.white.withValues(alpha: 0.95),
+                child: Column(
+                  children: [
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                  ],
+                ),
+              ),
+            ),
+        ],
+      )
     );
   }
 }
