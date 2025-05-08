@@ -1,5 +1,4 @@
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
-import 'package:arthub/widgets/navbar_widget.dart';
 import 'package:flutter/material.dart';
 
 class TelaPublicacao extends StatefulWidget {
