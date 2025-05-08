@@ -75,13 +75,29 @@ class TelaEditarPerfil extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.primary, 
       automaticallyImplyLeading: false,
+       leading: Padding(
+        padding: const EdgeInsets.all(8.0), // Padding opcional
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white, // Fundo branco
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ),
       ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 12),
-
-            // Texto de editar perfil
             Text(
               'Editar Perfil',
               style: Theme.of(context).textTheme.displayMedium?.copyWith(
@@ -97,7 +113,7 @@ class TelaEditarPerfil extends StatelessWidget {
                   radius: 40,
                   backgroundImage: AssetImage('assets/images/hannah.jpg'),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
                     {
                       print("Ícone de edição foto de perfil clicado");
@@ -162,7 +178,7 @@ class TelaEditarPerfil extends StatelessWidget {
                                 ),
                               ),
                             ),
-                            GestureDetector(
+                            InkWell(
                               onTap: () {
                                 {
                                   print("Ícone de edição banner clicado");
