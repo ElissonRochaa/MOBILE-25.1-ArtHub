@@ -14,6 +14,7 @@ class TelaPerfilUsuario extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            
             Text(
               "Hannah Montana",
               style: TextStyle(

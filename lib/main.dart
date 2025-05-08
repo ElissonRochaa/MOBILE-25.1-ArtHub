@@ -41,7 +41,7 @@ class MyApp extends StatelessWidget {
         '/home' : (context) => const TelaInicial(),
         '/perfil' : (context) => const TelaPerfilUsuario(),
         '/editar-perfil' : (context) => const TelaEditarPerfil(),
-        'ver-perfil' : (context) => const TelaVerperfilUsuario(),
+        '/ver-perfil' : (context) => const TelaVerperfilUsuario(),
       },
     );
   }
