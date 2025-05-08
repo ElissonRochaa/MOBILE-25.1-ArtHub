@@ -34,7 +34,12 @@ class _TelaLoginState extends State<TelaLogin> {
       child: TextFormField(
         obscureText: oculto,
         decoration: InputDecoration(
-          label: Text(label, style: TextStyle(fontSize: 22)),
+          label: Text(
+            label,
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
           hintText: hintText,
           hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
           border: InputBorder.none,
@@ -89,9 +94,10 @@ class _TelaLoginState extends State<TelaLogin> {
                             },
                         child: Text(
                           'Mostrar Senha',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
                       ),

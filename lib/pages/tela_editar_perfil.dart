@@ -82,7 +82,12 @@ class TelaEditarPerfil extends StatelessWidget {
             const SizedBox(height: 12),
 
             // Texto de editar perfil
-            const Text('Editar Perfil', style: TextStyle(fontSize: 20)),
+            Text(
+              'Editar Perfil',
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
 
             const SizedBox(height: 12),
             Stack(

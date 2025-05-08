@@ -22,15 +22,24 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
         children: [
           Text(
             "Hannah Montana",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
-          Text("@hannahmontana", style: TextStyle(fontWeight: FontWeight.w600)),
+          Text(
+            "@hannahmontana",
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
           Row(
             children: [
               Text(
                 "20 seguidores",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  fontFamily: 'SignikaNegative',
                   shadows: [
                     Shadow(
                       color: corSombra,
@@ -45,6 +54,8 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
                 "22 seguindo",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  fontFamily: 'SignikaNegative',
                   shadows: [
                     Shadow(
                       color: corSombra,
@@ -115,31 +126,40 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
                   ),
                 ),
               ),
+              Positioned(
+                right: 0,
+                top: 165,
+                child: Row(
+                  children: [
+                    Transform.translate(
+                      offset: Offset(10, 0),
+                      child: IconButton(
+                        onPressed: () {
+                          Navigator.pushNamed(context, '/editar-perfil');
+                        },
+                        icon: Icon(Icons.edit_outlined),
+                        style: ButtonStyle(
+                          iconSize: WidgetStatePropertyAll(30),
+                        ),
+                      ),
+                    ),
+                    Transform.translate(
+                      offset: Offset(-5, 0),
+                      child: IconButton(
+                        onPressed: () {
+                          print("Botão de compartilhar foi apertado");
+                        },
+                        icon: Icon(Icons.share_outlined),
+                        style: ButtonStyle(
+                          iconSize: WidgetStatePropertyAll(30),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
               numerosPerfil(context),
             ],
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 0),
-          child: Align(
-            alignment: Alignment.center,
-            child: ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  seguindo = !seguindo;
-                });
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor:
-                    seguindo
-                        ? Theme.of(context).colorScheme.primary
-                        : Theme.of(context).colorScheme.tertiary,
-              ),
-              child: Text(
-                seguindo ? 'Seguindo' : 'Seguir',
-                style: TextStyle(color: Colors.black),
-              ),
-            ),
           ),
         ),
         Padding(
@@ -172,6 +192,7 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
               child: Text(
                 "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
                 overflow: TextOverflow.ellipsis,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           ),
@@ -185,7 +206,6 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: BarraPesquisaWidget(),
       ),
