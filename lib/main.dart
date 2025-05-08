@@ -1,10 +1,8 @@
 import 'package:arthub/config/themeApp.dart';
 import 'package:arthub/pages/tela_apresentacao.dart';
-import 'package:arthub/pages/tela_editar_perfil.dart';
 import 'package:arthub/pages/tela_esqueceu_senha.dart';
 import 'package:arthub/pages/tela_inicial.dart';
 import 'package:arthub/pages/tela_login.dart';
-import 'package:arthub/pages/tela_logotipo.dart';
 import 'package:arthub/pages/tela_perfil_usuario.dart';
 import 'package:arthub/pages/tela_publicacao.dart';
 import 'package:arthub/pages/tela_registro.dart';
@@ -37,7 +35,6 @@ class MyApp extends StatelessWidget {
       home: TelaApresentacao(),
       initialRoute: '/',
       routes: {
-        // '/': (context) => const TelaLogotipo(),
         '/registro': (context) => const TelaRegistro(),
         '/publicacao': (context) => const TelaPublicacao(),
         '/esqueceu-senha': (context) => const TelaEsqueceuSenha(),
