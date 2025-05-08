@@ -11,9 +11,7 @@ class TelaEsqueceuSenha extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.primary,
         elevation: 0,
         leading: IconButton.filled(
-          style: IconButton.styleFrom(
-            backgroundColor: Colors.white,
-          ),
+          style: IconButton.styleFrom(backgroundColor: Colors.white),
           onPressed: () {
             Navigator.pop(context);
           },
@@ -33,16 +31,18 @@ class TelaEsqueceuSenha extends StatelessWidget {
               'Informe seu email cadastrado para receber instruções de recuperação de senha:',
               style: Theme.of(
                 context,
-              ).textTheme.headlineSmall?.copyWith(color: Colors.black),
+              ).textTheme.displayMedium?.copyWith(color: Colors.black),
               textAlign: TextAlign.center,
             ),
             const SizedBox(height: 20),
-            const TextField(
+            TextField(
               decoration: InputDecoration(
                 filled: true,
                 fillColor: Colors.white,
                 labelText: 'Email',
-                labelStyle: TextStyle(color: Colors.black),
+                labelStyle: Theme.of(context).textTheme.displayMedium?.copyWith(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
                 enabledBorder: OutlineInputBorder(
                   borderSide: BorderSide(color: Colors.white),
                   borderRadius: BorderRadius.all(Radius.circular(5)),
@@ -52,7 +52,9 @@ class TelaEsqueceuSenha extends StatelessWidget {
                   borderRadius: BorderRadius.all(Radius.circular(5)),
                 ),
               ),
-              style: TextStyle(color: Colors.black),
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
             const SizedBox(height: 20),
             ElevatedButton(
@@ -64,9 +66,11 @@ class TelaEsqueceuSenha extends StatelessWidget {
               onPressed: () {
                 print('botão de Enviar Email clicado');
               },
-              child: const Text(
+              child: Text(
                 'Enviar email',
                 style: TextStyle(
+                  fontFamily: 'SignikaNegative',
+                  fontSize: 20,
                   shadows: [
                     Shadow(
                       offset: Offset(2, 2),

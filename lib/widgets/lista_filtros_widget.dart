@@ -92,8 +92,7 @@ class _ItemFiltroWidgetState extends State<ItemFiltroWidget> {
             Center(
               child: Text(
                 widget.name,
-                style: TextStyle(
-                  fontSize: 16,
+                style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                   color: Theme.of(context).colorScheme.onTertiary,
                 ),
               ),

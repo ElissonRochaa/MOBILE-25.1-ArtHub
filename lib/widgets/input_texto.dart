@@ -68,7 +68,9 @@ class _InputTextoState extends State<InputTexto> {
                   padding: const EdgeInsets.symmetric(horizontal: 20),
                   child: Text(
                     _displayText!,
-                    style: const TextStyle(color: Colors.grey, fontSize: 15),
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                 ),
               )
@@ -76,6 +78,11 @@ class _InputTextoState extends State<InputTexto> {
                 keyboardType: widget.inputTipo,
                 decoration: InputDecoration(
                   labelText: widget.label,
+                  labelStyle: Theme.of(
+                    context,
+                  ).textTheme.displayMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                  ),
                   hintText: widget.hintLabel,
                   hintStyle: const TextStyle(color: Colors.grey, fontSize: 15),
                   border: InputBorder.none,

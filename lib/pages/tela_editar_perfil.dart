@@ -17,7 +17,12 @@ class TelaEditarPerfil extends StatelessWidget {
             const SizedBox(height: 12),
 
             // Texto de editar perfil
-            const Text('Editar Perfil', style: TextStyle(fontSize: 20)),
+            Text(
+              'Editar Perfil',
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
 
             const SizedBox(height: 12),
 
@@ -48,7 +53,7 @@ class TelaEditarPerfil extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 18),
               child: Row(
                 children: [
-                  Expanded(child: _campoBannerEstatico()),
+                  Expanded(child: _campoBannerEstatico(context)),
                   //const SizedBox(width: 20),
                   Expanded(child: _campo(context, 'Biografia')),
                 ],
@@ -64,18 +69,20 @@ class TelaEditarPerfil extends StatelessWidget {
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 elevation: 6,
               ),
-              child: const Text(
+              child: Text(
                 'Salvar alterações',
-                style: TextStyle(color: Colors.white),
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: Colors.white),
               ),
             ),
 
             const SizedBox(height: 24),
 
             // Opções de conta (estáticas)
-            _opcaoSimples('Desativar conta'),
-            _opcaoSimples('Excluir conta'),
-            _opcaoSimples('Sair'),
+            _opcaoSimples(context, 'Desativar conta'),
+            _opcaoSimples(context, 'Excluir conta'),
+            _opcaoSimples(context, 'Sair'),
 
             const SizedBox(height: 20),
           ],
@@ -92,8 +99,14 @@ class TelaEditarPerfil extends StatelessWidget {
         shadowColor: Theme.of(context).colorScheme.onSurface,
         borderRadius: BorderRadius.circular(10),
         child: TextFormField(
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
           decoration: InputDecoration(
             labelText: label,
+            labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
             filled: true,
             fillColor: Theme.of(context).colorScheme.secondary,
             border: OutlineInputBorder(
@@ -123,7 +136,7 @@ class TelaEditarPerfil extends StatelessWidget {
     );
   }
 
-  Widget _campoBannerEstatico() {
+  Widget _campoBannerEstatico(BuildContext context) {
     return Stack(
       alignment: Alignment.topRight,
       children: [
@@ -133,12 +146,11 @@ class TelaEditarPerfil extends StatelessWidget {
             color: Colors.blue[800],
             borderRadius: BorderRadius.circular(8),
           ),
-          child: const Center(
+          child: Center(
             child: Text(
               'Walt Disney Pictures',
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
+              style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
           ),
@@ -155,10 +167,15 @@ class TelaEditarPerfil extends StatelessWidget {
     );
   }
 
-  Widget _opcaoSimples(String texto) {
+  Widget _opcaoSimples(BuildContext context, String texto) {
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 3),
-      child: Text(texto, style: const TextStyle(fontSize: 16)),
+      child: Text(
+        texto,
+        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+          color: Theme.of(context).colorScheme.onPrimary,
+        ),
+      ),
     );
   }
 }
