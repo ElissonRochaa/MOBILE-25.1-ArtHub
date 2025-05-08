@@ -34,10 +34,10 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/publicacao': (context) => const TelaPublicacao(),
-        '/esqueceu-senha' : (context) => const TelaEsqueceuSenha(),
-        '/login' : (context) => const TelaLogin(),
-        '/home' : (context) => const TelaInicial(),
-        '/perfil' : (context) => const TelaPerfilUsuario(),
+        '/esqueceu-senha': (context) => const TelaEsqueceuSenha(),
+        '/login': (context) => const TelaLogin(),
+        '/home': (context) => const TelaInicial(),
+        '/perfil': (context) => const TelaPerfilUsuario(),
       },
     );
   }
