@@ -16,15 +16,24 @@ class TelaPerfilUsuario extends StatelessWidget {
         children: [
           Text(
             "Hannah Montana",
-            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
+            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
-          Text("@hannahmontana", style: TextStyle(fontWeight: FontWeight.w600)),
+          Text(
+            "@hannahmontana",
+            style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
           Row(
             children: [
               Text(
                 "20 seguidores",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  fontFamily: 'SignikaNegative',
                   shadows: [
                     Shadow(
                       color: corSombra,
@@ -39,6 +48,8 @@ class TelaPerfilUsuario extends StatelessWidget {
                 "22 seguindo",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
+                  fontSize: 14,
+                  fontFamily: 'SignikaNegative',
                   shadows: [
                     Shadow(
                       color: corSombra,
@@ -157,6 +168,7 @@ class TelaPerfilUsuario extends StatelessWidget {
               child: Text(
                 "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
                 overflow: TextOverflow.clip,
+                style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
           ),

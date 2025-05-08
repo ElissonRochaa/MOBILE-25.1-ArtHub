@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ThemeApp {
   static final theme = ThemeData(
+    fontFamily: 'SignikaNegative',
     colorScheme: ColorScheme(
       brightness: Brightness.light,
       primary: Color(0xFFFFB246),
@@ -14,6 +15,15 @@ class ThemeApp {
       onError: Colors.white,
       surface: Colors.grey[200]!,
       onSurface: Colors.black,
+    ),
+    textTheme: const TextTheme(
+      displayLarge: TextStyle(fontSize: 32),
+      displayMedium: TextStyle(fontSize: 24),
+      titleLarge: TextStyle(fontSize: 20),
+      bodyLarge: TextStyle(fontSize: 16),
+      bodyMedium: TextStyle(fontSize: 15),
+      labelLarge: TextStyle(fontSize: 14),
+      labelSmall: TextStyle(fontSize: 12),
     ),
   );
 }

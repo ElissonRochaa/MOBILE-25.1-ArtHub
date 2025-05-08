@@ -54,18 +54,19 @@ class TelaRegistro extends StatelessWidget {
                           borderRadius: BorderRadius.circular(8),
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         "Cadastrar",
-                        style: TextStyle(fontSize: 16),
+                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                       ),
                     ),
                     const SizedBox(height: 80),
                     RichText(
                       text: TextSpan(
                         text: "Já é Cadastrado? ",
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
+                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.onPrimary,
                         ),
                         children: [
                           TextSpan(

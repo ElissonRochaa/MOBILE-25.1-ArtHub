@@ -7,14 +7,19 @@ class TelaEditarPerfil extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.primary),
-      
+
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 12),
 
             // Texto de editar perfil
-            const Text('Editar Perfil', style: TextStyle(fontSize: 20)),
+            Text(
+              'Editar Perfil',
+              style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
+            ),
 
             const SizedBox(height: 12),
 
@@ -174,7 +179,12 @@ class TelaEditarPerfil extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              child: const Text('Salvar alterações'),
+              child: Text(
+                'Salvar alterações',
+                style: Theme.of(
+                  context,
+                ).textTheme.bodyMedium?.copyWith(color: Colors.white),
+              ),
             ),
 
             const SizedBox(height: 24),
@@ -210,9 +220,14 @@ class TelaEditarPerfil extends StatelessWidget {
         shadowColor: Theme.of(context).colorScheme.onSurface,
         borderRadius: BorderRadius.circular(10),
         child: TextFormField(
+          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
           decoration: InputDecoration(
             labelText: label,
-            labelStyle: const TextStyle(fontSize: 16, color: Colors.grey),
+            labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
             filled: true,
             fillColor: Theme.of(context).colorScheme.secondary,
             border: OutlineInputBorder(
@@ -248,9 +263,8 @@ class TelaEditarPerfil extends StatelessWidget {
           onTap: onTap,
           child: Text(
             texto,
-            style: const TextStyle(
-              fontSize: 16,
-              color: Colors.black,
+            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
               shadows: [
                 Shadow(
                   color: Colors.black26,

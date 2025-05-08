@@ -49,8 +49,9 @@ class TelaApresentacao extends StatelessWidget {
                       child: Text(
                         "Um universo de arte na palma da sua mão.",
                         textAlign: TextAlign.left,
-                        style: TextStyle(
-                          fontSize: 32,
+                        style: Theme.of(
+                          context,
+                        ).textTheme.displayLarge?.copyWith(
                           color: Theme.of(context).colorScheme.onPrimary,
                           decoration: TextDecoration.none,
                         ),
