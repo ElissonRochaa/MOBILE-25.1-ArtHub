@@ -1,7 +1,6 @@
 import 'package:arthub/config/themeApp.dart';
 import 'package:arthub/pages/tela_editar_perfil.dart';
 import 'package:arthub/pages/tela_esqueceu_senha.dart';
-import 'package:arthub/pages/tela_home.dart';
 import 'package:arthub/pages/tela_login.dart';
 import 'package:arthub/pages/tela_perfil_usuario.dart';
 import 'package:arthub/pages/tela_publicacao.dart';
