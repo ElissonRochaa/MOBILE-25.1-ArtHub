@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:arthub/widgets/publicacao_widget.dart';
+import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 
 class TelaVerperfilUsuario extends StatefulWidget {
   const TelaVerperfilUsuario({super.key});
