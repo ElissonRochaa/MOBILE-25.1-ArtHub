@@ -100,7 +100,7 @@ class TelaPerfilUsuario extends StatelessWidget {
                       offset: Offset(10, 0),
                       child: IconButton(
                         onPressed: () {
-                          print("Botão de editar foi apertado");
+                          Navigator.pushNamed(context, "/editar-perfil");
                         },
                         icon: Icon(Icons.edit_outlined),
                         style: ButtonStyle(
@@ -156,7 +156,7 @@ class TelaPerfilUsuario extends StatelessWidget {
               * */
               child: Text(
                 "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
-                overflow: TextOverflow.ellipsis,
+                overflow: TextOverflow.clip,
               ),
             ),
           ),
@@ -170,6 +170,7 @@ class TelaPerfilUsuario extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: BarraPesquisaWidget(),
       ),

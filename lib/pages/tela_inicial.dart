@@ -14,6 +14,7 @@ class TelaInicial extends StatelessWidget {
     var pesquisa = context.watch<BarraPesquisaProvider>().texto;
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: BarraPesquisaWidget(),
       ),
