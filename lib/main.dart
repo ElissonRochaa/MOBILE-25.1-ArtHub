@@ -1,13 +1,13 @@
 import 'package:arthub/config/themeApp.dart';
 import 'package:arthub/pages/tela_editar_perfil.dart';
 import 'package:arthub/pages/tela_esqueceu_senha.dart';
-import 'package:arthub/pages/tela_inicial.dart';
 import 'package:arthub/pages/tela_login.dart';
 import 'package:arthub/pages/tela_perfil_usuario.dart';
 import 'package:arthub/pages/tela_publicacao.dart';
+import 'package:arthub/pages/tela_registro.dart';
 import 'package:arthub/pages/tela_ver_perfil_usuario.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
-import 'package:arthub/pages/tela_principal.dart';
+import 'package:arthub/widgets/tela_com_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -32,15 +32,16 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ArtHub',
       theme: ThemeApp.theme,
-      home: TelaPrincipal(),
+      home: TelaComNavbar(),
       initialRoute: '/',
       routes: {
+        '/registro': (context) => const TelaRegistro(),
         '/publicacao': (context) => const TelaPublicacao(),
-        '/esqueceu-senha' : (context) => const TelaEsqueceuSenha(),
-        '/login' : (context) => const TelaLogin(),
-        '/home' : (context) => const TelaInicial(),
-        '/perfil' : (context) => const TelaPerfilUsuario(),
-        '/editar-perfil' : (context) => const TelaEditarPerfil(),
+        '/esqueceu-senha': (context) => const TelaEsqueceuSenha(),
+        '/login': (context) => const TelaLogin(),
+        '/home': (context) => const TelaComNavbar(),
+        '/perfil': (context) => const TelaPerfilUsuario(),
+        '/editar-perfil': (context) => const TelaEditarPerfil(),
         '/ver-perfil' : (context) => const TelaVerperfilUsuario(),
       },
     );

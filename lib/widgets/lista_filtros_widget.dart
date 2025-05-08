@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class ListaFiltrosWidget extends StatelessWidget {
-  const ListaFiltrosWidget({super.key});
+  ListaFiltrosWidget({super.key});
+
+  final ScrollController _scrollController = ScrollController();
 
   @override
   Widget build(BuildContext context) {
@@ -10,29 +12,32 @@ class ListaFiltrosWidget extends StatelessWidget {
         thumbVisibility: WidgetStatePropertyAll(false),
         radius: Radius.circular(20),
         thickness: WidgetStatePropertyAll(5),
-        thumbColor: WidgetStatePropertyAll(Theme.of(context).colorScheme.primary),
+        thumbColor: WidgetStatePropertyAll(
+          Theme.of(context).colorScheme.primary,
+        ),
         mainAxisMargin: 8,
       ),
-      child:
-        Scrollbar(
-          child: Padding(
-            padding: EdgeInsets.only(bottom: 12, top: 10),
-            child:SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              padding: EdgeInsets.only(left: 8, right: 5),
-              child: Row(
-                children: [
-                  ItemFiltroWidget("Todos"),
-                  ItemFiltroWidget("Poemas"),
-                  ItemFiltroWidget("Pinturas"),
-                  ItemFiltroWidget("Músicas"),
-                  ItemFiltroWidget("Desenhos"),
-                  ItemFiltroWidget("Esculturas"),
-                ],
-              ),
+      child: Scrollbar(
+        controller: _scrollController,
+        child: Padding(
+          padding: EdgeInsets.only(bottom: 12, top: 10),
+          child: SingleChildScrollView(
+            controller: _scrollController,
+            scrollDirection: Axis.horizontal,
+            padding: EdgeInsets.only(left: 8, right: 5),
+            child: Row(
+              children: [
+                ItemFiltroWidget("Todos"),
+                ItemFiltroWidget("Poemas"),
+                ItemFiltroWidget("Pinturas"),
+                ItemFiltroWidget("Músicas"),
+                ItemFiltroWidget("Desenhos"),
+                ItemFiltroWidget("Esculturas"),
+              ],
             ),
-          )
+          ),
         ),
+      ),
     );
   }
 }
@@ -56,40 +61,46 @@ class _ItemFiltroWidgetState extends State<ItemFiltroWidget> {
           isSelected = !isSelected;
         });
       },
-      child:
-        AnimatedContainer(
-          duration: Duration(milliseconds: 100),
-          height: 35,
-          margin: EdgeInsets.only(right: 4),
-          padding: EdgeInsets.only(left: 3, right: 3),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: isSelected ? Theme.of(context).colorScheme.tertiary : Colors.white,
-              border: Border.all(
-                color: isSelected ? Theme.of(context).colorScheme.tertiary : Color(0xFFCAC4D0),
-                width: 1,
-              )
-          ),
-          child: Row(
-            children: [
-              if (isSelected)
-                Icon(
-                  Icons.check,
-                  size: 16,
-                  color: Theme.of(context).colorScheme.onTertiary,
-                ),
-              SizedBox(width: 4,),
-              Center(
-                child: Text(
-                    widget.name,
-                    style: TextStyle(
-                    fontSize: 16,
-                    color: Theme.of(context).colorScheme.onTertiary)),
-              ),
-            ],
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 100),
+        height: 35,
+        margin: EdgeInsets.only(right: 4),
+        padding: EdgeInsets.only(left: 3, right: 3),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color:
+              isSelected
+                  ? Theme.of(context).colorScheme.tertiary
+                  : Colors.white,
+          border: Border.all(
+            color:
+                isSelected
+                    ? Theme.of(context).colorScheme.tertiary
+                    : Color(0xFFCAC4D0),
+            width: 1,
           ),
         ),
+        child: Row(
+          children: [
+            if (isSelected)
+              Icon(
+                Icons.check,
+                size: 16,
+                color: Theme.of(context).colorScheme.onTertiary,
+              ),
+            SizedBox(width: 4),
+            Center(
+              child: Text(
+                widget.name,
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onTertiary,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
-

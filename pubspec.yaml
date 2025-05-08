@@ -35,6 +35,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.8
   provider: ^6.1.4
+  curved_navigation_bar: ^1.0.6
 
 dev_dependencies:
   flutter_test:
@@ -64,6 +65,8 @@ flutter:
     - assets/images/cat.jpeg
     - assets/images/snoopy.jpeg
     - assets/images/gato_horizontal.jpg
+    - assets/images/upe_entrada.jpeg
+    - assets/images/logo_upe.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
