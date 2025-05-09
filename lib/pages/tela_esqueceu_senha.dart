@@ -36,73 +36,74 @@ class TelaEsqueceuSenha extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-              left: 10,
-              top: 10,
-              child: BotaoVoltarWidget()
-          ),
+          Positioned(left: 10, top: 10, child: BotaoVoltarWidget()),
           Positioned(
             top: MediaQuery.of(context).size.height / 2 - 150,
             left: 20,
             right: 20,
-            child: Column(
-              children: [
-                Text(
-                  'Informe seu email cadastrado para receber instruções de recuperação de senha:',
-                  style: Theme.of(
-                    context,
-                  ).textTheme.displayMedium?.copyWith(color: Colors.black),
-                  textAlign: TextAlign.center,
-                ),
-                const SizedBox(height: 20),
-                TextField(
-                  decoration: InputDecoration(
-                    filled: true,
-                    fillColor: Colors.white,
-                    labelText: 'Email',
-                    labelStyle: Theme.of(context).textTheme.displayMedium?.copyWith(
+            child: Padding(
+              padding: EdgeInsets.only(left: 20, right: 20),
+              child: Column(
+                children: [
+                  Text(
+                    'Informe seu email cadastrado para receber instruções de recuperação de senha:',
+                    style: Theme.of(
+                      context,
+                    ).textTheme.displayMedium?.copyWith(color: Colors.black),
+                    textAlign: TextAlign.center,
+                  ),
+                  const SizedBox(height: 20),
+                  TextField(
+                    decoration: InputDecoration(
+                      filled: true,
+                      fillColor: Colors.white,
+                      labelText: 'Email',
+                      labelStyle: Theme.of(
+                        context,
+                      ).textTheme.displayMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                      enabledBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderSide: BorderSide(color: Colors.white),
+                        borderRadius: BorderRadius.all(Radius.circular(5)),
+                      ),
+                    ),
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
-                    enabledBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.white),
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
-                    ),
                   ),
-                  style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onPrimary,
-                  ),
-                ),
-                const SizedBox(height: 20),
-                ElevatedButton(
-                  onPressed: () => {Navigator.pushNamed(context, "/login")},
-                  style: ElevatedButton.styleFrom(
-                    fixedSize: Size(165, 46),
-                    backgroundColor: ThemeApp.theme.colorScheme.tertiary,
-                    elevation: 6,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
+                  const SizedBox(height: 20),
+                  ElevatedButton(
+                    onPressed: () => {Navigator.pushNamed(context, "/login")},
+                    style: ElevatedButton.styleFrom(
+                      fixedSize: Size(165, 46),
+                      backgroundColor: ThemeApp.theme.colorScheme.tertiary,
+                      elevation: 6,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(5),
+                      ),
                     ),
-                  ),
-                  child: Text(
-                    'Enviar e-mail',
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 20,
-                      shadows: [
-                        Shadow(
-                          color: Color.fromRGBO(10, 10, 10, 0.3),
-                          offset: Offset(0, 3),
-                          blurRadius: 2.0,
-                        ),
-                      ],
+                    child: Text(
+                      'Enviar e-mail',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 20,
+                        shadows: [
+                          Shadow(
+                            color: Color.fromRGBO(10, 10, 10, 0.3),
+                            offset: Offset(0, 3),
+                            blurRadius: 2.0,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ],
+                ],
+              ),
             ),
           ),
         ],
