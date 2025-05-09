@@ -3,17 +3,101 @@ import 'package:flutter/material.dart';
 class TelaEditarPerfil extends StatelessWidget {
   const TelaEditarPerfil({super.key});
 
+  Widget _campo(BuildContext context, String label) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Material(
+        elevation: 4,
+        shadowColor: Theme.of(context).colorScheme.onSurface,
+        borderRadius: BorderRadius.circular(10),
+        child: TextFormField(
+          decoration: InputDecoration(
+            labelText: label,
+            labelStyle: const TextStyle(fontSize: 16, color: Colors.grey),
+            filled: true,
+            fillColor: Theme.of(context).colorScheme.secondary,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(10),
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+
+            focusedBorder: OutlineInputBorder(
+              borderSide: BorderSide(
+                color: Theme.of(context).colorScheme.secondary,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _opcaoSimples(BuildContext context, String texto, VoidCallback onTap) {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15, left: 28),
+      child: Align(
+        alignment: Alignment.centerLeft,
+        child: InkWell(
+          onTap: onTap,
+          child: Text(
+            texto,
+            style: const TextStyle(
+              fontSize: 16,
+              color: Colors.black,
+              shadows: [
+                Shadow(
+                  color: Colors.black26,
+                  offset: Offset(1, 1),
+                  blurRadius: 2,
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _mostrarPopup(BuildContext context, String titulo) {
+    print("Deseja realmente: " + titulo);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.primary),
-
+      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.primary,
+      automaticallyImplyLeading: false,
+       leading: Padding(
+        padding: const EdgeInsets.all(8.0), // Padding opcional
+        child: Container(
+          decoration: BoxDecoration(
+            color: Colors.white, // Fundo branco
+            shape: BoxShape.circle,
+          ),
+          child: IconButton(
+            icon: Icon(
+              Icons.arrow_back,
+              color: Theme.of(context).colorScheme.primary,
+            ),
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
+        ),
+      ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
             const SizedBox(height: 12),
-
-            // Texto de editar perfil
             Text(
               'Editar Perfil',
               style: Theme.of(context).textTheme.displayMedium?.copyWith(
@@ -22,8 +106,6 @@ class TelaEditarPerfil extends StatelessWidget {
             ),
 
             const SizedBox(height: 12),
-
-            // Foto de perfil com ícone de edição
             Stack(
               alignment: Alignment.bottomRight,
               children: [
@@ -31,9 +113,11 @@ class TelaEditarPerfil extends StatelessWidget {
                   radius: 40,
                   backgroundImage: AssetImage('assets/images/hannah.jpg'),
                 ),
-                GestureDetector(
+                InkWell(
                   onTap: () {
-                    {print("Ícone de edição foto de perfil clicado");}
+                    {
+                      print("Ícone de edição foto de perfil clicado");
+                    }
                   },
                   child: const CircleAvatar(
                     radius: 14,
@@ -56,7 +140,6 @@ class TelaEditarPerfil extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 🔵 Container do Banner com fundo colorido
                   Container(
                     padding: const EdgeInsets.all(8),
                     decoration: BoxDecoration(
@@ -88,14 +171,18 @@ class TelaEditarPerfil extends StatelessWidget {
                                 color: Colors.grey[300],
                                 borderRadius: BorderRadius.circular(8),
                                 image: const DecorationImage(
-                                  image: AssetImage('assets/images/banner.jpg'),
+                                  image: AssetImage(
+                                    'assets/images/gato_horizontal.jpg',
+                                  ),
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
-                            GestureDetector(
+                            InkWell(
                               onTap: () {
-                                {print("Ícone de edição banner clicado");}
+                                {
+                                  print("Ícone de edição banner clicado");
+                                }
                               },
                               child: const CircleAvatar(
                                 radius: 14,
@@ -111,7 +198,6 @@ class TelaEditarPerfil extends StatelessWidget {
 
                   const SizedBox(width: 16),
 
-                  // 🟢 Container da Biografia com fundo colorido
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.all(8),
@@ -119,12 +205,12 @@ class TelaEditarPerfil extends StatelessWidget {
                         color: Theme.of(context).colorScheme.secondary,
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
-                        BoxShadow(
-                          color: Colors.black26,
-                          offset: const Offset(1, 4),
-                          blurRadius: 4,
-                        ),
-                      ],
+                          BoxShadow(
+                            color: Colors.black26,
+                            offset: const Offset(1, 4),
+                            blurRadius: 4,
+                          ),
+                        ],
                       ),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
@@ -170,7 +256,9 @@ class TelaEditarPerfil extends StatelessWidget {
             ),
 
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                 print("Alterações salvas");
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.tertiary,
                 elevation: 8,
@@ -179,12 +267,7 @@ class TelaEditarPerfil extends StatelessWidget {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              child: Text(
-                'Salvar alterações',
-                style: Theme.of(
-                  context,
-                ).textTheme.bodyMedium?.copyWith(color: Colors.white),
-              ),
+              child: const Text('Salvar alterações'),
             ),
 
             const SizedBox(height: 24),
@@ -211,73 +294,4 @@ class TelaEditarPerfil extends StatelessWidget {
       ),
     );
   }
-
-  Widget _campo(BuildContext context, String label) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      child: Material(
-        elevation: 4,
-        shadowColor: Theme.of(context).colorScheme.onSurface,
-        borderRadius: BorderRadius.circular(10),
-        child: TextFormField(
-          style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
-          decoration: InputDecoration(
-            labelText: label,
-            labelStyle: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-            filled: true,
-            fillColor: Theme.of(context).colorScheme.secondary,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-            enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(10),
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-
-            focusedBorder: OutlineInputBorder(
-              borderSide: BorderSide(
-                color: Theme.of(context).colorScheme.secondary,
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _opcaoSimples(BuildContext context, String texto, VoidCallback onTap) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 15, left: 28),
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: InkWell(
-          onTap: onTap,
-          child: Text(
-            texto,
-            style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-              shadows: [
-                Shadow(
-                  color: Colors.black26,
-                  offset: Offset(1, 1),
-                  blurRadius: 2,
-                ),
-              ],
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  void _mostrarPopup(BuildContext context, String titulo) {}
 }

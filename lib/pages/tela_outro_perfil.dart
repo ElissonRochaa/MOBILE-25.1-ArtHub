@@ -1,11 +1,17 @@
-import 'package:arthub/widgets/barra_pesquisa_widget.dart';
-import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:arthub/widgets/publicacao_widget.dart';
+import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 
-class TelaVerperfilUsuario extends StatelessWidget {
-  const TelaVerperfilUsuario({super.key});
+class TelaOutroPerfil extends StatefulWidget {
+  const TelaOutroPerfil({super.key});
 
+  @override
+  State<TelaOutroPerfil> createState() => _TelaOutroPerfilState();
+}
+
+class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
   static const Color corSombra = Color.fromRGBO(10, 10, 10, 0.3);
+  bool seguindo = false;
 
   Widget numerosPerfil(BuildContext context) {
     return Positioned(
@@ -79,6 +85,24 @@ class TelaVerperfilUsuario extends StatelessWidget {
                 width: MediaQuery.sizeOf(context).width,
                 height: 159,
                 fit: BoxFit.cover,
+              ),
+              Positioned(
+                top: 10,
+                left: 10,
+                child: IconButton(
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.primary,
+                    size: 28,
+                  ),
+                  style: IconButton.styleFrom(
+                    backgroundColor: Colors.white,
+                    padding: EdgeInsets.all(4),
+                  ),
+                ),
               ),
               Positioned(
                 top: 100,
@@ -182,34 +206,35 @@ class TelaVerperfilUsuario extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-          backgroundColor: Theme.of(context).colorScheme.primary,
-          title: BarraPesquisaWidget()
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        title: BarraPesquisaWidget(),
       ),
       body: CustomScrollView(
         slivers: [
           SliverList(
             delegate: SliverChildListDelegate([informacoesPerfil(context)]),
           ),
-          SliverPadding(padding: const EdgeInsets.only(
+          SliverPadding(
+            padding: const EdgeInsets.only(
               left: 15,
               right: 12,
               top: 30,
-              bottom: 10
-          ),
-            sliver: SliverGrid(
-                delegate: SliverChildListDelegate([
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                ]),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 2,
-                  crossAxisSpacing: 2,
-                )
+              bottom: 10,
             ),
-          )
+            sliver: SliverGrid(
+              delegate: SliverChildListDelegate([
+                PublicacaoWidget(),
+                PublicacaoWidget(),
+                PublicacaoWidget(),
+                PublicacaoWidget(),
+              ]),
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                mainAxisSpacing: 2,
+                crossAxisSpacing: 2,
+              ),
+            ),
+          ),
         ],
       ),
     );
