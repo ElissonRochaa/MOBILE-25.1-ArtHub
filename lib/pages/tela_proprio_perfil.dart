@@ -1,9 +1,8 @@
-import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 
-class TelaPerfilUsuario extends StatelessWidget {
-  const TelaPerfilUsuario({super.key});
+class TelaProprioPerfil extends StatelessWidget {
+  const TelaProprioPerfil({super.key});
 
   static const Color corSombra = Color.fromRGBO(10, 10, 10, 0.3);
 
@@ -167,7 +166,8 @@ class TelaPerfilUsuario extends StatelessWidget {
               * */
               child: Text(
                 "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
-                overflow: TextOverflow.clip,
+                maxLines: 3,
+                overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
             ),
@@ -180,32 +180,32 @@ class TelaPerfilUsuario extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate([informacoesPerfil(context)]),
+      slivers: [
+        SliverList(
+          delegate: SliverChildListDelegate([informacoesPerfil(context)]),
+        ),
+        SliverPadding(
+          padding: const EdgeInsets.only(
+            left: 15,
+            right: 12,
+            top: 30,
+            bottom: 10,
           ),
-          SliverPadding(
-            padding: const EdgeInsets.only(
-              left: 15,
-              right: 12,
-              top: 30,
-              bottom: 10,
-            ),
-            sliver: SliverGrid(
-              delegate: SliverChildListDelegate([
-                PublicacaoWidget(),
-                PublicacaoWidget(),
-                PublicacaoWidget(),
-                PublicacaoWidget(),
-              ]),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 2,
-                crossAxisSpacing: 2,
-              ),
+          sliver: SliverGrid(
+            delegate: SliverChildListDelegate([
+              PublicacaoWidget(),
+              PublicacaoWidget(),
+              PublicacaoWidget(),
+              PublicacaoWidget(),
+            ]),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              mainAxisSpacing: 2,
+              crossAxisSpacing: 2,
             ),
           ),
-        ],
-      );
+        ),
+      ],
+    );
   }
 }

@@ -1,5 +1,8 @@
+import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
+import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TelaPublicacao extends StatefulWidget {
   const TelaPublicacao({super.key});
@@ -106,6 +109,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
 
   @override
   Widget build(BuildContext context) {
+    var pesquisa = context.watch<BarraPesquisaProvider>().texto;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -166,6 +170,20 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                       padding: const EdgeInsets.only(left: 10, right: 10),
                       child: Image.asset('assets/images/cat.jpeg'),
                     ),
+                  ],
+                ),
+              ),
+            ),
+          if (pesquisa.isNotEmpty)
+            Positioned.fill(
+              child: Container(
+                color: Colors.white.withValues(alpha: 0.95),
+                child: Column(
+                  children: [
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
                   ],
                 ),
               ),

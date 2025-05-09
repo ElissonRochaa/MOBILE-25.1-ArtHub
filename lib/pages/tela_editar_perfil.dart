@@ -257,7 +257,7 @@ class TelaEditarPerfil extends StatelessWidget {
 
             ElevatedButton(
               onPressed: () {
-                 print("Alterações salvas");
+                print("Alterações salvas");
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.tertiary,

@@ -1,4 +1,5 @@
 import 'package:arthub/config/themeApp.dart';
+import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:flutter/material.dart';
 
 class TelaLogin extends StatefulWidget {
@@ -109,17 +110,11 @@ class _TelaLoginState extends State<TelaLogin> {
                             },
                         child: Text(
                           'Esqueceu a senha?',
-                          style: TextStyle(
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
                             decoration: TextDecoration.underline,
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            shadows: [
-                              Shadow(
-                                color: Color.fromRGBO(10, 10, 10, 0.3),
-                                offset: Offset(0, 3),
-                                blurRadius: 2.0,
-                              ),
-                            ],
                           ),
                         ),
                       ),
@@ -160,55 +155,44 @@ class _TelaLoginState extends State<TelaLogin> {
           ),
           Positioned(
             top: 600,
-            left: MediaQuery.of(context).size.width / 2 - 150,
+            left: MediaQuery.of(context).size.width / 2 - 140,
             child: Row(
               children: [
                 Text(
                   'Não tem uma conta?',
-                  style: TextStyle(
-                    fontSize: 20,
-                    shadows: [
-                      Shadow(
-                        color: Color.fromRGBO(10, 10, 10, 0.3),
-                        offset: Offset(0, 3),
-                        blurRadius: 2.0,
-                      ),
-                    ],
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    // shadows: [
+                    //   Shadow(
+                    //     color: Color.fromRGBO(10, 10, 10, 0.3),
+                    //     offset: Offset(0, 3),
+                    //     blurRadius: 2.0,
+                    //   ),
+                    // ],
                   ),
                 ),
                 SizedBox(width: 3),
                 GestureDetector(
                   onTap: () => {Navigator.pushNamed(context, '/registro')},
                   child: Text(
-                    'Registre-se',
-                    style: TextStyle(
+                    'Registre-se!',
+                    style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.onPrimary,
                       decoration: TextDecoration.underline,
-                      fontSize: 20,
-                      shadows: [
-                        Shadow(
-                          color: Color.fromRGBO(10, 10, 10, 0.3),
-                          offset: Offset(0, 3),
-                          blurRadius: 2.0,
-                        ),
-                      ],
+                      // shadows: [
+                      //   Shadow(
+                      //     color: Color.fromRGBO(10, 10, 10, 0.3),
+                      //     offset: Offset(0, 3),
+                      //     blurRadius: 2.0,
+                      //   ),
+                      // ],
                     ),
                   ),
                 ),
               ],
             ),
           ),
-          Positioned(
-            left: 10,
-            top: 10,
-            child: IconButton.filled(
-              onPressed: () => {Navigator.pop(context)},
-              style: IconButton.styleFrom(backgroundColor: Colors.white),
-              icon: Icon(
-                Icons.arrow_back,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-          ),
+          Positioned(left: 10, top: 10, child: BotaoVoltarWidget()),
         ],
       ),
     );

@@ -1,15 +1,18 @@
+import 'package:arthub/provider/barra_pesquisa_provider.dart';
+import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
+import 'package:provider/provider.dart';
 
-class TelaVerperfilUsuario extends StatefulWidget {
-  const TelaVerperfilUsuario({super.key});
+class TelaOutroPerfil extends StatefulWidget {
+  const TelaOutroPerfil({super.key});
 
   @override
-  State<TelaVerperfilUsuario> createState() => _TelaVerperfilUsuarioState();
+  State<TelaOutroPerfil> createState() => _TelaOutroPerfilState();
 }
 
-class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
+class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
   static const Color corSombra = Color.fromRGBO(10, 10, 10, 0.3);
   bool seguindo = false;
 
@@ -21,13 +24,13 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Hannah Montana",
+            "Outro perfil",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
           Text(
-            "@hannahmontana",
+            "@eunaosouahannahmontana",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
@@ -35,7 +38,7 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
           Row(
             children: [
               Text(
-                "20 seguidores",
+                "0 seguidores",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -51,7 +54,7 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
               ),
               SizedBox(width: 20),
               Text(
-                "22 seguindo",
+                "2 seguindo",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -132,18 +135,6 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
                 child: Row(
                   children: [
                     Transform.translate(
-                      offset: Offset(10, 0),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/editar-perfil');
-                        },
-                        icon: Icon(Icons.edit_outlined),
-                        style: ButtonStyle(
-                          iconSize: WidgetStatePropertyAll(30),
-                        ),
-                      ),
-                    ),
-                    Transform.translate(
                       offset: Offset(-5, 0),
                       child: IconButton(
                         onPressed: () {
@@ -190,7 +181,8 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
               * do tipo de OVERFLOW e estilo que vai ser usado nesse texto.
               * */
               child: Text(
-                "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                "Finja que isso é um Lorem Ipsum, mas na verdade é só um texto de teste para ver como fica o layout. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),
@@ -203,38 +195,59 @@ class _TelaVerperfilUsuarioState extends State<TelaVerperfilUsuario> {
 
   @override
   Widget build(BuildContext context) {
+    var pesquisa = context.watch<BarraPesquisaProvider>().texto;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: BarraPesquisaWidget(),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate([informacoesPerfil(context)]),
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildListDelegate([informacoesPerfil(context)]),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.only(
+                  left: 15,
+                  right: 12,
+                  top: 30,
+                  bottom: 10,
+                ),
+                sliver: SliverGrid(
+                  delegate: SliverChildListDelegate([
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                  ]),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 2,
+                    crossAxisSpacing: 2,
+                  ),
+                ),
+              ),
+            ],
           ),
-          SliverPadding(
-            padding: const EdgeInsets.only(
-              left: 15,
-              right: 12,
-              top: 30,
-              bottom: 10,
-            ),
-            sliver: SliverGrid(
-              delegate: SliverChildListDelegate([
-                PublicacaoWidget(),
-                PublicacaoWidget(),
-                PublicacaoWidget(),
-                PublicacaoWidget(),
-              ]),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 2,
-                crossAxisSpacing: 2,
+          if (pesquisa.isNotEmpty)
+            Positioned.fill(
+              child: Container(
+                color: Colors.white.withValues(alpha: 0.95),
+                child: Column(
+                  children: [
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                  ],
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
