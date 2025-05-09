@@ -35,16 +35,52 @@ class MyApp extends StatelessWidget {
       theme: ThemeApp.theme,
       home: TelaApresentacao(),
       initialRoute: '/',
-      routes: {
-        '/registro': (context) => const TelaRegistro(),
-        '/publicacao': (context) => const TelaPublicacao(),
-        '/esqueceu-senha': (context) => const TelaEsqueceuSenha(),
-        '/login': (context) => const TelaLogin(),
-        '/home': (context) => const TelaComNavbar(),
-        '/perfil': (context) => const TelaProprioPerfil(),
-        '/editar-perfil': (context) => const TelaEditarPerfil(),
-        '/outro-perfil': (context) => const TelaOutroPerfil(),
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/registro':
+            return buildPageRoute(const TelaRegistro(), settings);
+          case '/publicacao':
+            return buildPageRoute(const TelaPublicacao(), settings);
+          case '/esqueceu-senha':
+            return buildPageRoute(const TelaEsqueceuSenha(), settings);
+          case '/login':
+            return buildPageRoute(const TelaLogin(), settings);
+          case '/home':
+            return buildPageRoute(const TelaComNavbar(), settings);
+          case '/perfil':
+            return buildPageRoute(const TelaProprioPerfil(), settings);
+          case '/editar-perfil':
+            return buildPageRoute(const TelaEditarPerfil(), settings);
+          case '/outro-perfil':
+            return buildPageRoute(const TelaOutroPerfil(), settings);
+          default:
+            return null;
+        }
       },
     );
   }
+}
+
+PageRouteBuilder buildPageRoute(Widget page, RouteSettings settings) {
+  return PageRouteBuilder(
+    settings: settings,
+    transitionDuration: const Duration(milliseconds: 650),
+    pageBuilder: (context, animation, secondaryAnimation) => page,
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      Offset begin;
+      const end = Offset.zero;
+      const curve = Curves.easeInOut;
+
+      if (settings.name == '/login' || settings.name == '/registro') {
+        begin = const Offset(0.0, 1.0); // De baixo para cima
+      } else {
+        begin = const Offset(1.0, 0.0); // Da direita para a esquerda
+      }
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+      var offsetAnimation = animation.drive(tween);
+
+      return SlideTransition(position: offsetAnimation, child: child);
+    },
+  );
 }
