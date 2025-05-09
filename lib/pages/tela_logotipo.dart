@@ -12,7 +12,7 @@ class _TelaLogotipoState extends State<TelaLogotipo> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 5), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.of(
         context,
       ).pushReplacement(_fadeRoute(const TelaApresentacao()));
@@ -24,10 +24,15 @@ class _TelaLogotipoState extends State<TelaLogotipo> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.primary,
       body: Center(
-        child: Text(
-          "A logotipo vai aqui", // Adicionar a logo aqui depois!
-          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
+        child: Container(
+          margin: const EdgeInsets.only(top: 20),
+          width: 400,
+          height: 400,
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage("assets/images/logo_arthub.png"),
+              fit: BoxFit.fill,
+            ),
           ),
         ),
       ),
