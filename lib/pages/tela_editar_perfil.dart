@@ -76,10 +76,10 @@ class TelaEditarPerfil extends StatelessWidget {
       appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.primary, 
       automaticallyImplyLeading: false,
        leading: Padding(
-        padding: const EdgeInsets.all(8.0), // Padding opcional
+        padding: const EdgeInsets.all(8.0),
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white, // Fundo branco
+            color: Colors.white,
             shape: BoxShape.circle,
           ),
           child: IconButton(
