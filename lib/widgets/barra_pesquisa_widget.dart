@@ -30,7 +30,8 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
       children: [
         SizedBox(
           height: 31,
-          width: 246,
+          width:
+              MediaQuery.of(context).size.width * 0.9, // Atualizar com padding!
           child: SearchBar(
             controller: controller,
             onChanged:
