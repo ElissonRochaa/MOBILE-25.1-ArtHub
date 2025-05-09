@@ -14,6 +14,16 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
   final TextEditingController controller = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      context.read<BarraPesquisaProvider>().setTexto(
+        '',
+      ); //Aqui limpa o texto da barra!
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,

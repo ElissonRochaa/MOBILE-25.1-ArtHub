@@ -9,7 +9,6 @@ class TelaPrincipal extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var pesquisa = context.watch<BarraPesquisaProvider>().texto;
     return Stack(
       children: [
         CustomScrollView(

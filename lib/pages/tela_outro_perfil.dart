@@ -1,6 +1,9 @@
+import 'package:arthub/provider/barra_pesquisa_provider.dart';
+import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
+import 'package:provider/provider.dart';
 
 class TelaOutroPerfil extends StatefulWidget {
   const TelaOutroPerfil({super.key});
@@ -192,6 +195,8 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
 
   @override
   Widget build(BuildContext context) {
+    var pesquisa = context.watch<BarraPesquisaProvider>().texto;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -199,32 +204,50 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: BarraPesquisaWidget(),
       ),
-      body: CustomScrollView(
-        slivers: [
-          SliverList(
-            delegate: SliverChildListDelegate([informacoesPerfil(context)]),
+      body: Stack(
+        children: [
+          CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildListDelegate([informacoesPerfil(context)]),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.only(
+                  left: 15,
+                  right: 12,
+                  top: 30,
+                  bottom: 10,
+                ),
+                sliver: SliverGrid(
+                  delegate: SliverChildListDelegate([
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                    PublicacaoWidget(),
+                  ]),
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 2,
+                    crossAxisSpacing: 2,
+                  ),
+                ),
+              ),
+            ],
           ),
-          SliverPadding(
-            padding: const EdgeInsets.only(
-              left: 15,
-              right: 12,
-              top: 30,
-              bottom: 10,
-            ),
-            sliver: SliverGrid(
-              delegate: SliverChildListDelegate([
-                PublicacaoWidget(),
-                PublicacaoWidget(),
-                PublicacaoWidget(),
-                PublicacaoWidget(),
-              ]),
-              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                mainAxisSpacing: 2,
-                crossAxisSpacing: 2,
+          if (pesquisa.isNotEmpty)
+            Positioned.fill(
+              child: Container(
+                color: Colors.white.withValues(alpha: 0.95),
+                child: Column(
+                  children: [
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                    PerfilPesquisaWidget(pesquisa: pesquisa),
+                  ],
+                ),
               ),
             ),
-          ),
         ],
       ),
     );
