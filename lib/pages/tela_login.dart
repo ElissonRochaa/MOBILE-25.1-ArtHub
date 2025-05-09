@@ -203,10 +203,24 @@ class _TelaLoginState extends State<TelaLogin> {
                     ),
                   ),
                 ),
+                SizedBox(height: 6),
               ],
             ),
           ),
           Positioned(left: 10, top: 10, child: BotaoVoltarWidget()),
+          Positioned( top: 750, left: 160,
+            child: Container(
+              width: 75,
+              height: 33,
+              decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.primaryContainer,
+                image: DecorationImage(
+                  image: AssetImage('assets/images/logo_upe.png'),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
         ],
       ),
     );
