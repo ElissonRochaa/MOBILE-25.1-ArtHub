@@ -1,4 +1,5 @@
 import 'package:arthub/config/themeApp.dart';
+import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:flutter/material.dart';
 
 class TelaLogin extends StatefulWidget {
@@ -190,14 +191,7 @@ class _TelaLoginState extends State<TelaLogin> {
           Positioned(
             left: 10,
             top: 10,
-            child: IconButton.filled(
-              onPressed: () => {Navigator.pop(context)},
-              style: IconButton.styleFrom(backgroundColor: Colors.white),
-              icon: Icon(
-                Icons.arrow_back,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
+            child: BotaoVoltarWidget()
           ),
         ],
       ),
