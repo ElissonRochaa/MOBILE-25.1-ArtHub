@@ -206,6 +206,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: BarraPesquisaWidget(),
       ),
