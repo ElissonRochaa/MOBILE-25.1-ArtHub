@@ -1,10 +1,17 @@
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 
-class TelaProprioPerfil extends StatelessWidget {
+class TelaProprioPerfil extends StatefulWidget {
   const TelaProprioPerfil({super.key});
 
   static const Color corSombra = Color.fromRGBO(10, 10, 10, 0.3);
+
+  @override
+  State<TelaProprioPerfil> createState() => _TelaProprioPerfilState();
+}
+
+class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
+  bool lerTudo = false;
 
   Widget numerosPerfil(BuildContext context) {
     return Positioned(
@@ -35,7 +42,7 @@ class TelaProprioPerfil extends StatelessWidget {
                   fontFamily: 'SignikaNegative',
                   shadows: [
                     Shadow(
-                      color: corSombra,
+                      color: TelaProprioPerfil.corSombra,
                       offset: Offset(0, 3),
                       blurRadius: 2,
                     ),
@@ -51,7 +58,7 @@ class TelaProprioPerfil extends StatelessWidget {
                   fontFamily: 'SignikaNegative',
                   shadows: [
                     Shadow(
-                      color: corSombra,
+                      color: TelaProprioPerfil.corSombra,
                       offset: Offset(0, 3),
                       blurRadius: 2,
                     ),
@@ -93,7 +100,7 @@ class TelaProprioPerfil extends StatelessWidget {
                     borderRadius: BorderRadius.circular(70),
                     boxShadow: [
                       BoxShadow(
-                        color: corSombra,
+                        color: TelaProprioPerfil.corSombra,
                         offset: Offset(0, 5),
                         blurRadius: 2.0,
                       ),
@@ -139,36 +146,42 @@ class TelaProprioPerfil extends StatelessWidget {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 94,
-            decoration: BoxDecoration(
-              color: Color(0xFFFEFFB9),
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                  color: corSombra,
-                  offset: Offset(0, 4),
-                  blurRadius: 3,
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 10,
-                left: 15,
-                right: 15,
-                bottom: 10,
+          child: GestureDetector(
+            onTap: (){
+              setState(() {
+                lerTudo = !lerTudo;
+              });
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: lerTudo ? null : 94,
+              decoration: BoxDecoration(
+                color: Color(0xFFFEFFB9),
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                    color: TelaProprioPerfil.corSombra,
+                    offset: Offset(0, 4),
+                    blurRadius: 3,
+                  ),
+                ],
               ),
-              /*
-              * É preciso verificar o limite de caractéres para ter certeza
-              * do tipo de OVERFLOW e estilo que vai ser usado nesse texto.
-              * */
-              child: Text(
-                "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 15,
+                  right: 15,
+                  bottom: 10,
+                ),
+                child: lerTudo ? Text(
+                  "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ) : Text(
+                  "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ),
             ),
           ),
