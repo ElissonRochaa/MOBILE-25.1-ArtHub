@@ -21,13 +21,13 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Hannah Montana",
+            "Outro perfil",
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
           Text(
-            "@hannahmontana",
+            "@eunaosouahannahmontana",
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
@@ -35,7 +35,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
           Row(
             children: [
               Text(
-                "20 seguidores",
+                "0 seguidores",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -51,7 +51,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
               ),
               SizedBox(width: 20),
               Text(
-                "22 seguindo",
+                "2 seguindo",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -132,18 +132,6 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                 child: Row(
                   children: [
                     Transform.translate(
-                      offset: Offset(10, 0),
-                      child: IconButton(
-                        onPressed: () {
-                          Navigator.pushNamed(context, '/editar-perfil');
-                        },
-                        icon: Icon(Icons.edit_outlined),
-                        style: ButtonStyle(
-                          iconSize: WidgetStatePropertyAll(30),
-                        ),
-                      ),
-                    ),
-                    Transform.translate(
                       offset: Offset(-5, 0),
                       child: IconButton(
                         onPressed: () {
@@ -190,7 +178,8 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
               * do tipo de OVERFLOW e estilo que vai ser usado nesse texto.
               * */
               child: Text(
-                "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                "Finja que isso é um Lorem Ipsum, mas na verdade é só um texto de teste para ver como fica o layout. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+                maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: Theme.of(context).textTheme.bodyMedium,
               ),

@@ -27,7 +27,7 @@ class TelaRegistro extends StatelessWidget {
           Positioned(
             left: 10,
             top: 10,
-            child: BotaoVoltarWidget()
+            child: BotaoVoltarWidget(),
             // IconButton.filled(
             //   onPressed: () => {Navigator.pop(context)},
             //   style: IconButton.styleFrom(backgroundColor: Colors.white),
@@ -68,7 +68,8 @@ class TelaRegistro extends StatelessWidget {
                       InputTexto(label: "Senha", hintLabel: "Digite sua senha"),
                       const SizedBox(height: 40),
                       ElevatedButton(
-                        onPressed: () => {Navigator.pushNamed(context, "/login")},
+                        onPressed:
+                            () => {Navigator.pushNamed(context, "/login")},
                         style: ElevatedButton.styleFrom(
                           fixedSize: Size(165, 46),
                           backgroundColor: ThemeApp.theme.colorScheme.tertiary,
@@ -92,17 +93,21 @@ class TelaRegistro extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 80),
+                      const SizedBox(height: 60),
                       RichText(
                         text: TextSpan(
                           text: "Já é Cadastrado? ",
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                          style: Theme.of(
+                            context,
+                          ).textTheme.titleLarge?.copyWith(
                             color: Theme.of(context).colorScheme.onPrimary,
                           ),
                           children: [
                             TextSpan(
                               text: "Faça o Login!",
-                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              style: Theme.of(
+                                context,
+                              ).textTheme.titleLarge?.copyWith(
                                 color: Theme.of(context).colorScheme.onPrimary,
                                 decoration: TextDecoration.underline,
                               ),
@@ -116,7 +121,7 @@ class TelaRegistro extends StatelessWidget {
                         ),
                       ),
                       Container(
-                        margin: const EdgeInsets.only(top: 35),
+                        margin: const EdgeInsets.only(top: 20),
                         width: 75,
                         height: 33,
                         decoration: BoxDecoration(

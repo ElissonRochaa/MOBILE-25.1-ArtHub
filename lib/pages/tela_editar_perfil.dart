@@ -73,26 +73,27 @@ class TelaEditarPerfil extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.primary,
-      automaticallyImplyLeading: false,
-       leading: Padding(
-        padding: const EdgeInsets.all(8.0), // Padding opcional
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white, // Fundo branco
-            shape: BoxShape.circle,
-          ),
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Theme.of(context).colorScheme.primary,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        automaticallyImplyLeading: false,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0), // Padding opcional
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white, // Fundo branco
+              shape: BoxShape.circle,
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
           ),
         ),
-      ),
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -257,7 +258,7 @@ class TelaEditarPerfil extends StatelessWidget {
 
             ElevatedButton(
               onPressed: () {
-                 print("Alterações salvas");
+                print("Alterações salvas");
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.tertiary,
