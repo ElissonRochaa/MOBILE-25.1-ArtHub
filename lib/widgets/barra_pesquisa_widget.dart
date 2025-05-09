@@ -48,18 +48,20 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
             ),
           ),
         ),
-        Container(
-          height: 30,
-          width: 30,
-          decoration: BoxDecoration(
-            image: DecorationImage(
-              image: AssetImage('assets/images/hannah.jpg'),
-              fit: BoxFit.cover,
-            ),
-            border: Border.all(color: Colors.white, width: 0.9),
-            borderRadius: BorderRadius.circular(70),
-          ),
-        ),
+        // Vamos rever a baixo se é realmente necessário...?
+
+        // Container(
+        //   height: 30,
+        //   width: 30,
+        //   decoration: BoxDecoration(
+        //     image: DecorationImage(
+        //       image: AssetImage('assets/images/hannah.jpg'),
+        //       fit: BoxFit.cover,
+        //     ),
+        //     border: Border.all(color: Colors.white, width: 0.9),
+        //     borderRadius: BorderRadius.circular(70),
+        //   ),
+        // ),
       ],
     );
   }

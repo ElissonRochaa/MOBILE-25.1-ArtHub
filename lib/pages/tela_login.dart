@@ -95,7 +95,9 @@ class _TelaLoginState extends State<TelaLogin> {
                             },
                         child: Text(
                           'Mostrar Senha',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
@@ -108,7 +110,9 @@ class _TelaLoginState extends State<TelaLogin> {
                             },
                         child: Text(
                           'Esqueceu a senha?',
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
                             color: Theme.of(context).colorScheme.onPrimary,
                             decoration: TextDecoration.underline,
                           ),
@@ -188,11 +192,7 @@ class _TelaLoginState extends State<TelaLogin> {
               ],
             ),
           ),
-          Positioned(
-            left: 10,
-            top: 10,
-            child: BotaoVoltarWidget()
-          ),
+          Positioned(left: 10, top: 10, child: BotaoVoltarWidget()),
         ],
       ),
     );

@@ -3,6 +3,7 @@ import 'package:arthub/pages/tela_apresentacao.dart';
 import 'package:arthub/pages/tela_editar_perfil.dart';
 import 'package:arthub/pages/tela_esqueceu_senha.dart';
 import 'package:arthub/pages/tela_login.dart';
+import 'package:arthub/pages/tela_logotipo.dart';
 import 'package:arthub/pages/tela_proprio_perfil.dart';
 import 'package:arthub/pages/tela_publicacao.dart';
 import 'package:arthub/pages/tela_registro.dart';
@@ -33,7 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'ArtHub',
       theme: ThemeApp.theme,
-      home: TelaApresentacao(),
+      home: TelaLogotipo(), // TelaLogotipo() para a tela de logotipo
       initialRoute: '/',
       onGenerateRoute: (settings) {
         switch (settings.name) {
