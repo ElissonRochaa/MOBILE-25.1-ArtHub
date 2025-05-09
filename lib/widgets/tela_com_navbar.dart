@@ -1,5 +1,5 @@
-import 'package:arthub/pages/tela_home.dart';
-import 'package:arthub/pages/tela_perfil_usuario.dart';
+import 'package:arthub/pages/tela_principal.dart';
+import 'package:arthub/pages/tela_proprio_perfil.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
@@ -20,8 +20,8 @@ class TelaComNavbar extends StatefulWidget {
 class _TelaComNavbarState extends State<TelaComNavbar> {
   late int currentPageIndex = 0;
   late final List<Widget> _pages = [
-    TelaHome(),
-    TelaPerfilUsuario(),
+    TelaPrincipal(),
+    TelaProprioPerfil(),
   ];
 
   @override

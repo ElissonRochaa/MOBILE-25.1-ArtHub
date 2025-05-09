@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../config/themeApp.dart';
+
 class TelaEsqueceuSenha extends StatelessWidget {
   const TelaEsqueceuSenha({super.key});
 
@@ -58,24 +60,25 @@ class TelaEsqueceuSenha extends StatelessWidget {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
+              onPressed: () => {Navigator.pushNamed(context, "/login")},
               style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
-                foregroundColor: Colors.white,
-                elevation: 10,
+                fixedSize: Size(165, 46),
+                backgroundColor: ThemeApp.theme.colorScheme.tertiary,
+                elevation: 6,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
               ),
-              onPressed: () {
-                print('botão de Enviar Email clicado');
-              },
               child: Text(
-                'Enviar email',
+                'Enviar e-mail',
                 style: TextStyle(
-                  fontFamily: 'SignikaNegative',
+                  color: Colors.white,
                   fontSize: 20,
                   shadows: [
                     Shadow(
-                      offset: Offset(2, 2),
-                      blurRadius: 2,
-                      color: Colors.black45,
+                      color: Color.fromRGBO(10, 10, 10, 0.3),
+                      offset: Offset(0, 3),
+                      blurRadius: 2.0,
                     ),
                   ],
                 ),

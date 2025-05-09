@@ -2,6 +2,8 @@ import 'package:arthub/widgets/input_texto.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../config/themeApp.dart';
+
 class TelaRegistro extends StatelessWidget {
   const TelaRegistro({super.key});
 
@@ -40,24 +42,27 @@ class TelaRegistro extends StatelessWidget {
                     InputTexto(label: "Senha", hintLabel: "Digite sua senha"),
                     const SizedBox(height: 40),
                     ElevatedButton(
-                      onPressed: () {
-                        Navigator.pushNamed(context, '/login');
-                      },
+                      onPressed: () => {Navigator.pushNamed(context, "/login")},
                       style: ElevatedButton.styleFrom(
-                        backgroundColor:
-                            Theme.of(context).colorScheme.secondary,
-                        padding: const EdgeInsets.symmetric(
-                          horizontal: 50,
-                          vertical: 15,
-                        ),
+                        fixedSize: Size(165, 46),
+                        backgroundColor: ThemeApp.theme.colorScheme.tertiary,
+                        elevation: 6,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                          borderRadius: BorderRadius.circular(5),
                         ),
                       ),
                       child: Text(
-                        "Cadastrar",
-                        style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
+                        'Cadastrar-se',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 20,
+                          shadows: [
+                            Shadow(
+                              color: Color.fromRGBO(10, 10, 10, 0.3),
+                              offset: Offset(0, 3),
+                              blurRadius: 2.0,
+                            ),
+                          ],
                         ),
                       ),
                     ),
@@ -65,15 +70,14 @@ class TelaRegistro extends StatelessWidget {
                     RichText(
                       text: TextSpan(
                         text: "Já é Cadastrado? ",
-                        style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).colorScheme.onPrimary,
                         ),
                         children: [
                           TextSpan(
                             text: "Faça o Login!",
-                            style: const TextStyle(
-                              color: Colors.blue,
-                              fontWeight: FontWeight.bold,
+                            style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                              color: Theme.of(context).colorScheme.onPrimary,
                               decoration: TextDecoration.underline,
                             ),
                             recognizer:

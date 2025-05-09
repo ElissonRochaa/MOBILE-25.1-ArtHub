@@ -1,9 +1,8 @@
-import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 
-class TelaPerfilUsuario extends StatelessWidget {
-  const TelaPerfilUsuario({super.key});
+class TelaProprioPerfil extends StatelessWidget {
+  const TelaProprioPerfil({super.key});
 
   static const Color corSombra = Color.fromRGBO(10, 10, 10, 0.3);
 

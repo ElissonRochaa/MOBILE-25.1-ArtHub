@@ -4,8 +4,8 @@ import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class TelaHome extends StatelessWidget {
-  const TelaHome({super.key});
+class TelaPrincipal extends StatelessWidget {
+  const TelaPrincipal({super.key});
 
   @override
   Widget build(BuildContext context) {
