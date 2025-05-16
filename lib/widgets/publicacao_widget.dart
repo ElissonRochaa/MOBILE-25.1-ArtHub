@@ -19,6 +19,13 @@ class PublicacaoWidget extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
               borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Color.fromRGBO(10, 10, 10, 0.3),
+                  offset: Offset(0, 6),
+                  blurRadius: 2.0,
+                ),
+              ],
             ),
             width: 150,
             height: 160,
