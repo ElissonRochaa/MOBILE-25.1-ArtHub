@@ -61,7 +61,7 @@ class _TelaLoginState extends State<TelaLogin> {
             decoration: BoxDecoration(
               color: Theme.of(context).colorScheme.primary,
               image: DecorationImage(
-                image: AssetImage('assets/images/upe_entrada.jpeg'),
+                image: AssetImage('assets/images/upe.jpg'),
                 colorFilter: ColorFilter.mode(
                   Theme.of(context).colorScheme.primary,
                   BlendMode.modulate,

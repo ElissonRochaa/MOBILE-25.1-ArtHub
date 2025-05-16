@@ -9,16 +9,22 @@ class PublicacaoWidget extends StatelessWidget {
       onTap: () {
         Navigator.pushNamed(context, '/publicacao');
       },
-      child: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: AssetImage('assets/images/cat.jpeg'),
-            fit: BoxFit.cover,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/images/cat.jpeg'),
+                fit: BoxFit.cover,
+              ),
+              borderRadius: BorderRadius.circular(20),
+            ),
+            width: 150,
+            height: 160,
           ),
-          borderRadius: BorderRadius.circular(20),
-        ),
-        width: 150,
-        height: 160,
+          Text('@esnupi'),
+        ],
       ),
     );
   }
