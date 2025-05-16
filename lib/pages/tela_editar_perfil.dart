@@ -67,7 +67,7 @@ class TelaEditarPerfil extends StatelessWidget {
   }
 
   void _mostrarPopup(BuildContext context, String titulo) {
-    print("Deseja realmente: " + titulo);
+    print("Deseja realmente: $titulo");
   }
 
   @override
