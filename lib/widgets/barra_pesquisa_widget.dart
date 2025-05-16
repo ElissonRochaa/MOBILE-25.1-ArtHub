@@ -28,33 +28,40 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          height: 31,
-          width: 246,
-          child: SearchBar(
-            controller: controller,
-            onChanged:
-                (value) =>
-                    context.read<BarraPesquisaProvider>().setTexto(value),
-            hintText: '',
-            leading: Icon(
-              Icons.search,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            backgroundColor: MaterialStatePropertyAll(
-              Theme.of(context).colorScheme.surface,
-            ),
-            side: MaterialStatePropertyAll(
-              BorderSide(
-                color: Theme.of(context).colorScheme.tertiary,
-                width: 2,
+        Image.asset(
+          'assets/images/logo_arthub.png',
+          color: Theme.of(context).colorScheme.onPrimary,
+          height: 75,
+        ),
+        Expanded(
+          child: SizedBox(
+            height: 31,
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: SearchBar(
+              controller: controller,
+              onChanged:
+                  (value) =>
+                      context.read<BarraPesquisaProvider>().setTexto(value),
+              hintText: '',
+              leading: Icon(
+                Icons.search,
+                color: Theme.of(context).colorScheme.primary,
               ),
-            ),
-            shape: MaterialStatePropertyAll(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            ),
-            padding: const MaterialStatePropertyAll(
-              EdgeInsets.symmetric(horizontal: 10),
+              backgroundColor: MaterialStatePropertyAll(
+                Theme.of(context).colorScheme.surface,
+              ),
+              side: MaterialStatePropertyAll(
+                BorderSide(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  width: 2,
+                ),
+              ),
+              shape: MaterialStatePropertyAll(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              ),
+              padding: const MaterialStatePropertyAll(
+                EdgeInsets.symmetric(horizontal: 10),
+              ),
             ),
           ),
         ),
