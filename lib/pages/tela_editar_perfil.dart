@@ -94,6 +94,26 @@ class TelaEditarPerfil extends StatelessWidget {
             ),
           ),
         ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.sunny,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () {
+                  print("Botão de trocar thema apertado");
+                },
+              ),
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
