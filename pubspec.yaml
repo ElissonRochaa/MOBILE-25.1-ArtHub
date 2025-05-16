@@ -67,6 +67,7 @@ flutter:
     - assets/images/gato_horizontal.jpg
     - assets/images/upe_entrada.jpeg
     - assets/images/logo_upe.png
+    - assets/images/logo_arthub.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

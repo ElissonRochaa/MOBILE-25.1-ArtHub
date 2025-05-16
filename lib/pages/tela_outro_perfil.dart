@@ -15,6 +15,7 @@ class TelaOutroPerfil extends StatefulWidget {
 class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
   static const Color corSombra = Color.fromRGBO(10, 10, 10, 0.3);
   bool seguindo = false;
+  bool lerTudo = false;
 
   Widget numerosPerfil(BuildContext context) {
     return Positioned(
@@ -155,36 +156,42 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
         ),
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
-          child: Container(
-            width: MediaQuery.of(context).size.width,
-            height: 94,
-            decoration: BoxDecoration(
-              color: Color(0xFFFEFFB9),
-              borderRadius: BorderRadius.circular(5),
-              boxShadow: [
-                BoxShadow(
-                  color: corSombra,
-                  offset: Offset(0, 4),
-                  blurRadius: 3,
-                ),
-              ],
-            ),
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 10,
-                left: 15,
-                right: 15,
-                bottom: 10,
+          child: GestureDetector(
+            onTap: (){
+              setState(() {
+                lerTudo = !lerTudo;
+              });
+            },
+            child: Container(
+              width: MediaQuery.of(context).size.width,
+              height: lerTudo ? null : 94,
+              decoration: BoxDecoration(
+                color: Color(0xFFFEFFB9),
+                borderRadius: BorderRadius.circular(5),
+                boxShadow: [
+                  BoxShadow(
+                    color: corSombra,
+                    offset: Offset(0, 4),
+                    blurRadius: 3,
+                  ),
+                ],
               ),
-              /*
-              * É preciso verificar o limite de caractéres para ter certeza
-              * do tipo de OVERFLOW e estilo que vai ser usado nesse texto.
-              * */
-              child: Text(
-                "Finja que isso é um Lorem Ipsum, mas na verdade é só um texto de teste para ver como fica o layout. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-                maxLines: 3,
-                overflow: TextOverflow.ellipsis,
-                style: Theme.of(context).textTheme.bodyMedium,
+              child: Padding(
+                padding: const EdgeInsets.only(
+                  top: 10,
+                  left: 15,
+                  right: 15,
+                  bottom: 10,
+                ),
+                child: lerTudo ?Text(
+                  "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ) : Text(
+                  "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                  maxLines: 3,
+                  overflow: TextOverflow.ellipsis,
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
               ),
             ),
           ),
@@ -196,6 +203,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
   @override
   Widget build(BuildContext context) {
     var pesquisa = context.watch<BarraPesquisaProvider>().texto;
+    bool lerTudo = false;
 
     return Scaffold(
       backgroundColor: Colors.white,
