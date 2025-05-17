@@ -68,32 +68,119 @@ class TelaEditarPerfil extends StatelessWidget {
   }
 
   void _mostrarPopup(BuildContext context, String titulo) {
-    print("Deseja realmente: $titulo");
+    String mensagem = '';
+    Color corTitulo = Theme.of(context).colorScheme.primary;
+    String pergunta = '';
+
+    switch (titulo) {
+      case 'Desativar conta':
+        mensagem = 'Tem certeza que deseja desativar sua conta?';
+        pergunta = 'Desativar conta?';
+        break;
+      //outros botões
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: corTitulo,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
+                ),
+                child: Text(
+                  pergunta,
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 20,
+                ),
+                child: Text(
+                  mensagem,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 174, 237, 177),
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Sim'),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(255, 246, 158, 158),
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Não'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.primary, 
-      automaticallyImplyLeading: false,
-       leading: Padding(
-         padding: const EdgeInsets.all(8.0),
-         child: Container(
-           decoration: BoxDecoration(
-             color: Colors.white,
-             shape: BoxShape.circle,
-          ),
-           child: IconButton(
-             icon: Icon(
-               Icons.arrow_back,
-               color: Theme.of(context).colorScheme.primary,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        automaticallyImplyLeading: false,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
             ),
-             onPressed: () {
-               Navigator.pop(context);
-               },
-           ),
-         ),
-       ),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -112,7 +199,7 @@ class TelaEditarPerfil extends StatelessWidget {
                 },
               ),
             ),
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -276,9 +363,10 @@ class TelaEditarPerfil extends StatelessWidget {
               ),
             ),
 
-            BotaoEstilizadoWidget(funcao: () => {
-              print("Alterações salvas")
-            }, texto: 'Salvar alterações'),
+            BotaoEstilizadoWidget(
+              funcao: () => {print("Alterações salvas")},
+              texto: 'Salvar alterações',
+            ),
 
             const SizedBox(height: 24),
 
