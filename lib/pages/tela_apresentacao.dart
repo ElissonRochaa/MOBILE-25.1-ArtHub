@@ -1,12 +1,16 @@
 import 'dart:ui';
 import 'package:arthub/widgets/botao_avancar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // Adicione esta linha
+import '../provider/modo_tema_provider.dart'; // Adicione esta linha
 
 class TelaApresentacao extends StatelessWidget {
   const TelaApresentacao({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeAppProvider>(context);
+
     return Stack(
       children: [
         ImageFiltered(
@@ -24,6 +28,24 @@ class TelaApresentacao extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
+          ),
+        ),
+        Positioned(
+          top: 30,
+          right: 20,
+          child: IconButton(
+            icon: Icon(
+              themeProvider.isDarkMode
+                  ? Icons.dark_mode
+                  : Icons
+                      .light_mode, // Um ternário, não pode usar estrutura condicional em Icon
+              color: Colors.white,
+              size: 32,
+            ),
+            onPressed: () {
+              themeProvider.toggleTheme();
+            },
+            tooltip: 'Trocar tema',
           ),
         ),
         Positioned(
@@ -73,10 +95,7 @@ class TelaApresentacao extends StatelessWidget {
                             ),
                           ),
                         ),
-                        BotaoAvancarWidget(
-                          texto: "Avançar",
-                          rota: "/login", //Organizar as rotas depois!
-                        ),
+                        BotaoAvancarWidget(texto: "Avançar", rota: "/login"),
                       ],
                     ),
                   ],

@@ -16,7 +16,7 @@ class PerfilPesquisaWidget extends StatelessWidget {
         child: Container(
           padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            color: const Color(0xFFFFDA72),
+            color: Theme.of(context).colorScheme.primary,
             borderRadius: BorderRadius.circular(35),
             boxShadow: const [
               BoxShadow(

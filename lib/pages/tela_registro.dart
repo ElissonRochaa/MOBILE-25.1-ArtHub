@@ -4,6 +4,7 @@ import 'package:arthub/widgets/input_texto.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+import '../config/themeApp.dart';
 
 class TelaRegistro extends StatelessWidget {
   const TelaRegistro({super.key});
@@ -18,7 +19,7 @@ class TelaRegistro extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/upe_entrada.jpeg'),
+                image: AssetImage('assets/images/upe.jpg'),
                 colorFilter: ColorFilter.mode(
                   Theme.of(context).colorScheme.primary,
                   BlendMode.modulate,

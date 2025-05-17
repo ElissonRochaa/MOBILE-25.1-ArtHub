@@ -46,14 +46,15 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
         animationCurve: Curves.easeInOut,
         items: <Widget>[
           Icon(Icons.home_rounded, size: 50),
-          Icon(Icons.add_rounded, size:50),
+          Icon(Icons.add_rounded, size: 50),
           Icon(Icons.person_rounded, size: 50),
         ],
-        onTap: (index) => {
-          setState(() {
-            currentPageIndex = index;
-          }),
-        },
+        onTap:
+            (index) => {
+              setState(() {
+                currentPageIndex = index;
+              }),
+            },
         letIndexChange: (index) => true,
       ),
       body: Stack(
@@ -74,7 +75,7 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
               ),
             ),
         ],
-      )
+      ),
     );
   }
 }
