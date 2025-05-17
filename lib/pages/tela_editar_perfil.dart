@@ -82,6 +82,10 @@ class TelaEditarPerfil extends StatelessWidget {
             'Tem certeza que deseja excluir sua conta? Esta ação não poderá ser desfeita.';
         pergunta = 'Excluir conta?';
         break;
+      case 'Sair':
+        mensagem = 'Tem certeza que deseja sair do aplicativo?';
+        pergunta = 'Sair do aplicativo?';
+        break;
 
     }
 
