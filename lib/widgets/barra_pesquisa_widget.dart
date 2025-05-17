@@ -28,51 +28,45 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        SizedBox(
-          height: 31,
-          width:
-              MediaQuery.of(context).size.width * 0.9, // Atualizar com padding!
-          child: SearchBar(
-            controller: controller,
-            onChanged:
-                (value) =>
-                    context.read<BarraPesquisaProvider>().setTexto(value),
-            hintText: '',
-            leading: Icon(
-              Icons.search,
-              color: Theme.of(context).colorScheme.primary,
-            ),
-            backgroundColor: WidgetStatePropertyAll(
-              Theme.of(context).colorScheme.surface,
-            ),
-            side: WidgetStatePropertyAll(
-              BorderSide(
-                color: Theme.of(context).colorScheme.tertiary,
-                width: 2,
+        Expanded(
+          child: SizedBox(
+            height: 31,
+            width: MediaQuery.of(context).size.width * 0.9,
+            child: SearchBar(
+              controller: controller,
+              onChanged:
+                  (value) =>
+                      context.read<BarraPesquisaProvider>().setTexto(value),
+              hintText: '',
+              leading: Icon(
+                Icons.search,
+                color: Theme.of(context).colorScheme.primary,
               ),
-            ),
-            shape: WidgetStatePropertyAll(
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-            ),
-            padding: const WidgetStatePropertyAll(
-              EdgeInsets.symmetric(horizontal: 10),
+              backgroundColor: MaterialStatePropertyAll(
+                Theme.of(context).colorScheme.surface,
+              ),
+              side: MaterialStatePropertyAll(
+                BorderSide(
+                  color: Theme.of(context).colorScheme.tertiary,
+                  width: 2,
+                ),
+              ),
+              shape: MaterialStatePropertyAll(
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+              ),
+              padding: const MaterialStatePropertyAll(
+                EdgeInsets.symmetric(horizontal: 10),
+              ),
             ),
           ),
         ),
-        // Vamos rever a baixo se é realmente necessário...?
-
-        // Container(
-        //   height: 30,
-        //   width: 30,
-        //   decoration: BoxDecoration(
-        //     image: DecorationImage(
-        //       image: AssetImage('assets/images/hannah.jpg'),
-        //       fit: BoxFit.cover,
-        //     ),
-        //     border: Border.all(color: Colors.white, width: 0.9),
-        //     borderRadius: BorderRadius.circular(70),
-        //   ),
-        // ),
+        Align(
+          child: Image.asset(
+            'assets/images/logo_arthub.png',
+            color: Theme.of(context).colorScheme.onPrimary,
+            height: 120,
+          ),
+        ),
       ],
     );
   }

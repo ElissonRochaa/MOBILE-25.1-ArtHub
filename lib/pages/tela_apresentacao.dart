@@ -16,10 +16,10 @@ class TelaApresentacao extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/upe_entrada.jpeg'),
+                image: AssetImage('assets/images/upe.jpg'),
                 colorFilter: ColorFilter.mode(
-                  Theme.of(context).colorScheme.primary,
-                  BlendMode.modulate,
+                  Colors.black.withOpacity(0.5),
+                  BlendMode.darken,
                 ),
                 fit: BoxFit.cover,
               ),
