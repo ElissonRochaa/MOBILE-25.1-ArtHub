@@ -77,7 +77,12 @@ class TelaEditarPerfil extends StatelessWidget {
         mensagem = 'Tem certeza que deseja desativar sua conta?';
         pergunta = 'Desativar conta?';
         break;
-      //outros botões
+      case 'Excluir conta':
+        mensagem =
+            'Tem certeza que deseja excluir sua conta? Esta ação não poderá ser desfeita.';
+        pergunta = 'Excluir conta?';
+        break;
+
     }
 
     showDialog(
