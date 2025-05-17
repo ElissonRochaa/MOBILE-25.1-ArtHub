@@ -28,11 +28,6 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Image.asset(
-          'assets/images/logo_arthub.png',
-          color: Theme.of(context).colorScheme.onPrimary,
-          height: 75,
-        ),
         Expanded(
           child: SizedBox(
             height: 31,
@@ -63,6 +58,13 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
                 EdgeInsets.symmetric(horizontal: 10),
               ),
             ),
+          ),
+        ),
+        Align(
+          child: Image.asset(
+            'assets/images/logo_arthub.png',
+            color: Theme.of(context).colorScheme.onPrimary,
+            height: 120,
           ),
         ),
       ],
