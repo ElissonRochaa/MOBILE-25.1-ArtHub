@@ -19,10 +19,7 @@ class TelaComNavbar extends StatefulWidget {
 
 class _TelaComNavbarState extends State<TelaComNavbar> {
   late int currentPageIndex = 0;
-  late final List<Widget> _pages = [
-    TelaPrincipal(),
-    TelaProprioPerfil(),
-  ];
+  late final List<Widget> _pages = [TelaPrincipal(), TelaProprioPerfil()];
 
   @override
   Widget build(BuildContext context) {
@@ -46,11 +43,12 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
           Icon(Icons.home_outlined, size: 50),
           Icon(Icons.person_outline, size: 50),
         ],
-        onTap: (index) => {
-          setState(() {
-            currentPageIndex = index;
-          }),
-        },
+        onTap:
+            (index) => {
+              setState(() {
+                currentPageIndex = index;
+              }),
+            },
         letIndexChange: (index) => true,
       ),
       body: Stack(
@@ -71,7 +69,7 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
               ),
             ),
         ],
-      )
+      ),
     );
   }
 }

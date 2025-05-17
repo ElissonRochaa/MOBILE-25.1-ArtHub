@@ -30,13 +30,15 @@ class TelaApresentacao extends StatelessWidget {
             ),
           ),
         ),
-        // Botão para trocar o tema no topo direito
         Positioned(
           top: 30,
           right: 20,
           child: IconButton(
             icon: Icon(
-              themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
+              themeProvider.isDarkMode
+                  ? Icons.dark_mode
+                  : Icons
+                      .light_mode, // Um ternário, não pode usar estrutura condicional em Icon
               color: Colors.white,
               size: 32,
             ),
@@ -93,10 +95,7 @@ class TelaApresentacao extends StatelessWidget {
                             ),
                           ),
                         ),
-                        BotaoAvancarWidget(
-                          texto: "Avançar",
-                          rota: "/login", //Organizar as rotas depois!
-                        ),
+                        BotaoAvancarWidget(texto: "Avançar", rota: "/login"),
                       ],
                     ),
                   ],
