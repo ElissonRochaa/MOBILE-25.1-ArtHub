@@ -1,3 +1,4 @@
+import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:flutter/material.dart';
 
 class TelaEditarPerfil extends StatelessWidget {
@@ -76,23 +77,43 @@ class TelaEditarPerfil extends StatelessWidget {
       appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.primary, 
       automaticallyImplyLeading: false,
        leading: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Container(
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
+         padding: const EdgeInsets.all(8.0),
+         child: Container(
+           decoration: BoxDecoration(
+             color: Colors.white,
+             shape: BoxShape.circle,
           ),
-          child: IconButton(
-            icon: Icon(
-              Icons.arrow_back,
-              color: Theme.of(context).colorScheme.primary,
+           child: IconButton(
+             icon: Icon(
+               Icons.arrow_back,
+               color: Theme.of(context).colorScheme.primary,
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
-        ),
-      ),
+             onPressed: () {
+               Navigator.pop(context);
+               },
+           ),
+         ),
+       ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.sunny,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () {
+                  print("Botão de trocar thema apertado");
+                },
+              ),
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -255,20 +276,9 @@ class TelaEditarPerfil extends StatelessWidget {
               ),
             ),
 
-            ElevatedButton(
-              onPressed: () {
-                print("Alterações salvas");
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
-                elevation: 8,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              child: const Text('Salvar alterações'),
-            ),
+            BotaoEstilizadoWidget(funcao: () => {
+              print("Alterações salvas")
+            }, texto: 'Salvar alterações'),
 
             const SizedBox(height: 24),
 
