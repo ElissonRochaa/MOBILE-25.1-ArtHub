@@ -68,33 +68,52 @@ class TelaEditarPerfil extends StatelessWidget {
   }
 
   void _mostrarPopup(BuildContext context, String titulo) {
-    print("Deseja realmente: " + titulo);
+    print("Deseja realmente: $titulo");
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        automaticallyImplyLeading: false,
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0), // Padding opcional
-          child: Container(
-            decoration: BoxDecoration(
-              color: Colors.white, // Fundo branco
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              icon: Icon(
-                Icons.arrow_back,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              onPressed: () {
-                Navigator.pop(context);
-              },
-            ),
+      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.primary, 
+      automaticallyImplyLeading: false,
+       leading: Padding(
+         padding: const EdgeInsets.all(8.0),
+         child: Container(
+           decoration: BoxDecoration(
+             color: Colors.white,
+             shape: BoxShape.circle,
           ),
-        ),
+           child: IconButton(
+             icon: Icon(
+               Icons.arrow_back,
+               color: Theme.of(context).colorScheme.primary,
+            ),
+             onPressed: () {
+               Navigator.pop(context);
+               },
+           ),
+         ),
+       ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                icon: Icon(
+                  Icons.sunny,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                onPressed: () {
+                  print("Botão de trocar thema apertado");
+                },
+              ),
+            ),
+          )
+        ],
       ),
       body: SingleChildScrollView(
         child: Column(

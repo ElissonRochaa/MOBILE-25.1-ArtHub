@@ -15,6 +15,7 @@ class TelaPublicacao extends StatefulWidget {
 class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool isCurtido = false;
   bool isImagemAberta = false;
+  List<String> comentarios = [];
 
   Widget post(BuildContext context) {
     return Row(
@@ -61,6 +62,68 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                             ? Icon(Icons.favorite_rounded)
                             : Icon(Icons.favorite_border_rounded),
                   ),
+                  GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          TextEditingController _controller =
+                              TextEditingController();
+
+                          return AlertDialog(
+                            title: Text('Novo comentário'),
+                            content: TextField(
+                              controller: _controller,
+                              decoration: InputDecoration(
+                                hintText: "Digite seu comentário",
+                                filled: true,
+                                fillColor:
+                                    Theme.of(context).colorScheme.secondary,
+                              ),
+                              maxLines: 3,
+                            ),
+                            actions: <Widget>[
+                              OutlinedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Cancelar'),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                  side: BorderSide(width: 2),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                              OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    comentarios.add(_controller.text);
+                                  });
+                                  Navigator.of(context).pop();
+                                },
+                                child: Text('Enviar'),
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                  side: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    width: 2,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
+                    child: Icon(Icons.mode_comment_outlined),
+                  ),
+
                   GestureDetector(
                     onTap: () => {print("Botão de compartilhar foi clicado")},
                     child: Icon(Icons.share_outlined),
@@ -129,6 +192,9 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   child: Column(
                     children: [
                       post(context),
+                      ...comentarios
+                          .map((texto) => comentario(context, texto))
+                          .toList(),
                       comentario(context, "Um texto curtinho"),
                       comentario(
                         context,

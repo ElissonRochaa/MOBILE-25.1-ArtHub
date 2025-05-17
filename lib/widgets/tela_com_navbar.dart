@@ -1,3 +1,4 @@
+import 'package:arthub/pages/tela_criar_publicacao.dart';
 import 'package:arthub/pages/tela_principal.dart';
 import 'package:arthub/pages/tela_proprio_perfil.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
@@ -21,6 +22,7 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
   late int currentPageIndex = 0;
   late final List<Widget> _pages = [
     TelaPrincipal(),
+    TelaCriarPublicacao(),
     TelaProprioPerfil(),
   ];
 
@@ -43,14 +45,16 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
         animationDuration: Duration(milliseconds: 600),
         animationCurve: Curves.easeInOut,
         items: <Widget>[
-          Icon(Icons.home_outlined, size: 50),
-          Icon(Icons.person_outline, size: 50),
+          Icon(Icons.home_rounded, size: 50),
+          Icon(Icons.add_rounded, size: 50),
+          Icon(Icons.person_rounded, size: 50),
         ],
-        onTap: (index) => {
-          setState(() {
-            currentPageIndex = index;
-          }),
-        },
+        onTap:
+            (index) => {
+              setState(() {
+                currentPageIndex = index;
+              }),
+            },
         letIndexChange: (index) => true,
       ),
       body: Stack(
@@ -71,7 +75,7 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
               ),
             ),
         ],
-      )
+      ),
     );
   }
 }

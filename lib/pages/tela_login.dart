@@ -1,4 +1,3 @@
-import 'package:arthub/config/themeApp.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -141,7 +140,7 @@ class _TelaLoginState extends State<TelaLogin> {
                   onPressed: () => {Navigator.pushNamed(context, "/home")},
                   style: ElevatedButton.styleFrom(
                     fixedSize: Size(165, 46),
-                    backgroundColor: ThemeApp.theme.colorScheme.tertiary,
+                    backgroundColor: Theme.of(context).colorScheme.tertiary,
                     elevation: 6,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(5),
