@@ -19,7 +19,7 @@ class TelaRegistro extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/upe_entrada.jpeg'),
+                image: AssetImage('assets/images/upe.jpg'),
                 colorFilter: ColorFilter.mode(
                   Theme.of(context).colorScheme.primary,
                   BlendMode.modulate,
@@ -43,14 +43,6 @@ class TelaRegistro extends StatelessWidget {
             left: 10,
             top: 10,
             child: BotaoVoltarWidget(),
-            // IconButton.filled(
-            //   onPressed: () => {Navigator.pop(context)},
-            //   style: IconButton.styleFrom(backgroundColor: Colors.white),
-            //   icon: Icon(
-            //     Icons.arrow_back,
-            //     color: Theme.of(context).colorScheme.primary,
-            //   ),
-            // ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 60),
