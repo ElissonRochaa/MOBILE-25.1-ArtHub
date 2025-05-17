@@ -1,3 +1,4 @@
+import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:flutter/material.dart';
 
 class TelaEditarPerfil extends StatelessWidget {
@@ -275,20 +276,9 @@ class TelaEditarPerfil extends StatelessWidget {
               ),
             ),
 
-            ElevatedButton(
-              onPressed: () {
-                print("Alterações salvas");
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
-                elevation: 8,
-                foregroundColor: Colors.white,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              child: const Text('Salvar alterações'),
-            ),
+            BotaoEstilizadoWidget(funcao: () => {
+              print("Alterações salvas")
+            }, texto: 'Salvar alterações'),
 
             const SizedBox(height: 24),
 
