@@ -1,8 +1,6 @@
-import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/lista_filtros_widget.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class TelaPrincipal extends StatelessWidget {
   const TelaPrincipal({super.key});
