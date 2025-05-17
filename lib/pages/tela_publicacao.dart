@@ -16,120 +16,131 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool isImagemAberta = false;
   List<String> comentarios = [];
 
+  Future<dynamic> popupComentario(BuildContext context){
+    return showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        TextEditingController _controller =
+        TextEditingController();
+
+        return AlertDialog(
+          title: Text('Novo comentário'),
+          content: TextField(
+            controller: _controller,
+            decoration: InputDecoration(
+              hintText: "Digite seu comentário",
+              filled: true,
+              fillColor:
+              Theme.of(context).colorScheme.secondary,
+            ),
+            maxLines: 3,
+          ),
+          actions: <Widget>[
+            OutlinedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.black,
+                side: BorderSide(width: 2),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text('Cancelar'),
+            ),
+            OutlinedButton(
+              onPressed: () {
+                setState(() {
+                  comentarios.add(_controller.text);
+                });
+                Navigator.of(context).pop();
+              },
+              style: OutlinedButton.styleFrom(
+                foregroundColor: Colors.black,
+                side: BorderSide(
+                  color:
+                  Theme.of(context).colorScheme.primary,
+                  width: 2,
+                ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text('Enviar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   Widget post(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        SizedBox(
-          child: Column(
-            children: [
-              Container(
-                constraints: BoxConstraints(maxWidth: 335, maxHeight: 335),
-                child: GestureDetector(
-                  onTap:
-                      () => {
-                        setState(() {
-                          isImagemAberta = true;
-                        }),
-                      },
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(15),
-                    child: AspectRatio(
-                      aspectRatio: 1,
-                      child: Image.asset(
-                        'assets/images/cat.jpeg',
-                        fit: BoxFit.cover,
-                      ),
+        Padding(
+          padding: const EdgeInsets.only(left: 33),
+          child: Text(
+              'Título do post',
+              style: Theme.of(context).textTheme.displayMedium
+          ),
+        ),
+        Column(
+          children: [
+            Container(
+              constraints: BoxConstraints(maxWidth: 335, maxHeight: 335),
+              child: GestureDetector(
+                onTap:
+                    () => {
+                  setState(() {
+                    isImagemAberta = true;
+                  }),
+                },
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: AspectRatio(
+                    aspectRatio: 1,
+                    child: Image.asset(
+                      'assets/images/cat.jpeg',
+                      fit: BoxFit.cover,
                     ),
                   ),
                 ),
               ),
-              Row(
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 35),
+              child: Row(
                 children: [
                   Text("@esnupi"),
-                  SizedBox(width: 220),
+                  SizedBox(width: MediaQuery.of(context).size.width - 200,),
                   GestureDetector(
                     onTap:
                         () => {
-                          setState(() {
-                            isCurtido = !isCurtido;
-                          }),
-                        },
+                      setState(() {
+                        isCurtido = !isCurtido;
+                      }),
+                    },
                     child:
-                        isCurtido
-                            ? Icon(Icons.favorite_rounded)
-                            : Icon(Icons.favorite_border_rounded),
+                    isCurtido
+                        ? Icon(Icons.favorite_rounded)
+                        : Icon(Icons.favorite_border_rounded),
                   ),
                   GestureDetector(
                     onTap: () {
-                      showDialog(
-                        context: context,
-                        builder: (BuildContext context) {
-                          TextEditingController _controller =
-                              TextEditingController();
-
-                          return AlertDialog(
-                            title: Text('Novo comentário'),
-                            content: TextField(
-                              controller: _controller,
-                              decoration: InputDecoration(
-                                hintText: "Digite seu comentário",
-                                filled: true,
-                                fillColor:
-                                    Theme.of(context).colorScheme.secondary,
-                              ),
-                              maxLines: 3,
-                            ),
-                            actions: <Widget>[
-                              OutlinedButton(
-                                onPressed: () {
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('Cancelar'),
-                                style: OutlinedButton.styleFrom(
-                                  foregroundColor: Colors.black,
-                                  side: BorderSide(width: 2),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ),
-                              OutlinedButton(
-                                onPressed: () {
-                                  setState(() {
-                                    comentarios.add(_controller.text);
-                                  });
-                                  Navigator.of(context).pop();
-                                },
-                                child: Text('Enviar'),
-                                style: OutlinedButton.styleFrom(
-                                  foregroundColor: Colors.black,
-                                  side: BorderSide(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    width: 2,
-                                  ),
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(8),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          );
-                        },
-                      );
+                      popupComentario(context);
                     },
                     child: Icon(Icons.mode_comment_outlined),
                   ),
-
                   GestureDetector(
                     onTap: () => {print("Botão de compartilhar foi clicado")},
                     child: Icon(Icons.share_outlined),
                   ),
                 ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ],
     );
@@ -140,7 +151,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       padding: const EdgeInsets.only(top: 10),
       child: Container(
         constraints: BoxConstraints(minHeight: 69),
-        width: 350,
+        width: 335,
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
@@ -206,6 +217,8 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
               ],
             ),
           ),
+
+          // Image ao ser clicada
           if (isImagemAberta)
             GestureDetector(
               onTap:
