@@ -78,7 +78,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
 
   Widget _tags(BuildContext context, String texto){
     return Container(
-      margin: EdgeInsets.only(right: 4),
+      margin: EdgeInsets.only(right: 4, left: 4),
       padding: EdgeInsets.only(left: 10, right: 10),
       height: 35,
       decoration: BoxDecoration(
@@ -96,11 +96,17 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              _tags(context, 'Fotografia'),
-              _tags(context, 'Escultura'),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              children: [
+                _tags(context, 'Fotografia'),
+                _tags(context, 'Escultura'),
+                _tags(context, 'Escultura'),
+                _tags(context, 'Escultura'),
+                _tags(context, 'Escultura'),
+              ],
+            ),
           ),
           GestureDetector(
             onTap: (){
