@@ -1,4 +1,3 @@
-import 'package:arthub/config/themeApp.dart';
 import 'package:arthub/pages/tela_editar_perfil.dart';
 import 'package:arthub/pages/tela_esqueceu_senha.dart';
 import 'package:arthub/pages/tela_login.dart';
@@ -8,6 +7,7 @@ import 'package:arthub/pages/tela_publicacao.dart';
 import 'package:arthub/pages/tela_registro.dart';
 import 'package:arthub/pages/tela_outro_perfil.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
+import 'package:arthub/provider/modo_tema_provider.dart';
 import 'package:arthub/widgets/tela_com_navbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -18,6 +18,7 @@ void main() {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => BarraPesquisaProvider()),
+        ChangeNotifierProvider(create: (_) => ThemeAppProvider()),
       ],
       child: const MyApp(),
     ),
@@ -29,33 +30,37 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'ArtHub',
-      theme: ThemeApp.theme,
-      home: TelaLogotipo(),
-      initialRoute: '/',
-      onGenerateRoute: (settings) {
-        switch (settings.name) {
-          case '/registro':
-            return buildPageRoute(const TelaRegistro(), settings);
-          case '/publicacao':
-            return buildPageRoute(const TelaPublicacao(), settings);
-          case '/esqueceu-senha':
-            return buildPageRoute(const TelaEsqueceuSenha(), settings);
-          case '/login':
-            return buildPageRoute(const TelaLogin(), settings);
-          case '/home':
-            return buildPageRoute(const TelaComNavbar(), settings);
-          case '/perfil':
-            return buildPageRoute(const TelaProprioPerfil(), settings);
-          case '/editar-perfil':
-            return buildPageRoute(const TelaEditarPerfil(), settings);
-          case '/outro-perfil':
-            return buildPageRoute(const TelaOutroPerfil(), settings);
-          default:
-            return null;
-        }
+    return Consumer<ThemeAppProvider>(
+      builder: (context, ThemeAppProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'ArtHub',
+          theme: ThemeAppProvider.themeData,
+          home: TelaLogotipo(),
+          initialRoute: '/',
+          onGenerateRoute: (settings) {
+            switch (settings.name) {
+              case '/registro':
+                return buildPageRoute(const TelaRegistro(), settings);
+              case '/publicacao':
+                return buildPageRoute(const TelaPublicacao(), settings);
+              case '/esqueceu-senha':
+                return buildPageRoute(const TelaEsqueceuSenha(), settings);
+              case '/login':
+                return buildPageRoute(const TelaLogin(), settings);
+              case '/home':
+                return buildPageRoute(const TelaComNavbar(), settings);
+              case '/perfil':
+                return buildPageRoute(const TelaProprioPerfil(), settings);
+              case '/editar-perfil':
+                return buildPageRoute(const TelaEditarPerfil(), settings);
+              case '/outro-perfil':
+                return buildPageRoute(const TelaOutroPerfil(), settings);
+              default:
+                return null;
+            }
+          },
+        );
       },
     );
   }

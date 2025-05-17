@@ -1,8 +1,6 @@
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:flutter/material.dart';
 
-import '../config/themeApp.dart';
-
 class TelaEsqueceuSenha extends StatelessWidget {
   const TelaEsqueceuSenha({super.key});
 
@@ -81,7 +79,7 @@ class TelaEsqueceuSenha extends StatelessWidget {
                     onPressed: () => {Navigator.pushNamed(context, "/login")},
                     style: ElevatedButton.styleFrom(
                       fixedSize: Size(165, 46),
-                      backgroundColor: ThemeApp.theme.colorScheme.tertiary,
+                      backgroundColor: Theme.of(context).colorScheme.tertiary,
                       elevation: 6,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(5),
@@ -106,9 +104,11 @@ class TelaEsqueceuSenha extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(top: 750, left: 160,
-          child: Container(
-            width: 75,
+          Positioned(
+            top: 750,
+            left: 160,
+            child: Container(
+              width: 75,
               height: 33,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.primaryContainer,
@@ -117,7 +117,8 @@ class TelaEsqueceuSenha extends StatelessWidget {
                   fit: BoxFit.cover,
                 ),
               ),
-          ))
+            ),
+          ),
         ],
       ),
     );
