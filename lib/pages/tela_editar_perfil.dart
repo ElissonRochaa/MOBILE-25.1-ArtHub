@@ -1,4 +1,5 @@
 import 'package:arthub/provider/modo_tema_provider.dart';
+import 'package:arthub/widgets/rodape_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -322,11 +323,10 @@ class TelaEditarPerfil extends StatelessWidget {
               'Sair',
               () => _mostrarPopup(context, 'Sair'),
             ),
-
-            const SizedBox(height: 20),
           ],
         ),
       ),
+      bottomNavigationBar: RodapeWidget(),
     );
   }
 }

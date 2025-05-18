@@ -1,6 +1,7 @@
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
+import 'package:arthub/widgets/rodape_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -23,8 +24,9 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
         SizedBox(
           child: Column(
             children: [
+              SizedBox(height: 20),
               Container(
-                constraints: BoxConstraints(maxWidth: 335, maxHeight: 335),
+                constraints: BoxConstraints(maxWidth: 355, maxHeight: 335),
                 child: GestureDetector(
                   onTap:
                       () => {
@@ -213,13 +215,6 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                IconButton(
-                  onPressed: () => {Navigator.pop(context)},
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
                 SingleChildScrollView(
                   child: Column(
                     children: [
@@ -227,10 +222,41 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                       ...comentarios
                           .map((texto) => comentario(context, texto))
                           .toList(),
+                      comentario(context, "Um texto curtinho"),
+                      comentario(
+                        context,
+                        "Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo",
+                      ),
+                      comentario(
+                        context,
+                        "Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo",
+                      ),
+                      comentario(context, "Um texto curtinho"),
+                      comentario(context, "Um texto curtinho"),
+                      RodapeWidget(),
                     ],
                   ),
                 ),
               ],
+            ),
+          ),
+          Positioned(
+            top: 12,
+            left: 12,
+            child: SafeArea(
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Theme.of(context).colorScheme.primary,
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  onPressed: () => {Navigator.pop(context)},
+                  icon: Icon(
+                    Icons.arrow_back,
+                    color: Theme.of(context).colorScheme.onError,
+                  ),
+                ),
+              ),
             ),
           ),
           if (isImagemAberta)
