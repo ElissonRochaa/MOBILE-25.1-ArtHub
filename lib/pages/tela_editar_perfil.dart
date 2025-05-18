@@ -94,7 +94,7 @@ class TelaEditarPerfil extends StatelessWidget {
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
               onPressed: () {
                 Navigator.pop(context);
