@@ -36,9 +36,9 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: BarraPesquisaWidget(),
       ),
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       bottomNavigationBar: CurvedNavigationBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).colorScheme.surface,
         color: Theme.of(context).colorScheme.primary,
         index: currentPageIndex,
         height: 55,
@@ -63,7 +63,7 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
           if (pesquisa.isNotEmpty)
             Positioned.fill(
               child: Container(
-                color: Colors.white.withValues(alpha: 0.95),
+                color: Theme.of(context).colorScheme.surface!.withOpacity(0.95),
                 child: Column(
                   children: [
                     PerfilPesquisaWidget(pesquisa: pesquisa),

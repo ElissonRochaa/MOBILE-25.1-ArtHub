@@ -1,4 +1,6 @@
+import 'package:arthub/provider/modo_tema_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TelaEditarPerfil extends StatelessWidget {
   const TelaEditarPerfil({super.key});
@@ -13,7 +15,10 @@ class TelaEditarPerfil extends StatelessWidget {
         child: TextFormField(
           decoration: InputDecoration(
             labelText: label,
-            labelStyle: const TextStyle(fontSize: 16, color: Colors.grey),
+            labelStyle: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
             filled: true,
             fillColor: Theme.of(context).colorScheme.secondary,
             border: OutlineInputBorder(
@@ -72,46 +77,45 @@ class TelaEditarPerfil extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeProvider = Provider.of<ThemeAppProvider>(context);
+
     return Scaffold(
-      appBar: AppBar(backgroundColor: Theme.of(context).colorScheme.primary, 
-      automaticallyImplyLeading: false,
-       leading: Padding(
-         padding: const EdgeInsets.all(8.0),
-         child: Container(
-           decoration: BoxDecoration(
-             color: Colors.white,
-             shape: BoxShape.circle,
-          ),
-           child: IconButton(
-             icon: Icon(
-               Icons.arrow_back,
-               color: Theme.of(context).colorScheme.primary,
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        automaticallyImplyLeading: false,
+        leading: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.primary,
+              shape: BoxShape.circle,
             ),
-             onPressed: () {
-               Navigator.pop(context);
-               },
-           ),
-         ),
-       ),
+            child: IconButton(
+              icon: Icon(
+                Icons.arrow_back,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              onPressed: () {
+                Navigator.pop(context);
+              },
+            ),
+          ),
+        ),
         actions: [
           Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Container(
-              decoration: BoxDecoration(
+            padding: const EdgeInsets.all(2.0),
+            child: IconButton(
+              icon: Icon(
+                themeProvider.isDarkMode ? Icons.dark_mode : Icons.light_mode,
                 color: Colors.white,
-                shape: BoxShape.circle,
+                size: 32,
               ),
-              child: IconButton(
-                icon: Icon(
-                  Icons.sunny,
-                  color: Theme.of(context).colorScheme.primary,
-                ),
-                onPressed: () {
-                  print("Botão de trocar thema apertado");
-                },
-              ),
+              onPressed: () {
+                themeProvider.toggleTheme();
+              },
+              tooltip: 'Trocar tema',
             ),
-          )
+          ),
         ],
       ),
       body: SingleChildScrollView(
@@ -125,7 +129,7 @@ class TelaEditarPerfil extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 12),
+            SizedBox(height: 12),
             Stack(
               alignment: Alignment.bottomRight,
               children: [
@@ -139,10 +143,14 @@ class TelaEditarPerfil extends StatelessWidget {
                       print("Ícone de edição foto de perfil clicado");
                     }
                   },
-                  child: const CircleAvatar(
+                  child: CircleAvatar(
                     radius: 14,
-                    backgroundColor: Colors.white,
-                    child: Icon(Icons.edit, size: 16),
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                    child: Icon(
+                      Icons.edit,
+                      size: 16,
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                   ),
                 ),
               ],
@@ -176,11 +184,14 @@ class TelaEditarPerfil extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
+                        Text(
                           'Banner',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 16,
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
                         ),
-                        const SizedBox(height: 3),
+                        SizedBox(height: 3),
                         Stack(
                           alignment: Alignment.topRight,
                           children: [
@@ -204,9 +215,10 @@ class TelaEditarPerfil extends StatelessWidget {
                                   print("Ícone de edição banner clicado");
                                 }
                               },
-                              child: const CircleAvatar(
+                              child: CircleAvatar(
                                 radius: 14,
-                                backgroundColor: Colors.white,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.primary,
                                 child: Icon(Icons.edit, size: 16),
                               ),
                             ),
@@ -235,9 +247,12 @@ class TelaEditarPerfil extends StatelessWidget {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             'Biografia',
-                            style: TextStyle(fontSize: 16, color: Colors.grey),
+                            style: TextStyle(
+                              fontSize: 16,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
                           ),
                           const SizedBox(height: 3),
                           TextFormField(
@@ -282,7 +297,7 @@ class TelaEditarPerfil extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.tertiary,
                 elevation: 8,
-                foregroundColor: Colors.white,
+                foregroundColor: Theme.of(context).colorScheme.primary,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(5),
                 ),

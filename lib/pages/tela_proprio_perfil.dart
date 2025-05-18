@@ -40,6 +40,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                   fontFamily: 'SignikaNegative',
+                  color: Theme.of(context).colorScheme.onPrimary,
                   shadows: [
                     Shadow(
                       color: TelaProprioPerfil.corSombra,
@@ -56,6 +57,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                   fontFamily: 'SignikaNegative',
+                  color: Theme.of(context).colorScheme.onPrimary,
                   shadows: [
                     Shadow(
                       color: TelaProprioPerfil.corSombra,
@@ -116,6 +118,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                     Transform.translate(
                       offset: Offset(10, 0),
                       child: IconButton(
+                        color: Theme.of(context).colorScheme.onPrimary,
                         onPressed: () {
                           Navigator.pushNamed(context, "/editar-perfil");
                         },
@@ -128,6 +131,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                     Transform.translate(
                       offset: Offset(-5, 0),
                       child: IconButton(
+                        color: Theme.of(context).colorScheme.onPrimary,
                         onPressed: () {
                           print("Botão de compartilhar foi apertado");
                         },
@@ -147,7 +151,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
           child: GestureDetector(
-            onTap: (){
+            onTap: () {
               setState(() {
                 lerTudo = !lerTudo;
               });
@@ -156,7 +160,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
               width: MediaQuery.of(context).size.width,
               height: lerTudo ? null : 94,
               decoration: BoxDecoration(
-                color: Color(0xFFFEFFB9),
+                color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: [
                   BoxShadow(
@@ -173,15 +177,26 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                   right: 15,
                   bottom: 10,
                 ),
-                child: lerTudo ? Text(
-                  "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ) : Text(
-                  "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+                child:
+                    lerTudo
+                        ? Text(
+                          "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        )
+                        : Text(
+                          "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
               ),
             ),
           ),

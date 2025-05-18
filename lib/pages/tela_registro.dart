@@ -94,15 +94,8 @@ class TelaRegistro extends StatelessWidget {
                         child: Text(
                           'Cadastrar-se',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: Theme.of(context).colorScheme.surface,
                             fontSize: 20,
-                            shadows: [
-                              Shadow(
-                                color: Color.fromRGBO(10, 10, 10, 0.3),
-                                offset: Offset(0, 3),
-                                blurRadius: 2.0,
-                              ),
-                            ],
                           ),
                         ),
                       ),
@@ -113,7 +106,7 @@ class TelaRegistro extends StatelessWidget {
                           style: Theme.of(
                             context,
                           ).textTheme.titleLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
+                            color: Theme.of(context).colorScheme.surface,
                           ),
                           children: [
                             TextSpan(
@@ -121,7 +114,7 @@ class TelaRegistro extends StatelessWidget {
                               style: Theme.of(
                                 context,
                               ).textTheme.titleLarge?.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
+                                color: Theme.of(context).colorScheme.surface,
                                 decoration: TextDecoration.underline,
                               ),
                               recognizer:

@@ -14,7 +14,7 @@ class TelaEsqueceuSenha extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/upe_entrada.jpeg'),
+                image: AssetImage('assets/images/upe.jpg'),
                 colorFilter: ColorFilter.mode(
                   Theme.of(context).colorScheme.primary,
                   BlendMode.modulate,
@@ -45,16 +45,16 @@ class TelaEsqueceuSenha extends StatelessWidget {
                 children: [
                   Text(
                     'Informe seu email cadastrado para receber instruções de recuperação de senha:',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.displayMedium?.copyWith(color: Colors.black),
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   TextField(
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Theme.of(context).colorScheme.surface,
                       labelText: 'Email',
                       labelStyle: Theme.of(
                         context,
@@ -62,10 +62,6 @@ class TelaEsqueceuSenha extends StatelessWidget {
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      ),
-                      focusedBorder: OutlineInputBorder(
                         borderSide: BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
@@ -88,7 +84,7 @@ class TelaEsqueceuSenha extends StatelessWidget {
                     child: Text(
                       'Enviar e-mail',
                       style: TextStyle(
-                        color: Colors.white,
+                        color: Theme.of(context).colorScheme.surface,
                         fontSize: 20,
                         shadows: [
                           Shadow(

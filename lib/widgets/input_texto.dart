@@ -33,7 +33,7 @@ class _InputTextoState extends State<InputTexto> {
       width: 346,
       height: 79,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(6),
         boxShadow: [
           BoxShadow(
@@ -84,7 +84,10 @@ class _InputTextoState extends State<InputTexto> {
                     color: Theme.of(context).colorScheme.onPrimary,
                   ),
                   hintText: widget.hintLabel,
-                  hintStyle: const TextStyle(color: Colors.grey, fontSize: 15),
+                  hintStyle: TextStyle(
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    fontSize: 15,
+                  ),
                   border: InputBorder.none,
                   contentPadding: const EdgeInsets.symmetric(
                     horizontal: 20,

@@ -46,7 +46,12 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
               ),
               Row(
                 children: [
-                  Text("@esnupi"),
+                  Text(
+                    "@esnupi",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
+                  ),
                   SizedBox(width: 220),
                   GestureDetector(
                     onTap:
@@ -57,8 +62,14 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                         },
                     child:
                         isCurtido
-                            ? Icon(Icons.favorite_rounded)
-                            : Icon(Icons.favorite_border_rounded),
+                            ? Icon(
+                              Icons.favorite_rounded,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            )
+                            : Icon(
+                              Icons.favorite_border_rounded,
+                              color: Theme.of(context).colorScheme.onPrimary,
+                            ),
                   ),
                   GestureDetector(
                     onTap: () {
@@ -101,7 +112,13 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                                   });
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Enviar'),
+                                child: Text(
+                                  'Enviar',
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                ),
                                 style: OutlinedButton.styleFrom(
                                   foregroundColor: Colors.black,
                                   side: BorderSide(
@@ -124,7 +141,10 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
 
                   GestureDetector(
                     onTap: () => {print("Botão de compartilhar foi clicado")},
-                    child: Icon(Icons.share_outlined),
+                    child: Icon(
+                      Icons.share_outlined,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                 ],
               ),
@@ -162,7 +182,14 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             children: [
               Text('@mikeymouse'),
               SizedBox(height: 10),
-              Text(texto, softWrap: true, overflow: TextOverflow.visible),
+              Text(
+                texto,
+                softWrap: true,
+                overflow: TextOverflow.visible,
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
             ],
           ),
         ),
@@ -174,7 +201,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   Widget build(BuildContext context) {
     var pesquisa = context.watch<BarraPesquisaProvider>().texto;
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.primary,
         title: BarraPesquisaWidget(),

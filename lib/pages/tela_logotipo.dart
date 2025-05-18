@@ -30,8 +30,12 @@ class _TelaLogotipoState extends State<TelaLogotipo> {
           height: 400,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/images/logo_arthub.png"),
+              image: AssetImage('assets/images/logo_arthub.png'),
               fit: BoxFit.fill,
+              colorFilter: ColorFilter.mode(
+                Theme.of(context).colorScheme.onPrimary,
+                BlendMode.srcIn,
+              ),
             ),
           ),
         ),

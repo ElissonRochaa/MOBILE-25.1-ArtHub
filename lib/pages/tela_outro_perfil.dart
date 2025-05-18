@@ -44,6 +44,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                   fontFamily: 'SignikaNegative',
+                  color: Theme.of(context).colorScheme.onPrimary,
                   shadows: [
                     Shadow(
                       color: corSombra,
@@ -60,6 +61,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
                   fontFamily: 'SignikaNegative',
+                  color: Theme.of(context).colorScheme.onPrimary,
                   shadows: [
                     Shadow(
                       color: corSombra,
@@ -99,11 +101,11 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                   },
                   icon: Icon(
                     Icons.arrow_back,
-                    color: Theme.of(context).colorScheme.primary,
+                    color: Theme.of(context).colorScheme.onPrimary,
                     size: 28,
                   ),
                   style: IconButton.styleFrom(
-                    backgroundColor: Colors.white,
+                    backgroundColor: Theme.of(context).colorScheme.surface,
                     padding: EdgeInsets.all(4),
                   ),
                 ),
@@ -138,6 +140,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                     Transform.translate(
                       offset: Offset(-5, 0),
                       child: IconButton(
+                        color: Theme.of(context).colorScheme.onPrimary,
                         onPressed: () {
                           print("Botão de compartilhar foi apertado");
                         },
@@ -157,7 +160,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
         Padding(
           padding: const EdgeInsets.only(left: 10, right: 10, top: 10),
           child: GestureDetector(
-            onTap: (){
+            onTap: () {
               setState(() {
                 lerTudo = !lerTudo;
               });
@@ -166,7 +169,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
               width: MediaQuery.of(context).size.width,
               height: lerTudo ? null : 94,
               decoration: BoxDecoration(
-                color: Color(0xFFFEFFB9),
+                color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(5),
                 boxShadow: [
                   BoxShadow(
@@ -183,15 +186,26 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                   right: 15,
                   bottom: 10,
                 ),
-                child: lerTudo ?Text(
-                  "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ) : Text(
-                  "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
-                  maxLines: 3,
-                  overflow: TextOverflow.ellipsis,
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
+                child:
+                    lerTudo
+                        ? Text(
+                          "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        )
+                        : Text(
+                          "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                          maxLines: 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(
+                            context,
+                          ).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
+                        ),
               ),
             ),
           ),
@@ -206,7 +220,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
     bool lerTudo = false;
 
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).colorScheme.surface,
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -245,7 +259,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
           if (pesquisa.isNotEmpty)
             Positioned.fill(
               child: Container(
-                color: Colors.white.withValues(alpha: 0.95),
+                color: Theme.of(context).colorScheme.surface!.withOpacity(0.95),
                 child: Column(
                   children: [
                     PerfilPesquisaWidget(pesquisa: pesquisa),

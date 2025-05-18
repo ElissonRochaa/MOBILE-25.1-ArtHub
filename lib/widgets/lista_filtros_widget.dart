@@ -71,7 +71,7 @@ class _ItemFiltroWidgetState extends State<ItemFiltroWidget> {
           color:
               isSelected
                   ? Theme.of(context).colorScheme.tertiary
-                  : Colors.white,
+                  : Theme.of(context).colorScheme.onError,
           border: Border.all(
             color:
                 isSelected

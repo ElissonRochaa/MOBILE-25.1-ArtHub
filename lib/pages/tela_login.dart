@@ -21,7 +21,7 @@ class _TelaLoginState extends State<TelaLogin> {
       width: 346,
       height: 79,
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).colorScheme.surface,
         borderRadius: BorderRadius.circular(6),
         boxShadow: [
           BoxShadow(
@@ -41,7 +41,10 @@ class _TelaLoginState extends State<TelaLogin> {
             ),
           ),
           hintText: hintText,
-          hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
+          hintStyle: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+            fontSize: 15,
+          ),
           border: InputBorder.none,
           contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
         ),
@@ -103,7 +106,10 @@ class _TelaLoginState extends State<TelaLogin> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     estaOculto
-                        ? Icon(Icons.remove_red_eye_outlined)
+                        ? Icon(
+                          color: Theme.of(context).colorScheme.surface,
+                          Icons.remove_red_eye_outlined,
+                        )
                         : Icon(Icons.remove_red_eye),
                     GestureDetector(
                       onTap:
@@ -115,7 +121,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       child: Text(
                         'Mostrar Senha',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: Theme.of(context).colorScheme.surface,
                         ),
                       ),
                     ),
@@ -128,7 +134,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       child: Text(
                         'Esqueceu a senha?',
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: Theme.of(context).colorScheme.surface,
                           decoration: TextDecoration.underline,
                         ),
                       ),
@@ -149,7 +155,7 @@ class _TelaLoginState extends State<TelaLogin> {
                   child: Text(
                     'Fazer Login',
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Theme.of(context).colorScheme.surface,
                       fontSize: 20,
                       shadows: [
                         Shadow(
@@ -168,7 +174,7 @@ class _TelaLoginState extends State<TelaLogin> {
                     Text(
                       'Não tem uma conta?',
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                        color: Theme.of(context).colorScheme.surface,
                       ),
                     ),
                     SizedBox(width: 3),
@@ -177,7 +183,7 @@ class _TelaLoginState extends State<TelaLogin> {
                       child: Text(
                         'Registre-se!',
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
+                          color: Theme.of(context).colorScheme.surface,
                           decoration: TextDecoration.underline,
                         ),
                       ),
