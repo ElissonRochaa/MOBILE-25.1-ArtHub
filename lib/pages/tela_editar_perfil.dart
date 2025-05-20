@@ -1,5 +1,6 @@
 import 'package:arthub/provider/modo_tema_provider.dart';
 import 'package:arthub/widgets/rodape_widget.dart';
+import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -73,7 +74,113 @@ class TelaEditarPerfil extends StatelessWidget {
   }
 
   void _mostrarPopup(BuildContext context, String titulo) {
-    print("Deseja realmente: $titulo");
+    String mensagem = '';
+    Color corTitulo = Theme.of(context).colorScheme.primary;
+    String pergunta = '';
+
+    switch (titulo) {
+      case 'Desativar conta':
+        mensagem = 'Tem certeza que deseja desativar sua conta?';
+        pergunta = 'Desativar conta?';
+        break;
+      case 'Excluir conta':
+        mensagem =
+            'Tem certeza que deseja excluir sua conta? Esta ação não poderá ser desfeita.';
+        pergunta = 'Excluir conta?';
+        break;
+      case 'Sair':
+        mensagem = 'Tem certeza que deseja sair do aplicativo?';
+        pergunta = 'Sair do aplicativo?';
+        break;
+    }
+
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: corTitulo,
+                  borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(16),
+                  ),
+                ),
+                child: Text(
+                  pergunta,
+                  style: Theme.of(
+                    context,
+                  ).textTheme.titleLarge?.copyWith(color: Colors.white),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 20,
+                ),
+                child: Text(
+                  mensagem,
+                  textAlign: TextAlign.center,
+                  style: Theme.of(context).textTheme.bodyLarge,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          174,
+                          237,
+                          177,
+                        ),
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Sim'),
+                    ),
+                    ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromARGB(
+                          255,
+                          246,
+                          158,
+                          158,
+                        ),
+                        foregroundColor: Colors.black,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                      },
+                      child: const Text('Não'),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
 
   @override
@@ -88,13 +195,13 @@ class TelaEditarPerfil extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Container(
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.primary,
+              color: Colors.white,
               shape: BoxShape.circle,
             ),
             child: IconButton(
               icon: Icon(
                 Icons.arrow_back,
-                color: Theme.of(context).colorScheme.onPrimary,
+                color: Theme.of(context).colorScheme.primary,
               ),
               onPressed: () {
                 Navigator.pop(context);
@@ -291,19 +398,9 @@ class TelaEditarPerfil extends StatelessWidget {
               ),
             ),
 
-            ElevatedButton(
-              onPressed: () {
-                print("Alterações salvas");
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Theme.of(context).colorScheme.tertiary,
-                elevation: 8,
-                foregroundColor: Theme.of(context).colorScheme.primary,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(5),
-                ),
-              ),
-              child: const Text('Salvar alterações'),
+            BotaoEstilizadoWidget(
+              funcao: () => {print("Alterações salvas")},
+              texto: 'Salvar alterações',
             ),
 
             const SizedBox(height: 24),

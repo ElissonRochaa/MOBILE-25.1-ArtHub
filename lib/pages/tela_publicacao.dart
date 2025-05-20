@@ -78,13 +78,13 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
-                          TextEditingController _controller =
+                          TextEditingController controller =
                               TextEditingController();
 
                           return AlertDialog(
                             title: Text('Novo comentário'),
                             content: TextField(
-                              controller: _controller,
+                              controller: controller,
                               decoration: InputDecoration(
                                 hintText: "Digite seu comentário",
                                 filled: true,
@@ -98,7 +98,6 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
-                                child: Text('Cancelar'),
                                 style: OutlinedButton.styleFrom(
                                   foregroundColor: Colors.black,
                                   side: BorderSide(width: 2),
@@ -106,11 +105,12 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
+                                child: Text('Cancelar'),
                               ),
                               OutlinedButton(
                                 onPressed: () {
                                   setState(() {
-                                    comentarios.add(_controller.text);
+                                    comentarios.add(controller.text);
                                   });
                                   Navigator.of(context).pop();
                                 },
@@ -132,6 +132,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
+                                // child: Text('Enviar'),
                               ),
                             ],
                           );

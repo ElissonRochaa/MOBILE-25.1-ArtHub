@@ -1,3 +1,4 @@
+import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/input_texto.dart';
 import 'package:flutter/gestures.dart';
@@ -79,25 +80,9 @@ class TelaRegistro extends StatelessWidget {
                       const SizedBox(height: 20),
                       InputTexto(label: "Senha", hintLabel: "Digite sua senha"),
                       const SizedBox(height: 40),
-                      ElevatedButton(
-                        onPressed:
-                            () => {Navigator.pushNamed(context, "/login")},
-                        style: ElevatedButton.styleFrom(
-                          fixedSize: Size(165, 46),
-                          backgroundColor:
-                              Theme.of(context).colorScheme.tertiary,
-                          elevation: 6,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5),
-                          ),
-                        ),
-                        child: Text(
-                          'Cadastrar-se',
-                          style: TextStyle(
-                            color: Theme.of(context).colorScheme.surface,
-                            fontSize: 20,
-                          ),
-                        ),
+                      BotaoEstilizadoWidget(
+                        funcao: () => {Navigator.pushNamed(context, '/login')},
+                        texto: 'Registre-se',
                       ),
                       const SizedBox(height: 60),
                       RichText(

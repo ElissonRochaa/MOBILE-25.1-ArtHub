@@ -41,19 +41,19 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
                 Icons.search,
                 color: Theme.of(context).colorScheme.primary,
               ),
-              backgroundColor: MaterialStatePropertyAll(
+              backgroundColor: WidgetStatePropertyAll(
                 Theme.of(context).colorScheme.surface,
               ),
-              side: MaterialStatePropertyAll(
+              side: WidgetStatePropertyAll(
                 BorderSide(
                   color: Theme.of(context).colorScheme.tertiary,
                   width: 2,
                 ),
               ),
-              shape: MaterialStatePropertyAll(
+              shape: WidgetStatePropertyAll(
                 RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
               ),
-              padding: const MaterialStatePropertyAll(
+              padding: const WidgetStatePropertyAll(
                 EdgeInsets.symmetric(horizontal: 10),
               ),
             ),

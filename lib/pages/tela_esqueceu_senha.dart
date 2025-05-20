@@ -1,3 +1,4 @@
+import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:flutter/material.dart';
 
@@ -71,30 +72,9 @@ class TelaEsqueceuSenha extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () => {Navigator.pushNamed(context, "/login")},
-                    style: ElevatedButton.styleFrom(
-                      fixedSize: Size(165, 46),
-                      backgroundColor: Theme.of(context).colorScheme.tertiary,
-                      elevation: 6,
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                    ),
-                    child: Text(
-                      'Enviar e-mail',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.surface,
-                        fontSize: 20,
-                        shadows: [
-                          Shadow(
-                            color: Color.fromRGBO(10, 10, 10, 0.3),
-                            offset: Offset(0, 3),
-                            blurRadius: 2.0,
-                          ),
-                        ],
-                      ),
-                    ),
+                  BotaoEstilizadoWidget(
+                    funcao: () => {Navigator.pushNamed(context, '/login')},
+                    texto: 'Enviar e-mail',
                   ),
                 ],
               ),
