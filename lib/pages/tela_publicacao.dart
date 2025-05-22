@@ -190,7 +190,62 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      _popupComentario(context);
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          TextEditingController controller =
+                              TextEditingController();
+
+                          return AlertDialog(
+                            title: Text('Novo comentário'),
+                            content: TextField(
+                              controller: controller,
+                              decoration: InputDecoration(
+                                hintText: "Digite seu comentário",
+                                filled: true,
+                                fillColor:
+                                    Theme.of(context).colorScheme.secondary,
+                              ),
+                              maxLines: 3,
+                            ),
+                            actions: <Widget>[
+                              OutlinedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                  side: BorderSide(width: 2),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Text('Cancelar'),
+                              ),
+                              OutlinedButton(
+                                onPressed: () {
+                                  setState(() {
+                                    comentarios.add(controller.text);
+                                  });
+                                  Navigator.of(context).pop();
+                                },
+                                style: OutlinedButton.styleFrom(
+                                  foregroundColor: Colors.black,
+                                  side: BorderSide(
+                                    color:
+                                        Theme.of(context).colorScheme.primary,
+                                    width: 2,
+                                  ),
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                ),
+                                child: Text('Enviar'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
                     },
                     child: Icon(Icons.mode_comment_outlined),
                   ),
@@ -276,21 +331,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   child: Column(
                     children: [
                       _post(context),
-                      ...comentarios
-                          .map((texto) => _comentario(context, texto))
-                          .toList(),
-                      _comentario(context, "Um texto curtinho"),
-                      _comentario(
-                        context,
-                        "Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo",
-                      ),
-                      _comentario(
-                        context,
-                        "Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo",
-                      ),
-                      _comentario(context, "Um texto curtinho"),
-                      _comentario(context, "Um texto curtinho"),
-                      RodapeWidget(),
+                      ...comentarios.map((texto) => _comentario(context, texto)),
                     ],
                   ),
                 ),

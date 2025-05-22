@@ -4,6 +4,7 @@ import 'package:arthub/widgets/input_texto.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+
 class TelaRegistro extends StatelessWidget {
   const TelaRegistro({super.key});
 
@@ -37,11 +38,7 @@ class TelaRegistro extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-            left: 10,
-            top: 10,
-            child: BotaoVoltarWidget(),
-          ),
+          Positioned(left: 10, top: 10, child: BotaoVoltarWidget()),
           Padding(
             padding: const EdgeInsets.only(top: 60),
             child: SingleChildScrollView(
@@ -63,14 +60,28 @@ class TelaRegistro extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       InputTexto(
+                        label: "Telefone",
+                        hintLabel: "Digite seu telefone",
+                        inputTipo: TextInputType.phone,
+                      ),
+                      const SizedBox(height: 20),
+                      InputTexto(
+                        label: "Email",
+                        hintLabel: "Digite seu email",
+                        inputTipo: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 20),
+                      InputTexto(
                         hintLabel: "Data de Nascimento",
                         label: "Data de Nascimento",
                         inputTipo: TextInputType.datetime,
                       ),
                       const SizedBox(height: 20),
-                      InputTexto(label: "Email", hintLabel: "Digite seu email"),
-                      const SizedBox(height: 20),
-                      InputTexto(label: "Senha", hintLabel: "Digite sua senha"),
+                      InputTexto(
+                        label: "Senha",
+                        hintLabel: "Digite sua senha",
+                        inputTipo: TextInputType.visiblePassword,
+                      ),
                       const SizedBox(height: 40),
                       BotaoEstilizadoWidget(
                         funcao: () => {Navigator.pushNamed(context, '/login')},

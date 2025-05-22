@@ -1,3 +1,4 @@
+import 'package:arthub/enums/usuario_enum.dart';
 import 'package:arthub/models/perfil_model.dart';
 
 class UsuarioModel {
@@ -29,11 +30,11 @@ class UsuarioModel {
       nome: json['nome'],
       apelido: json['apelido'],
       email: json['email'],
-      dataNascimento: DateTime.parse(json['dataNascimento']),
+      dataNascimento: json['dataNascimento'],
       senha: json['senha'],
       telefone: json['telefone'],
       perfil: PerfilModel.fromJson(json['perfil']),
-      tipoUsuario: UsuarioEnumExtension.fromString(json['tipoUsuario']),
+      tipoUsuario: json['tipoUsuario'],
     );
   }
 
@@ -43,11 +44,11 @@ class UsuarioModel {
       'nome': nome,
       'apelido': apelido,
       'email': email,
-      'dataNascimento': dataNascimento.toIso8601String(),
+      'dataNascimento': dataNascimento,
       'senha': senha,
       'telefone': telefone,
       'perfil': perfil.toJson(),
-      'tipoUsuario': tipoUsuario.toShortString(),
+      'tipoUsuario': tipoUsuario,
     };
   }
 }
