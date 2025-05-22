@@ -18,4 +18,28 @@ class PublicacaoModel {
     required this.titulo,
     required this.curtidas,
   });
+
+  factory PublicacaoModel.fromJson(Map<String, dynamic> json){
+    return PublicacaoModel(
+    id: json['id'], 
+    tipoArquivo: json['tipoArquivo'], 
+    dataPublicacao: json['dataPublicacao'], 
+    legenda: json['legenda'], 
+    nomeConteudo: json['nomeConteudo'], 
+    titulo: json['titulo'], 
+    curtidas: json['curtidas'],
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'id': id,
+      'tipoArquivo': tipoArquivo,
+      'dataPublicacao': dataPublicacao,
+      'legenda': legenda,
+      'nomeConteudo': nomeConteudo,
+      'titulo': titulo,
+      'curtidas': curtidas,
+    };
+  }
 }
