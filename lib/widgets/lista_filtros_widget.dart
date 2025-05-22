@@ -65,13 +65,13 @@ class _ItemFiltroWidgetState extends State<ItemFiltroWidget> {
         duration: Duration(milliseconds: 100),
         height: 35,
         margin: EdgeInsets.only(right: 4),
-        padding: EdgeInsets.only(left: 3, right: 3),
+        padding: EdgeInsets.only(left: 3, right: 6),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color:
               isSelected
                   ? Theme.of(context).colorScheme.tertiary
-                  : Colors.white,
+                  : Theme.of(context).colorScheme.onError,
           border: Border.all(
             color:
                 isSelected

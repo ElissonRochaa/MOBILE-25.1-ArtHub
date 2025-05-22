@@ -1,5 +1,5 @@
 name: arthub
-description: "A new Flutter project."
+description: "O ArtHub será uma rede social dedicada ao compartilhamento de manifestações artísticas entre os estudantes da UPE, proporcionando um espaço exclusivo para a divulgação e interação de talentos e expressões criativas."
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -36,6 +36,7 @@ dependencies:
   cupertino_icons: ^1.0.8
   provider: ^6.1.4
   curved_navigation_bar: ^1.0.6
+  http: ^1.4.0
 
 dev_dependencies:
   flutter_test:

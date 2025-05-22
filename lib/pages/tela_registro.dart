@@ -38,19 +38,7 @@ class TelaRegistro extends StatelessWidget {
               ),
             ),
           ),
-          Positioned(
-            left: 10,
-            top: 10,
-            child: BotaoVoltarWidget(),
-            // IconButton.filled(
-            //   onPressed: () => {Navigator.pop(context)},
-            //   style: IconButton.styleFrom(backgroundColor: Colors.white),
-            //   icon: Icon(
-            //     Icons.arrow_back,
-            //     color: Theme.of(context).colorScheme.primary,
-            //   ),
-            // ),
-          ),
+          Positioned(left: 10, top: 10, child: BotaoVoltarWidget()),
           Padding(
             padding: const EdgeInsets.only(top: 60),
             child: SingleChildScrollView(
@@ -72,18 +60,33 @@ class TelaRegistro extends StatelessWidget {
                       ),
                       const SizedBox(height: 20),
                       InputTexto(
+                        label: "Telefone",
+                        hintLabel: "Digite seu telefone",
+                        inputTipo: TextInputType.phone,
+                      ),
+                      const SizedBox(height: 20),
+                      InputTexto(
+                        label: "Email",
+                        hintLabel: "Digite seu email",
+                        inputTipo: TextInputType.emailAddress,
+                      ),
+                      const SizedBox(height: 20),
+                      InputTexto(
                         hintLabel: "Data de Nascimento",
                         label: "Data de Nascimento",
                         inputTipo: TextInputType.datetime,
                       ),
                       const SizedBox(height: 20),
-                      InputTexto(label: "Email", hintLabel: "Digite seu email"),
-                      const SizedBox(height: 20),
-                      InputTexto(label: "Senha", hintLabel: "Digite sua senha"),
+                      InputTexto(
+                        label: "Senha",
+                        hintLabel: "Digite sua senha",
+                        inputTipo: TextInputType.visiblePassword,
+                      ),
                       const SizedBox(height: 40),
-                      BotaoEstilizadoWidget(funcao: () => {
-                        Navigator.pushNamed(context, '/login')
-                      }, texto: 'Registre-se'),
+                      BotaoEstilizadoWidget(
+                        funcao: () => {Navigator.pushNamed(context, '/login')},
+                        texto: 'Registre-se',
+                      ),
                       const SizedBox(height: 60),
                       RichText(
                         text: TextSpan(
@@ -91,7 +94,7 @@ class TelaRegistro extends StatelessWidget {
                           style: Theme.of(
                             context,
                           ).textTheme.titleLarge?.copyWith(
-                            color: Theme.of(context).colorScheme.onPrimary,
+                            color: Theme.of(context).colorScheme.surface,
                           ),
                           children: [
                             TextSpan(
@@ -99,7 +102,7 @@ class TelaRegistro extends StatelessWidget {
                               style: Theme.of(
                                 context,
                               ).textTheme.titleLarge?.copyWith(
-                                color: Theme.of(context).colorScheme.onPrimary,
+                                color: Theme.of(context).colorScheme.surface,
                                 decoration: TextDecoration.underline,
                               ),
                               recognizer:

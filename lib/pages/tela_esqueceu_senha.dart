@@ -15,7 +15,7 @@ class TelaEsqueceuSenha extends StatelessWidget {
             height: MediaQuery.of(context).size.height,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/upe_entrada.jpeg'),
+                image: AssetImage('assets/images/upe.jpg'),
                 colorFilter: ColorFilter.mode(
                   Theme.of(context).colorScheme.primary,
                   BlendMode.modulate,
@@ -46,16 +46,16 @@ class TelaEsqueceuSenha extends StatelessWidget {
                 children: [
                   Text(
                     'Informe seu email cadastrado para receber instruções de recuperação de senha:',
-                    style: Theme.of(
-                      context,
-                    ).textTheme.displayMedium?.copyWith(color: Colors.black),
+                    style: Theme.of(context).textTheme.displayMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
                     textAlign: TextAlign.center,
                   ),
-                  const SizedBox(height: 20),
+                  SizedBox(height: 20),
                   TextField(
                     decoration: InputDecoration(
                       filled: true,
-                      fillColor: Colors.white,
+                      fillColor: Theme.of(context).colorScheme.surface,
                       labelText: 'Email',
                       labelStyle: Theme.of(
                         context,
@@ -66,19 +66,16 @@ class TelaEsqueceuSenha extends StatelessWidget {
                         borderSide: BorderSide(color: Colors.white),
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
-                        borderRadius: BorderRadius.all(Radius.circular(5)),
-                      ),
                     ),
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),
                   ),
                   const SizedBox(height: 20),
-                  BotaoEstilizadoWidget(funcao: () => {
-                    Navigator.pushNamed(context, '/login')
-                  }, texto: 'Enviar e-mail')
+                  BotaoEstilizadoWidget(
+                    funcao: () => {Navigator.pushNamed(context, '/login')},
+                    texto: 'Enviar e-mail',
+                  ),
                 ],
               ),
             ),

@@ -30,7 +30,10 @@ class PublicacaoWidget extends StatelessWidget {
             width: 150,
             height: 160,
           ),
-          Text('@esnupi'),
+          Text(
+            '@esnupi',
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
         ],
       ),
     );

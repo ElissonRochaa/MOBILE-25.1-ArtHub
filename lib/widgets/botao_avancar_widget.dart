@@ -17,8 +17,8 @@ class BotaoAvancarWidget extends StatelessWidget {
         Container(
           width: 55,
           height: 55,
-          decoration: const BoxDecoration(
-            color: Colors.white,
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.all(Radius.circular(55)),
           ),
           child: IconButton(
@@ -35,7 +35,7 @@ class BotaoAvancarWidget extends StatelessWidget {
         Text(
           texto,
           style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-            color: Theme.of(context).colorScheme.onPrimary,
+            color: Theme.of(context).colorScheme.surface,
           ),
         ),
       ],
