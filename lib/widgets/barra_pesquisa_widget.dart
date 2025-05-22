@@ -1,5 +1,4 @@
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
-import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
