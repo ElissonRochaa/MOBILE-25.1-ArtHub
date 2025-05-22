@@ -279,17 +279,17 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                       ...comentarios
                           .map((texto) => _comentario(context, texto))
                           .toList(),
-                      comentario(context, "Um texto curtinho"),
-                      comentario(
+                      _comentario(context, "Um texto curtinho"),
+                      _comentario(
                         context,
                         "Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo",
                       ),
-                      comentario(
+                      _comentario(
                         context,
                         "Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo Um texto muito muito longo",
                       ),
-                      comentario(context, "Um texto curtinho"),
-                      comentario(context, "Um texto curtinho"),
+                      _comentario(context, "Um texto curtinho"),
+                      _comentario(context, "Um texto curtinho"),
                       RodapeWidget(),
                     ],
                   ),
