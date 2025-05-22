@@ -37,8 +37,7 @@ class TelaApresentacao extends StatelessWidget {
             icon: Icon(
               themeProvider.isDarkMode
                   ? Icons.dark_mode
-                  : Icons
-                      .light_mode, // Um ternário, não pode usar estrutura condicional em Icon
+                  : Icons.light_mode, // Um ternário, não pode usar estrutura condicional em Icon
               color: Colors.white,
               size: 32,
             ),
