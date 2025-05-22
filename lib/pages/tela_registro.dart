@@ -41,14 +41,6 @@ class TelaRegistro extends StatelessWidget {
             left: 10,
             top: 10,
             child: BotaoVoltarWidget(),
-            // IconButton.filled(
-            //   onPressed: () => {Navigator.pop(context)},
-            //   style: IconButton.styleFrom(backgroundColor: Colors.white),
-            //   icon: Icon(
-            //     Icons.arrow_back,
-            //     color: Theme.of(context).colorScheme.primary,
-            //   ),
-            // ),
           ),
           Padding(
             padding: const EdgeInsets.only(top: 60),
