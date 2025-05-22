@@ -83,7 +83,14 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
         borderRadius: BorderRadius.circular(10),
         color: Theme.of(context).colorScheme.tertiary,
       ),
-      child: Center(child: Text(texto)),
+      child: Center(
+        child: Text(
+          texto,
+          style: TextStyle(
+            color: Theme.of(context).colorScheme.onPrimary,
+          ),
+        ),
+      ),
     );
   }
 
@@ -117,7 +124,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                     ? Text(
                       'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onTertiary,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     )
                     : Text(
@@ -125,7 +132,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onTertiary,
+                        color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     ),
           ),
@@ -144,7 +151,9 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
           padding: const EdgeInsets.only(left: 33),
           child: Text(
             'Título do post',
-            style: Theme.of(context).textTheme.displayMedium,
+            style: Theme.of(context).textTheme.displayMedium?.copyWith(
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
           ),
         ),
         Column(
@@ -174,7 +183,12 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
               padding: const EdgeInsets.only(left: 35),
               child: Row(
                 children: [
-                  Text("@esnupi"),
+                  Text(
+                    "@esnupi",
+                    style: TextStyle(
+                      color: Theme.of(context).colorScheme.onPrimary
+                    )
+                  ),
                   SizedBox(width: MediaQuery.of(context).size.width - 200),
                   GestureDetector(
                     onTap:
@@ -278,7 +292,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.grey,
+              color: Theme.of(context).colorScheme.onTertiary,
               spreadRadius: 2,
               blurRadius: 2,
               offset: Offset(0, 3),
@@ -339,19 +353,19 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             ),
           ),
           Positioned(
-            top: 12,
-            left: 12,
+            top: 40,
+            left: 40,
             child: SafeArea(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.primary,
+                  color: Colors.white,
                   shape: BoxShape.circle,
                 ),
                 child: IconButton(
                   onPressed: () => {Navigator.pop(context)},
                   icon: Icon(
                     Icons.arrow_back,
-                    color: Theme.of(context).colorScheme.onError,
+                    color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
               ),

@@ -56,9 +56,9 @@ class TelaEditarPerfil extends StatelessWidget {
           onTap: onTap,
           child: Text(
             texto,
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
-              color: Colors.black,
+              color: Theme.of(context).colorScheme.onPrimary,
               shadows: [
                 Shadow(
                   color: Colors.black26,
