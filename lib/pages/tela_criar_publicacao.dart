@@ -1,10 +1,7 @@
-import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/lista_filtros_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../provider/barra_pesquisa_provider.dart';
 
 class TelaCriarPublicacao extends StatelessWidget {
   const TelaCriarPublicacao({super.key});
@@ -28,7 +25,7 @@ class TelaCriarPublicacao extends StatelessWidget {
               child: Text(
                 'Em quais categorias essa publicação se encaixa?',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.onTertiary
+                    color: Theme.of(context).colorScheme.onPrimary
                 ),
               ),
             ),
@@ -52,7 +49,7 @@ class TelaCriarPublicacao extends StatelessWidget {
                 obscureText: false,
                 decoration: InputDecoration(
                   hintText: 'Qual o título da publicação?',
-                  hintStyle: TextStyle(color: Colors.grey, fontSize: 15),
+                  hintStyle: TextStyle(color: Theme.of(context).colorScheme.onTertiary, fontSize: 15),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
                 ),
@@ -86,7 +83,7 @@ class TelaCriarPublicacao extends StatelessWidget {
                 decoration: InputDecoration(
                   hintText: 'A publicação tem legenda?',
                   hintStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.onSecondary,
+                    color: Theme.of(context).colorScheme.onTertiary,
                     fontSize: 15,
                   ),
                   border: InputBorder.none,
