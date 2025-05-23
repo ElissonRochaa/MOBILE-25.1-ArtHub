@@ -86,14 +86,14 @@ class _ItemFiltroWidgetState extends State<ItemFiltroWidget> {
               Icon(
                 Icons.check,
                 size: 16,
-                color: Theme.of(context).colorScheme.onTertiary,
+                color: Theme.of(context).colorScheme.onPrimary,
               ),
             SizedBox(width: 4),
             Center(
               child: Text(
                 widget.name,
                 style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                  color: Theme.of(context).colorScheme.onTertiary,
+                  color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
             ),
