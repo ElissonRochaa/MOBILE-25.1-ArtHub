@@ -1,9 +1,7 @@
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-import '../provider/modo_tema_provider.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
