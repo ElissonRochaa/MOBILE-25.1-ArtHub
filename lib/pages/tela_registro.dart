@@ -4,6 +4,7 @@ import 'package:arthub/widgets/input_texto.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
+
 class TelaRegistro extends StatelessWidget {
   const TelaRegistro({super.key});
 
