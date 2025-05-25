@@ -4,6 +4,8 @@ class InputTexto extends StatefulWidget {
   final String label;
   final String hintLabel;
   final TextInputType inputTipo;
+  final bool ehOculto;
+  final TextEditingController? controller;
   final void Function(DateTime)? onDateSelected;
 
   const InputTexto({
@@ -11,6 +13,8 @@ class InputTexto extends StatefulWidget {
     required this.label,
     required this.hintLabel,
     this.inputTipo = TextInputType.text,
+    this.ehOculto = false,
+    this.controller,
     this.onDateSelected,
   });
 
@@ -20,6 +24,7 @@ class InputTexto extends StatefulWidget {
 
 class _InputTextoState extends State<InputTexto> {
   String? _displayText;
+  bool mostrar = false;
 
   @override
   void initState() {
@@ -76,6 +81,8 @@ class _InputTextoState extends State<InputTexto> {
               )
               : TextFormField(
                 keyboardType: widget.inputTipo,
+                controller: widget.controller,
+                obscureText: widget.ehOculto ? !mostrar : false,
                 decoration: InputDecoration(
                   labelText: widget.label,
                   labelStyle: Theme.of(
@@ -85,7 +92,7 @@ class _InputTextoState extends State<InputTexto> {
                   ),
                   hintText: widget.hintLabel,
                   hintStyle: TextStyle(
-                    color: Theme.of(context).colorScheme.onPrimary,
+                    color: Theme.of(context).colorScheme.onSecondary,
                     fontSize: 15,
                   ),
                   border: InputBorder.none,
@@ -93,6 +100,22 @@ class _InputTextoState extends State<InputTexto> {
                     horizontal: 20,
                     vertical: 20,
                   ),
+                  suffixIcon: widget.ehOculto ?
+                  IconButton(
+                      onPressed: () => setState(() {
+                        mostrar = !mostrar;
+                      }),
+                      icon: mostrar ?
+                      Icon(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        Icons.remove_red_eye_outlined,
+                      ) :
+                      Icon(
+                        color: Theme.of(context).colorScheme.onSurface,
+                        Icons.remove_red_eye,
+                      ),
+                  )
+                      : null,
                 ),
               ),
     );
