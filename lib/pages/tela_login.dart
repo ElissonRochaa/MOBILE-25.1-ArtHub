@@ -1,9 +1,6 @@
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../provider/modo_tema_provider.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -141,7 +138,8 @@ class _TelaLoginState extends State<TelaLogin> {
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.surface,
                           decoration: TextDecoration.underline,
-                          decorationColor: Theme.of(context).colorScheme.surface
+                          decorationColor:
+                              Theme.of(context).colorScheme.surface,
                         ),
                       ),
                     ),
@@ -170,7 +168,8 @@ class _TelaLoginState extends State<TelaLogin> {
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).colorScheme.surface,
                           decoration: TextDecoration.underline,
-                          decorationColor: Theme.of(context).colorScheme.surface,
+                          decorationColor:
+                              Theme.of(context).colorScheme.surface,
                         ),
                       ),
                     ),

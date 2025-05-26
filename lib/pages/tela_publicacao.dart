@@ -1,7 +1,6 @@
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
-import 'package:arthub/widgets/rodape_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -22,12 +21,12 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
     return showDialog(
       context: context,
       builder: (BuildContext context) {
-        TextEditingController _controller = TextEditingController();
+        TextEditingController controller = TextEditingController();
 
         return AlertDialog(
           title: Text('Novo comentário'),
           content: TextField(
-            controller: _controller,
+            controller: controller,
             decoration: InputDecoration(
               hintText: "Digite seu comentário",
               filled: true,
@@ -52,7 +51,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             OutlinedButton(
               onPressed: () {
                 setState(() {
-                  comentarios.add(_controller.text);
+                  comentarios.add(controller.text);
                 });
                 Navigator.of(context).pop();
               },
@@ -86,9 +85,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       child: Center(
         child: Text(
           texto,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
         ),
       ),
     );
@@ -186,8 +183,8 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   Text(
                     "@esnupi",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary
-                    )
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                   SizedBox(width: MediaQuery.of(context).size.width - 200),
                   GestureDetector(
@@ -345,7 +342,9 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   child: Column(
                     children: [
                       _post(context),
-                      ...comentarios.map((texto) => _comentario(context, texto)),
+                      ...comentarios.map(
+                        (texto) => _comentario(context, texto),
+                      ),
                     ],
                   ),
                 ),
