@@ -2,6 +2,7 @@ import 'package:arthub/pages/tela_editar_perfil.dart';
 import 'package:arthub/pages/tela_esqueceu_senha.dart';
 import 'package:arthub/pages/tela_login.dart';
 import 'package:arthub/pages/tela_logotipo.dart';
+import 'package:arthub/pages/tela_principal.dart';
 import 'package:arthub/pages/tela_proprio_perfil.dart';
 import 'package:arthub/pages/tela_publicacao.dart';
 import 'package:arthub/pages/tela_registro.dart';
@@ -36,7 +37,7 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'ArtHub',
           theme: ThemeAppProvider.themeData,
-          home: TelaLogotipo(),
+          home: TelaComNavbar(),
           initialRoute: '/',
           onGenerateRoute: (settings) {
             switch (settings.name) {
