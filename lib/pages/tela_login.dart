@@ -1,7 +1,9 @@
+import 'package:arthub/models/dots/login_dto.dart';
+import 'package:arthub/services/usuario_service.dart';
+import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
+import 'package:arthub/widgets/input_texto.dart';
 import 'package:flutter/material.dart';
-import 'package:arthub/services/auth_service.dart';
-
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -11,95 +13,39 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController senhaController = TextEditingController();
-  bool estaOculto = true;
-  bool isLoading = false;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
 
-   @override
-  void dispose() {
-    emailController.dispose();
-    senhaController.dispose();
+  void dipose(){
+    _emailController.dispose();
+    _senhaController.dispose();
     super.dispose();
   }
 
-  void fazerLogin() async {
-    String email = emailController.text.trim();
-    String senha = senhaController.text.trim();
-
-    if (email.isEmpty || senha.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Por favor, preencha email e senha')),
-      );
-      return;
-    }
-
-    setState(() {
-      isLoading = true;
-    });
+  Future<void> _login() async {
+    final usuarioLogin = LoginDTO(email: _emailController.text, senha: _senhaController.text);
+    final response = await UsuarioService.login(usuarioLogin);
 
     try {
-      String token = await AuthService().login(email, senha);
-      print('Token JWT: $token');
-
-      // Aqui você pode salvar o token no storage, se quiser
-
-      // Navega para home ao sucesso
-      Navigator.pushReplacementNamed(context, '/home');
+      if (response.isNotEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('O login foi realizado com sucesso'))
+        );
+        Navigator.pushNamed(context, '/home');
+      }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Senha ou email errados'))
+        );
+      }
     } catch (e) {
-      print('Erro no login: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Login falhou, verifique seus dados')),
+        const SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('Algo deu errado'),
+        )
       );
-    } finally {
-      setState(() {
-        isLoading = false;
-      });
     }
-  }
-
-
-  Widget inputDeTexto(
-    BuildContext context,
-    String label,
-    String hintText,
-    bool oculto,
-    TextEditingController controller,
-  ) {
-    return Container(
-      width: 346,
-      height: 79,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(6),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(10, 10, 10, 0.3),
-            offset: Offset(6, 6),
-            blurRadius: 2.0,
-          ),
-        ],
-      ),
-      child: TextFormField(
-        controller: controller, 
-        obscureText: oculto,
-        decoration: InputDecoration(
-          label: Text(
-            label,
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-          ),
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary,
-            fontSize: 15,
-          ),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        ),
-      ),
-    );
   }
 
   @override
@@ -144,40 +90,22 @@ class _TelaLoginState extends State<TelaLogin> {
                   ),
                 ),
                 SizedBox(height: 150),
-                inputDeTexto(
-                  context,
-                  'Email',
-                  'seumelhoremail@gmail.com',
-                  false,
-                  emailController,
+                InputTexto(
+                  label: 'Email',
+                  hintLabel: 'seumelhoremail@gmail.com',
+                  controller: _emailController,
                 ),
                 SizedBox(height: 50),
-                inputDeTexto(context, 'Senha', 'MuitoSecreta', estaOculto, senhaController),
+                InputTexto(
+                  label: 'Senha',
+                  hintLabel: 'MuitoSecreta',
+                  controller: _senhaController,
+                  ehOculto: true,
+                ),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    estaOculto
-                        ? Icon(
-                          color: Theme.of(context).colorScheme.surface,
-                          Icons.remove_red_eye_outlined,
-                        )
-                        : Icon(Icons.remove_red_eye),
-                    GestureDetector(
-                      onTap:
-                          () => {
-                            setState(() {
-                              estaOculto = !estaOculto;
-                            }),
-                          },
-                      child: Text(
-                        'Mostrar Senha',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.surface,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 90),
                     GestureDetector(
                       onTap:
                           () => {
@@ -195,13 +123,11 @@ class _TelaLoginState extends State<TelaLogin> {
                   ],
                 ),
                 SizedBox(height: 30),
-                 isLoading
-                ? CircularProgressIndicator()
-                : ElevatedButton(
-                    onPressed: fazerLogin,
-                    child: Text('Fazer Login'),
-                  ),
-            SizedBox(height: 50),
+                BotaoEstilizadoWidget(
+                  funcao: _login,
+                  texto: 'Fazer Login',
+                ),
+                SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
