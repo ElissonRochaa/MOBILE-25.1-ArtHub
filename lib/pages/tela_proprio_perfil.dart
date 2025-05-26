@@ -1,5 +1,6 @@
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TelaProprioPerfil extends StatefulWidget {
   const TelaProprioPerfil({super.key});
@@ -12,6 +13,14 @@ class TelaProprioPerfil extends StatefulWidget {
 
 class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
   bool lerTudo = false;
+
+  final List<String> imagens = [
+    'assets/images/teste1.jpeg',
+    'assets/images/teste2.jpeg',
+    'assets/images/cat.jpeg',
+    'assets/images/hannah.jpg',
+    'assets/images/snoopy.jpeg',
+  ];
 
   Widget numerosPerfil(BuildContext context) {
     return Positioned(
@@ -219,17 +228,18 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
             top: 30,
             bottom: 10,
           ),
-          sliver: SliverGrid(
-            delegate: SliverChildListDelegate([
-              PublicacaoWidget(imagePath: 'assets/images/teste1.jpeg'),
-              PublicacaoWidget(imagePath: 'assets/images/teste2.jpeg'),
-              PublicacaoWidget(imagePath: 'assets/images/teste1.jpeg'),
-              PublicacaoWidget(imagePath: 'assets/images/teste2.jpeg'),
-            ]),
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          sliver: SliverPadding(
+            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            sliver: SliverMasonryGrid.count(
               crossAxisCount: 2,
-              mainAxisSpacing: 2,
-              crossAxisSpacing: 2,
+              mainAxisSpacing: 8,
+              crossAxisSpacing: 8,
+              childCount: 5,
+              itemBuilder: (context, index) {
+                final imagePath = imagens[index % imagens.length];
+
+                return PublicacaoWidget(imagePath: imagePath);
+              },
             ),
           ),
         ),

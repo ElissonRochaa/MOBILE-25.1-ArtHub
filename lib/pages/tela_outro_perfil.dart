@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TelaOutroPerfil extends StatefulWidget {
   const TelaOutroPerfil({super.key});
@@ -16,6 +17,14 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
   static const Color corSombra = Color.fromRGBO(10, 10, 10, 0.3);
   bool seguindo = false;
   bool lerTudo = false;
+
+  final List<String> imagens = [
+    'assets/images/teste1.jpeg',
+    'assets/images/teste2.jpeg',
+    'assets/images/cat.jpeg',
+    'assets/images/hannah.jpg',
+    'assets/images/snoopy.jpeg',
+  ];
 
   Widget numerosPerfil(BuildContext context) {
     return Positioned(
@@ -240,18 +249,16 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                   top: 30,
                   bottom: 10,
                 ),
-                sliver: SliverGrid(
-                  delegate: SliverChildListDelegate([
-                    PublicacaoWidget(imagePath: 'assets/images/teste1.jpeg'),
-                    PublicacaoWidget(imagePath: 'assets/images/teste2.jpeg'),
-                    PublicacaoWidget(imagePath: 'assets/images/teste1.jpeg'),
-                    PublicacaoWidget(imagePath: 'assets/images/teste2.jpeg'),
-                  ]),
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2,
-                    mainAxisSpacing: 2,
-                    crossAxisSpacing: 2,
-                  ),
+                sliver: SliverMasonryGrid.count(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 8,
+                  crossAxisSpacing: 8,
+                  childCount: 5,
+                  itemBuilder: (context, index) {
+                    final imagePath = imagens[index % imagens.length];
+
+                    return PublicacaoWidget(imagePath: imagePath);
+                  },
                 ),
               ),
             ],

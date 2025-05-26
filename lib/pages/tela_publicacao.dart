@@ -1,7 +1,6 @@
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
-import 'package:arthub/widgets/rodape_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -120,13 +119,13 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             child:
                 lertudo
                     ? Text(
-                      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                      'cool cool cool cool cool cool cool cool cool cool cool cool cool cool cool',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     )
                     : Text(
-                      'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa',
+                      'cool cool cool cool cool cool cool cool cool cool cool cool cool cool cool',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -170,7 +169,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: Image.asset(
-                      'assets/images/teste2.jpeg',
+                      'assets/images/cat.jpeg',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -388,7 +387,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Image.asset('assets/images/teste2.jpeg'),
+                      child: Image.asset('assets/images/cat.jpeg'),
                     ),
                   ],
                 ),
