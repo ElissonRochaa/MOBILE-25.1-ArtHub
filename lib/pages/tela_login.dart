@@ -1,6 +1,6 @@
-import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:arthub/services/auth_service.dart';
 
 
 class TelaLogin extends StatefulWidget {
@@ -11,13 +11,60 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
+  final TextEditingController emailController = TextEditingController();
+  final TextEditingController senhaController = TextEditingController();
   bool estaOculto = true;
+  bool isLoading = false;
+
+   @override
+  void dispose() {
+    emailController.dispose();
+    senhaController.dispose();
+    super.dispose();
+  }
+
+  void fazerLogin() async {
+    String email = emailController.text.trim();
+    String senha = senhaController.text.trim();
+
+    if (email.isEmpty || senha.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Por favor, preencha email e senha')),
+      );
+      return;
+    }
+
+    setState(() {
+      isLoading = true;
+    });
+
+    try {
+      String token = await AuthService().login(email, senha);
+      print('Token JWT: $token');
+
+      // Aqui você pode salvar o token no storage, se quiser
+
+      // Navega para home ao sucesso
+      Navigator.pushReplacementNamed(context, '/home');
+    } catch (e) {
+      print('Erro no login: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Login falhou, verifique seus dados')),
+      );
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
+
 
   Widget inputDeTexto(
     BuildContext context,
     String label,
     String hintText,
     bool oculto,
+    TextEditingController controller,
   ) {
     return Container(
       width: 346,
@@ -34,6 +81,7 @@ class _TelaLoginState extends State<TelaLogin> {
         ],
       ),
       child: TextFormField(
+        controller: controller, 
         obscureText: oculto,
         decoration: InputDecoration(
           label: Text(
@@ -101,9 +149,10 @@ class _TelaLoginState extends State<TelaLogin> {
                   'Email',
                   'seumelhoremail@gmail.com',
                   false,
+                  emailController,
                 ),
                 SizedBox(height: 50),
-                inputDeTexto(context, 'Senha', 'MuitoSecreta', estaOculto),
+                inputDeTexto(context, 'Senha', 'MuitoSecreta', estaOculto, senhaController),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -146,11 +195,13 @@ class _TelaLoginState extends State<TelaLogin> {
                   ],
                 ),
                 SizedBox(height: 30),
-                BotaoEstilizadoWidget(
-                  funcao: () => {Navigator.pushNamed(context, '/home')},
-                  texto: 'Fazer Login',
-                ),
-                SizedBox(height: 50),
+                 isLoading
+                ? CircularProgressIndicator()
+                : ElevatedButton(
+                    onPressed: fazerLogin,
+                    child: Text('Fazer Login'),
+                  ),
+            SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
