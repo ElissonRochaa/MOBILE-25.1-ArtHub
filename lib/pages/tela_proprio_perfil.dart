@@ -221,10 +221,10 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
           ),
           sliver: SliverGrid(
             delegate: SliverChildListDelegate([
-              PublicacaoWidget(),
-              PublicacaoWidget(),
-              PublicacaoWidget(),
-              PublicacaoWidget(),
+              PublicacaoWidget(imagePath: 'assets/images/teste1.jpeg'),
+              PublicacaoWidget(imagePath: 'assets/images/teste2.jpeg'),
+              PublicacaoWidget(imagePath: 'assets/images/teste1.jpeg'),
+              PublicacaoWidget(imagePath: 'assets/images/teste2.jpeg'),
             ]),
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
               crossAxisCount: 2,

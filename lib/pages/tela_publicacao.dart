@@ -86,9 +86,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       child: Center(
         child: Text(
           texto,
-          style: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary,
-          ),
+          style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
         ),
       ),
     );
@@ -172,7 +170,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: Image.asset(
-                      'assets/images/cat.jpeg',
+                      'assets/images/teste2.jpeg',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -186,8 +184,8 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   Text(
                     "@esnupi",
                     style: TextStyle(
-                      color: Theme.of(context).colorScheme.onPrimary
-                    )
+                      color: Theme.of(context).colorScheme.onPrimary,
+                    ),
                   ),
                   SizedBox(width: MediaQuery.of(context).size.width - 200),
                   GestureDetector(
@@ -345,7 +343,9 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   child: Column(
                     children: [
                       _post(context),
-                      ...comentarios.map((texto) => _comentario(context, texto)),
+                      ...comentarios.map(
+                        (texto) => _comentario(context, texto),
+                      ),
                     ],
                   ),
                 ),
@@ -388,7 +388,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Image.asset('assets/images/cat.jpeg'),
+                      child: Image.asset('assets/images/teste2.jpeg'),
                     ),
                   ],
                 ),
