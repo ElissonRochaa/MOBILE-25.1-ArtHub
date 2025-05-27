@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 
 class PublicacaoWidget extends StatelessWidget {
-  const PublicacaoWidget({super.key});
+  final String imagePath;
+
+  const PublicacaoWidget({super.key, required this.imagePath});
 
   @override
   Widget build(BuildContext context) {
@@ -12,24 +14,11 @@ class PublicacaoWidget extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/cat.jpeg'),
-                fit: BoxFit.cover,
-              ),
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Color.fromRGBO(10, 10, 10, 0.3),
-                  offset: Offset(0, 6),
-                  blurRadius: 2.0,
-                ),
-              ],
-            ),
-            width: 150,
-            height: 160,
+          ClipRRect(
+            borderRadius: BorderRadius.circular(16),
+            child: Image.asset(imagePath, fit: BoxFit.cover),
           ),
+          const SizedBox(height: 5),
           Text(
             '@esnupi',
             style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
