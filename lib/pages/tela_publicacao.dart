@@ -145,7 +145,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 33),
+          padding: const EdgeInsets.only(left: 135),
           child: Text(
             'Título do post',
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
@@ -169,7 +169,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: Image.asset(
-                      'assets/images/cat.jpeg',
+                      'assets/images/teste2.jpeg',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -341,6 +341,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                 SingleChildScrollView(
                   child: Column(
                     children: [
+                      const SizedBox(height: 15),
                       _post(context),
                       ...comentarios.map(
                         (texto) => _comentario(context, texto),
@@ -352,13 +353,16 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             ),
           ),
           Positioned(
-            top: 40,
-            left: 40,
+            top: 19,
+            left: 10,
             child: SafeArea(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Colors.white,
+                  color: Theme.of(context).colorScheme.surface,
                   shape: BoxShape.circle,
+                  border: Border.all(
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
                 ),
                 child: IconButton(
                   onPressed: () => {Navigator.pop(context)},
@@ -387,7 +391,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Image.asset('assets/images/cat.jpeg'),
+                      child: Image.asset('assets/images/teste2.jpeg'),
                     ),
                   ],
                 ),
