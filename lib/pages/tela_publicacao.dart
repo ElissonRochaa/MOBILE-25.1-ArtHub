@@ -1,5 +1,6 @@
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
+import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -352,28 +353,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
               ],
             ),
           ),
-          Positioned(
-            top: 19,
-            left: 10,
-            child: SafeArea(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Theme.of(context).colorScheme.surface,
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-                child: IconButton(
-                  onPressed: () => {Navigator.pop(context)},
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          Positioned(top: 19, left: 10, child: BotaoVoltarWidget()),
           if (isImagemAberta)
             GestureDetector(
               onTap:
