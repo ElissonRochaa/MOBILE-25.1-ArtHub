@@ -10,7 +10,7 @@ class ThemeApp {
       secondary: Color(0xFFFEFF99),
       onSecondary: Color(0xFF49454F),
       tertiary: Color(0xFFC98311),
-      onTertiary: Color(0xFF4A4459),
+      onTertiary: Color.fromRGBO(10, 10, 10, 0.3),
       error: Colors.red,
       onError: Colors.white,
       surface: Colors.white,
