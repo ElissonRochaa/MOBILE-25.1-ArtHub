@@ -37,7 +37,7 @@ class _TelaLoginState extends State<TelaLogin> {
             content: Text(
               'O login foi realizado com sucesso.',
               style: TextStyle(
-                color: Theme.of(context).colorScheme.primary,
+                color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: Theme.of(context).textTheme.bodySmall?.fontWeight,
               ),
             ),
@@ -53,13 +53,18 @@ class _TelaLoginState extends State<TelaLogin> {
         );
         Navigator.pushNamed(context, '/home');
       }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Senha ou email errados'))
+        );
+      }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text(
             'Senha ou email incorretos. Tente novamente.',
             style: TextStyle(
-              color: Theme.of(context).colorScheme.primary,
+              color: Theme.of(context).colorScheme.onSurface,
               fontWeight: Theme.of(context).textTheme.bodySmall?.fontWeight,
             ),
           ),
