@@ -1,4 +1,5 @@
-import 'package:arthub/models/dots/login_dto.dart';
+import 'package:arthub/models/dtos/login_dto.dart';
+import 'package:arthub/services/auth_service.dart';
 import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
@@ -24,7 +25,7 @@ class _TelaLoginState extends State<TelaLogin> {
 
   Future<void> _login() async {
     final usuarioLogin = LoginDTO(email: _emailController.text, senha: _senhaController.text);
-    final response = await UsuarioService.login(usuarioLogin);
+    final response = await AuthService.login(usuarioLogin);
 
     try {
       if (response.isNotEmpty){
