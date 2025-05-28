@@ -17,7 +17,6 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _senhaController = TextEditingController();
 
   void dipose() {
-    void dipose() {
       _emailController.dispose();
       _senhaController.dispose();
       super.dispose();
@@ -160,7 +159,6 @@ class _TelaLoginState extends State<TelaLogin> {
                   ),
                   SizedBox(height: 30),
                   BotaoEstilizadoWidget(funcao: _login, texto: 'Fazer Login'),
-                  BotaoEstilizadoWidget(funcao: _login, texto: 'Fazer Login'),
                   SizedBox(height: 50),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -209,4 +207,3 @@ class _TelaLoginState extends State<TelaLogin> {
       );
     }
   }
-}
