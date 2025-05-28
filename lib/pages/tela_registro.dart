@@ -1,12 +1,82 @@
+import 'package:arthub/api/api_client.dart';
+import 'package:arthub/models/cadastro_model.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/input_texto.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 
-
-class TelaRegistro extends StatelessWidget {
+class TelaRegistro extends StatefulWidget {
   const TelaRegistro({super.key});
+
+  @override
+  State<TelaRegistro> createState() => _TelaRegistroState();
+}
+
+class _TelaRegistroState extends State<TelaRegistro> {
+  final TextEditingController _nomeController = TextEditingController();
+  final TextEditingController _apelidoController = TextEditingController();
+  final TextEditingController _telefoneController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _dataNascimentoController =
+      TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nomeController.dispose();
+    _apelidoController.dispose();
+    _telefoneController.dispose();
+    _emailController.dispose();
+    _dataNascimentoController.dispose();
+    _senhaController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _registrar() async {
+    try {
+      final cadastro = CadastroModel(
+        nome: _nomeController.text,
+        apelido: _apelidoController.text,
+        telefone: _telefoneController.text,
+        email: _emailController.text,
+        senha: _senhaController.text,
+        dataNascimento: _dataNascimentoController.text,
+      );
+
+      print(cadastro.toJson());
+
+      final response = await ApiClient().post(
+        '/auth/registrar',
+        cadastro.toJson(),
+      );
+
+      if (response.statusCode == 200) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Cadastro realizado com sucesso! Faça o login!',
+              style: TextStyle(),
+            ),
+          ),
+        );
+        Navigator.pushReplacementNamed(context, '/login');
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              'Erro ao cadastrar: ${response.statusMessage}',
+              style: TextStyle(),
+            ),
+          ),
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Erro ao cadastrar: $e')));
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,39 +122,47 @@ class TelaRegistro extends StatelessWidget {
                       InputTexto(
                         label: "Nome",
                         hintLabel: "Digite seu nome completo",
+                        controller: _nomeController,
+                        inputTipo: TextInputType.name,
                       ),
                       const SizedBox(height: 20),
                       InputTexto(
                         label: "Apelido",
                         hintLabel: "Digite seu apelido",
+                        controller: _apelidoController,
+                        inputTipo: TextInputType.name,
                       ),
                       const SizedBox(height: 20),
                       InputTexto(
                         label: "Telefone",
                         hintLabel: "Digite seu telefone",
                         inputTipo: TextInputType.phone,
+                        controller: _telefoneController,
                       ),
                       const SizedBox(height: 20),
                       InputTexto(
                         label: "Email",
                         hintLabel: "Digite seu email",
                         inputTipo: TextInputType.emailAddress,
+                        controller: _emailController,
                       ),
                       const SizedBox(height: 20),
                       InputTexto(
                         hintLabel: "Data de Nascimento",
                         label: "Data de Nascimento",
                         inputTipo: TextInputType.datetime,
+                        controller: _dataNascimentoController,
                       ),
                       const SizedBox(height: 20),
                       InputTexto(
                         label: "Senha",
                         hintLabel: "Digite sua senha",
                         inputTipo: TextInputType.visiblePassword,
+                        controller: _senhaController,
                       ),
                       const SizedBox(height: 40),
                       BotaoEstilizadoWidget(
-                        funcao: () => {Navigator.pushNamed(context, '/login')},
+                        funcao: _registrar,
                         texto: 'Registre-se',
                       ),
                       const SizedBox(height: 60),

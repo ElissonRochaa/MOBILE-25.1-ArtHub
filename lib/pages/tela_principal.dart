@@ -1,9 +1,18 @@
 import 'package:arthub/widgets/lista_filtros_widget.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TelaPrincipal extends StatelessWidget {
-  const TelaPrincipal({super.key});
+  TelaPrincipal({super.key});
+
+  final List<String> imagens = [
+    'assets/images/teste1.jpeg',
+    'assets/images/teste2.jpeg',
+    'assets/images/cat.jpeg',
+    'assets/images/hannah.jpg',
+    'assets/images/snoopy.jpeg',
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -15,29 +24,17 @@ class TelaPrincipal extends StatelessWidget {
               delegate: SliverChildListDelegate([ListaFiltrosWidget()]),
             ),
             SliverPadding(
-              padding: EdgeInsets.only(left: 15, right: 12, top: 5),
-              sliver: SliverGrid(
-                delegate: SliverChildListDelegate([
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                  PublicacaoWidget(),
-                ]),
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 2,
-                  crossAxisSpacing: 2,
-                ),
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              sliver: SliverMasonryGrid.count(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childCount: 14,
+                itemBuilder: (context, index) {
+                  final imagePath = imagens[index % imagens.length];
+
+                  return PublicacaoWidget(imagePath: imagePath);
+                },
               ),
             ),
           ],

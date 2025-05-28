@@ -1,4 +1,4 @@
-import 'package:arthub/models/dots/login_dto.dart';
+import 'package:arthub/models/dtos/login_dto.dart';
 import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
@@ -16,6 +16,7 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
+  void dipose() {
   void dipose() {
     _emailController.dispose();
     _senhaController.dispose();
@@ -52,11 +53,10 @@ class _TelaLoginState extends State<TelaLogin> {
           ),
         );
         Navigator.pushNamed(context, '/home');
-      }
-      else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Senha ou email errados'))
-        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Senha ou email errados')));
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -151,12 +151,15 @@ class _TelaLoginState extends State<TelaLogin> {
                           decoration: TextDecoration.underline,
                           decorationColor:
                               Theme.of(context).colorScheme.surface,
+                          decorationColor:
+                              Theme.of(context).colorScheme.surface,
                         ),
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 30),
+                BotaoEstilizadoWidget(funcao: _login, texto: 'Fazer Login'),
                 BotaoEstilizadoWidget(funcao: _login, texto: 'Fazer Login'),
                 SizedBox(height: 50),
                 Row(
@@ -176,6 +179,8 @@ class _TelaLoginState extends State<TelaLogin> {
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).colorScheme.surface,
                           decoration: TextDecoration.underline,
+                          decorationColor:
+                              Theme.of(context).colorScheme.surface,
                           decorationColor:
                               Theme.of(context).colorScheme.surface,
                         ),
