@@ -3,6 +3,7 @@ import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/input_texto.dart';
+import 'package:arthub/widgets/stackbar.dart';
 import 'package:flutter/material.dart';
 
 class TelaLogin extends StatefulWidget {
@@ -31,26 +32,7 @@ class _TelaLoginState extends State<TelaLogin> {
         final response = await UsuarioService.login(usuarioLogin);
 
         if (response.isNotEmpty) {
-          // Login bem-sucedido
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: Text(
-                'O login foi realizado com sucesso.',
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onSurface,
-                  fontWeight: Theme.of(context).textTheme.bodySmall?.fontWeight,
-                ),
-              ),
-              backgroundColor: Theme.of(context).colorScheme.onError,
-              duration: Duration(seconds: 2),
-              behavior: SnackBarBehavior.floating,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
-              margin: EdgeInsets.all(30),
-              elevation: 20,
-            ),
-          );
+          showCustomSnackBar(context, 'Login realizado com sucesso!');
           Navigator.pushNamed(context, '/home');
         } else {
           ScaffoldMessenger.of(context).showSnackBar(
