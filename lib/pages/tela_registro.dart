@@ -45,6 +45,8 @@ class _TelaRegistroState extends State<TelaRegistro> {
         dataNascimento: _dataNascimentoController.text,
       );
 
+      print(cadastro.toJson());
+
       final response = await ApiClient().post(
         '/auth/registrar',
         cadastro.toJson(),
@@ -55,7 +57,7 @@ class _TelaRegistroState extends State<TelaRegistro> {
           SnackBar(
             content: Text(
               'Cadastro realizado com sucesso! Faça o login!',
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              style: TextStyle(),
             ),
           ),
         );
@@ -65,7 +67,7 @@ class _TelaRegistroState extends State<TelaRegistro> {
           SnackBar(
             content: Text(
               'Erro ao cadastrar: ${response.statusMessage}',
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+              style: TextStyle(),
             ),
           ),
         );

@@ -61,9 +61,13 @@ class _InputTextoState extends State<InputTexto> {
                   if (dataEscolhida != null) {
                     setState(() {
                       _displayText =
-                          "${dataEscolhida.year.toString().padLeft(4, '0')}/"
-                          "${dataEscolhida.month.toString().padLeft(2, '0')}/"
+                          "${dataEscolhida.year.toString().padLeft(4, '0')}-"
+                          "${dataEscolhida.month.toString().padLeft(2, '0')}-"
                           "${dataEscolhida.day.toString().padLeft(2, '0')}";
+                      if (widget.controller != null) {
+                        widget.controller!.text =
+                            _displayText!; // Atulizar o controller com texto formatado aqui
+                      }
                     });
                     if (widget.onDateSelected != null) {
                       widget.onDateSelected!(dataEscolhida);
