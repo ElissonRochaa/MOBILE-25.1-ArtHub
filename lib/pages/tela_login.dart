@@ -35,30 +35,10 @@ class _TelaLoginState extends State<TelaLogin> {
           showCustomSnackBar(context, 'Login realizado com sucesso!');
           Navigator.pushNamed(context, '/home');
         } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Senha ou email errados')),
-          );
+          showCustomSnackBar(context, 'Email ou senha incorretos!');
         }
       } catch (e) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Senha ou email incorretos. Tente novamente.',
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onSurface,
-                fontWeight: Theme.of(context).textTheme.bodySmall?.fontWeight,
-              ),
-            ),
-            backgroundColor: Theme.of(context).colorScheme.onError,
-            duration: Duration(seconds: 3),
-            behavior: SnackBarBehavior.floating,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-            margin: EdgeInsets.all(30),
-            elevation: 20,
-          ),
-        );
+        showCustomSnackBar(context, 'Falha nas credencias! Tente novamente');
       }
     }
 
