@@ -1,4 +1,4 @@
-import 'package:arthub/services/auth_service.dart';
+import 'package:arthub/services/token_service.dart';
 import 'package:dio/dio.dart';
 
 class ApiClient {
@@ -9,7 +9,7 @@ class ApiClient {
     _dio.interceptors.add(
       InterceptorsWrapper(
         onRequest: (options, handler) async {
-          final token = await AuthService.getToken();
+          final token = await TokenService.getToken();
           if (token != null){
             options.headers['Authorization'] = 'Bearer $token';
           }
@@ -17,7 +17,7 @@ class ApiClient {
         },
         onError: (error, handler) async {
           if(error.response?.statusCode == 401){
-            await AuthService.removeToken();
+            await TokenService.removeToken();
           }
           return handler.next(error);
         }
