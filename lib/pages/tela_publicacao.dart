@@ -1,5 +1,6 @@
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
+import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -92,7 +93,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(left: 33),
+          padding: const EdgeInsets.only(left: 135),
           child: Text(
             'Título do post',
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
@@ -116,7 +117,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: Image.asset(
-                      'assets/images/cat.jpeg',
+                      'assets/images/teste2.jpeg',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -305,6 +306,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                 SingleChildScrollView(
                   child: Column(
                     children: [
+                      const SizedBox(height: 15),
                       _post(context),
                       ...comentarios.map(
                         (texto) => _comentario(context, texto),
@@ -315,25 +317,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
               ],
             ),
           ),
-          Positioned(
-            top: 40,
-            left: 40,
-            child: SafeArea(
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  shape: BoxShape.circle,
-                ),
-                child: IconButton(
-                  onPressed: () => {Navigator.pop(context)},
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ),
-            ),
-          ),
+          Positioned(top: 19, left: 10, child: BotaoVoltarWidget()),
           if (isImagemAberta)
             GestureDetector(
               onTap:
@@ -351,7 +335,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   children: [
                     Padding(
                       padding: const EdgeInsets.only(left: 10, right: 10),
-                      child: Image.asset('assets/images/cat.jpeg'),
+                      child: Image.asset('assets/images/teste2.jpeg'),
                     ),
                   ],
                 ),

@@ -1,4 +1,5 @@
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
+import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
@@ -101,24 +102,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                 height: 159,
                 fit: BoxFit.cover,
               ),
-              Positioned(
-                top: 10,
-                left: 10,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  icon: Icon(
-                    Icons.arrow_back,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    size: 28,
-                  ),
-                  style: IconButton.styleFrom(
-                    backgroundColor: Theme.of(context).colorScheme.surface,
-                    padding: EdgeInsets.all(4),
-                  ),
-                ),
-              ),
+              Positioned(top: 10, left: 10, child: BotaoVoltarWidget()),
               Positioned(
                 top: 100,
                 left: 15,
