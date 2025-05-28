@@ -1,4 +1,5 @@
 import 'package:arthub/api/api_client.dart';
+import 'package:arthub/config/themeApp.dart';
 import 'package:arthub/models/cadastro_model.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
@@ -41,7 +42,7 @@ class _TelaRegistroState extends State<TelaRegistro> {
         telefone: _telefoneController.text,
         email: _emailController.text,
         senha: _senhaController.text,
-        dataNascimento: DateTime.parse(_dataNascimentoController.text),
+        dataNascimento: _dataNascimentoController.text,
       );
 
       final response = await ApiClient().post(
@@ -51,13 +52,21 @@ class _TelaRegistroState extends State<TelaRegistro> {
 
       if (response.statusCode == 200) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Cadastro realizado com sucesso!')),
+          SnackBar(
+            content: Text(
+              'Cadastro realizado com sucesso! Faça o login!',
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
+          ),
         );
         Navigator.pushReplacementNamed(context, '/login');
       } else {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-            content: Text('Erro ao cadastrar: ${response.statusMessage}'),
+            content: Text(
+              'Erro ao cadastrar: ${response.statusMessage}',
+              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+            ),
           ),
         );
       }

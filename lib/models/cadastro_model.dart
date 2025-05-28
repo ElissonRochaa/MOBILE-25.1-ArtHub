@@ -4,7 +4,7 @@ class CadastroModel {
   final String email;
   final String senha;
   final String telefone;
-  final DateTime dataNascimento;
+  final String dataNascimento;
 
   CadastroModel({
     required this.nome,
