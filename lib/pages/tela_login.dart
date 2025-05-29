@@ -1,4 +1,5 @@
 import 'package:arthub/models/dtos/login_dto.dart';
+import 'package:arthub/services/auth_service.dart';
 import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
@@ -23,13 +24,9 @@ class _TelaLoginState extends State<TelaLogin> {
       super.dispose();
     }
 
-    Future<void> _login() async {
-      try {
-        final usuarioLogin = LoginDTO(
-          email: _emailController.text,
-          senha: _senhaController.text,
-        );
-        final response = await UsuarioService.login(usuarioLogin);
+  Future<void> _login() async {
+    final usuarioLogin = LoginDTO(email: _emailController.text, senha: _senhaController.text);
+    final response = await AuthService.login(usuarioLogin);
 
         if (response.isNotEmpty) {
           showCustomSnackBar(context, 'Login realizado com sucesso!');
