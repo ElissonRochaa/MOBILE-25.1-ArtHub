@@ -155,9 +155,10 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                               TextEditingController();
 
                           return AlertDialog(
-                            title: Text('Novo comentário',
+                            title: Text(
+                              'Novo comentário',
                               style: TextStyle(
-                                  color: Theme.of(context).colorScheme.onPrimary
+                                color: Theme.of(context).colorScheme.onPrimary,
                               ),
                             ),
                             content: TextField(
@@ -182,9 +183,11 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: Text('Cancelar',
+                                child: Text(
+                                  'Cancelar',
                                   style: TextStyle(
-                                    color: Theme.of(context).colorScheme.onPrimary,
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
                                   ),
                                 ),
                               ),
@@ -209,7 +212,8 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                                 child: Text(
                                   'Enviar',
                                   style: TextStyle(
-                                    color: Theme.of(context).colorScheme.onPrimary
+                                    color:
+                                        Theme.of(context).colorScheme.onPrimary,
                                   ),
                                 ),
                               ),

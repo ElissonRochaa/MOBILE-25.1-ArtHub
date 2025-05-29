@@ -1,4 +1,4 @@
-import 'package:arthub/models/dots/login_dto.dart';
+import 'package:arthub/models/dtos/login_dto.dart';
 import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
@@ -16,34 +16,36 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
-  void dipose(){
+  void dipose() {
     _emailController.dispose();
     _senhaController.dispose();
     super.dispose();
   }
 
   Future<void> _login() async {
-    final usuarioLogin = LoginDTO(email: _emailController.text, senha: _senhaController.text);
+    final usuarioLogin = LoginDTO(
+      email: _emailController.text,
+      senha: _senhaController.text,
+    );
     final response = await UsuarioService.login(usuarioLogin);
 
     try {
-      if (response.isNotEmpty){
+      if (response.isNotEmpty) {
         ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('O login foi realizado com sucesso'))
+          const SnackBar(content: Text('O login foi realizado com sucesso')),
         );
         Navigator.pushNamed(context, '/home');
-      }
-      else {
-        ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text('Senha ou email errados'))
-        );
+      } else {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('Senha ou email errados')));
       }
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           behavior: SnackBarBehavior.floating,
           content: Text('Algo deu errado'),
-        )
+        ),
       );
     }
   }
@@ -116,17 +118,15 @@ class _TelaLoginState extends State<TelaLogin> {
                         style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.surface,
                           decoration: TextDecoration.underline,
-                          decorationColor: Theme.of(context).colorScheme.surface
+                          decorationColor:
+                              Theme.of(context).colorScheme.surface,
                         ),
                       ),
                     ),
                   ],
                 ),
                 SizedBox(height: 30),
-                BotaoEstilizadoWidget(
-                  funcao: _login,
-                  texto: 'Fazer Login',
-                ),
+                BotaoEstilizadoWidget(funcao: _login, texto: 'Fazer Login'),
                 SizedBox(height: 50),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -145,7 +145,8 @@ class _TelaLoginState extends State<TelaLogin> {
                         style: Theme.of(context).textTheme.titleLarge?.copyWith(
                           color: Theme.of(context).colorScheme.surface,
                           decoration: TextDecoration.underline,
-                          decorationColor: Theme.of(context).colorScheme.surface,
+                          decorationColor:
+                              Theme.of(context).colorScheme.surface,
                         ),
                       ),
                     ),
