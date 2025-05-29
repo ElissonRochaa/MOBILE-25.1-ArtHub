@@ -5,6 +5,8 @@ import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/rodape_widget.dart';
+
 class TelaPublicacao extends StatefulWidget {
   const TelaPublicacao({super.key});
 
@@ -17,62 +19,6 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool isImagemAberta = false;
   bool lertudo = false;
   List<String> comentarios = [];
-
-  Future<dynamic> _popupComentario(BuildContext context) {
-    return showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        TextEditingController _controller = TextEditingController();
-
-        return AlertDialog(
-          title: Text('Novo comentário'),
-          content: TextField(
-            controller: _controller,
-            decoration: InputDecoration(
-              hintText: "Digite seu comentário",
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.secondary,
-            ),
-            maxLines: 3,
-          ),
-          actions: <Widget>[
-            OutlinedButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.black,
-                side: BorderSide(width: 2),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text('Cancelar'),
-            ),
-            OutlinedButton(
-              onPressed: () {
-                setState(() {
-                  comentarios.add(_controller.text);
-                });
-                Navigator.of(context).pop();
-              },
-              style: OutlinedButton.styleFrom(
-                foregroundColor: Colors.black,
-                side: BorderSide(
-                  color: Theme.of(context).colorScheme.primary,
-                  width: 2,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              ),
-              child: Text('Enviar'),
-            ),
-          ],
-        );
-      },
-    );
-  }
 
   Widget _tags(BuildContext context, String texto) {
     return Container(
@@ -209,7 +155,11 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                               TextEditingController();
 
                           return AlertDialog(
-                            title: Text('Novo comentário'),
+                            title: Text('Novo comentário',
+                              style: TextStyle(
+                                  color: Theme.of(context).colorScheme.onPrimary
+                              ),
+                            ),
                             content: TextField(
                               controller: controller,
                               decoration: InputDecoration(
@@ -232,7 +182,11 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: Text('Cancelar'),
+                                child: Text('Cancelar',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.onPrimary,
+                                  ),
+                                ),
                               ),
                               OutlinedButton(
                                 onPressed: () {
@@ -252,7 +206,12 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                                     borderRadius: BorderRadius.circular(8),
                                   ),
                                 ),
-                                child: Text('Enviar'),
+                                child: Text(
+                                  'Enviar',
+                                  style: TextStyle(
+                                    color: Theme.of(context).colorScheme.onPrimary
+                                  ),
+                                ),
                               ),
                             ],
                           );
@@ -393,6 +352,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             ),
         ],
       ),
+      bottomNavigationBar: RodapeWidget(),
     );
   }
 }

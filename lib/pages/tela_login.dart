@@ -1,9 +1,9 @@
+import 'package:arthub/models/dots/login_dto.dart';
+import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
+import 'package:arthub/widgets/input_texto.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-
-import '../provider/modo_tema_provider.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -13,47 +13,39 @@ class TelaLogin extends StatefulWidget {
 }
 
 class _TelaLoginState extends State<TelaLogin> {
-  bool estaOculto = true;
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _senhaController = TextEditingController();
 
-  Widget inputDeTexto(
-    BuildContext context,
-    String label,
-    String hintText,
-    bool oculto,
-  ) {
-    return Container(
-      width: 346,
-      height: 79,
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
-        borderRadius: BorderRadius.circular(6),
-        boxShadow: [
-          BoxShadow(
-            color: Color.fromRGBO(10, 10, 10, 0.3),
-            offset: Offset(6, 6),
-            blurRadius: 2.0,
-          ),
-        ],
-      ),
-      child: TextFormField(
-        obscureText: oculto,
-        decoration: InputDecoration(
-          label: Text(
-            label,
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-          ),
-          hintText: hintText,
-          hintStyle: TextStyle(
-            color: Theme.of(context).colorScheme.onPrimary,
-            fontSize: 15,
-          ),
-          border: InputBorder.none,
-          contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 20),
-        ),
-      ),
-    );
+  void dipose(){
+    _emailController.dispose();
+    _senhaController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _login() async {
+    final usuarioLogin = LoginDTO(email: _emailController.text, senha: _senhaController.text);
+    final response = await UsuarioService.login(usuarioLogin);
+
+    try {
+      if (response.isNotEmpty){
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('O login foi realizado com sucesso'))
+        );
+        Navigator.pushNamed(context, '/home');
+      }
+      else {
+        ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Senha ou email errados'))
+        );
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          behavior: SnackBarBehavior.floating,
+          content: Text('Algo deu errado'),
+        )
+      );
+    }
   }
 
   @override
@@ -98,39 +90,22 @@ class _TelaLoginState extends State<TelaLogin> {
                   ),
                 ),
                 SizedBox(height: 150),
-                inputDeTexto(
-                  context,
-                  'Email',
-                  'seumelhoremail@gmail.com',
-                  false,
+                InputTexto(
+                  label: 'Email',
+                  hintLabel: 'seumelhoremail@gmail.com',
+                  controller: _emailController,
                 ),
                 SizedBox(height: 50),
-                inputDeTexto(context, 'Senha', 'MuitoSecreta', estaOculto),
+                InputTexto(
+                  label: 'Senha',
+                  hintLabel: 'MuitoSecreta',
+                  controller: _senhaController,
+                  ehOculto: true,
+                ),
                 SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    estaOculto
-                        ? Icon(
-                          color: Theme.of(context).colorScheme.surface,
-                          Icons.remove_red_eye_outlined,
-                        )
-                        : Icon(Icons.remove_red_eye),
-                    GestureDetector(
-                      onTap:
-                          () => {
-                            setState(() {
-                              estaOculto = !estaOculto;
-                            }),
-                          },
-                      child: Text(
-                        'Mostrar Senha',
-                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.surface,
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 90),
                     GestureDetector(
                       onTap:
                           () => {
@@ -149,7 +124,7 @@ class _TelaLoginState extends State<TelaLogin> {
                 ),
                 SizedBox(height: 30),
                 BotaoEstilizadoWidget(
-                  funcao: () => {Navigator.pushNamed(context, '/home')},
+                  funcao: _login,
                   texto: 'Fazer Login',
                 ),
                 SizedBox(height: 50),
