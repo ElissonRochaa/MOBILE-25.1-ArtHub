@@ -2,6 +2,7 @@ import 'package:arthub/api/api_client.dart';
 import 'package:arthub/models/cadastro_model.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
+import 'package:arthub/widgets/stackbar.dart';
 import 'package:arthub/widgets/input_texto.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -52,29 +53,13 @@ class _TelaRegistroState extends State<TelaRegistro> {
       );
 
       if (response.statusCode == 200) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Cadastro realizado com sucesso! Faça o login!',
-              style: TextStyle(),
-            ),
-          ),
-        );
+        showCustomSnackBar(context, 'Cadastro realizado com sucesso!');
         Navigator.pushReplacementNamed(context, '/login');
       } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text(
-              'Erro ao cadastrar: ${response.statusMessage}',
-              style: TextStyle(),
-            ),
-          ),
-        );
+        showCustomSnackBar(context, 'Cadastro não realizado! ALgo deu errado!');
       }
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text('Erro ao cadastrar: $e')));
+      showCustomSnackBar(context, 'Verifique o domínio do email! (Deve ser @upe.br)!');
     }
   }
 
