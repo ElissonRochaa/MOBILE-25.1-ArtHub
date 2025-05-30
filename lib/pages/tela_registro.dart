@@ -60,7 +60,7 @@ class _TelaRegistroState extends State<TelaRegistro> {
         showCustomSnackBar(context, 'Cadastro não realizado! ALgo deu errado!');
       }
     } catch (e) {
-      showCustomSnackBar(context, 'Verifique o domínio do email! (Deve ser @upe.br)!');
+      showCustomSnackBar(context, 'Algo deu errado! Verifique o domínio do email! (Deve ser @upe.br)!');
     }
   }
 
