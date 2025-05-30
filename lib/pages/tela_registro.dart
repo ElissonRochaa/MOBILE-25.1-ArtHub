@@ -45,7 +45,8 @@ class _TelaRegistroState extends State<TelaRegistro> {
         dataNascimento: _dataNascimentoController.text,
       );
 
-      print(cadastro.toJson());
+      // Aqui era só debug
+      // print(cadastro.toJson());
 
       final response = await ApiClient().post(
         '/auth/registrar',

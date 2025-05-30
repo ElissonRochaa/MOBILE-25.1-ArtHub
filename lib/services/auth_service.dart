@@ -1,21 +1,45 @@
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:arthub/models/cadastro_model.dart';
+import 'package:arthub/services/token_service.dart';
 
-class AuthService{
+import '../api/api_client.dart';
+import '../models/dtos/login_dto.dart';
 
-  static final String _tokenKey = 'auth_token';
+class AuthService {
+  static final ApiClient _apiClient = ApiClient();
 
-  static Future<void> saveToken(String token) async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString(_tokenKey, token);
+  // Aqui o método do Login
+  static Future<String> login(LoginDTO login) async {
+    final response = await _apiClient.post('/auth/login', {
+      'email': login.email,
+      'senha': login.senha,
+    });
+
+    if (response.statusCode == 200) {
+      final token = response.data;
+      TokenService.saveToken(token);
+      return token;
+    } else {
+      throw Exception('Falha ao fazer o login');
+    }
   }
 
-  static Future<String?> getToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    return prefs.getString(_tokenKey);
-  }
+  // Aqui o método do Cadastro
+  static Future<void> cadastrarUsuario(CadastroModel cadastro) async {
+    final response = await _apiClient.post('/auth/registrar', {
+      'nome': cadastro.nome,
+      'apelido': cadastro.apelido,
+      'email': cadastro.email,
+      'senha': cadastro.senha,
+      'telefone': cadastro.telefone,
+      'dataNascimento': cadastro.dataNascimento,
+    });
 
-  static Future<void> removeToken() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.remove(_tokenKey);
+    //Aqui era só debug
+    // print(response.data);
+    // print(response.statusCode);
+
+    if (response.statusCode != 201) {
+      throw Exception('Falha ao cadastrar usuário');
+    }
   }
 }
