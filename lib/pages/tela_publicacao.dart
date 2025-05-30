@@ -20,6 +20,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool lertudo = false;
   List<String> comentarios = [];
 
+
   Widget _tags(BuildContext context, String texto) {
     return Container(
       margin: EdgeInsets.only(right: 4, left: 4),

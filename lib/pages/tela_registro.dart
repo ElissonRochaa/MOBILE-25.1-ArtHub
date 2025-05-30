@@ -1,5 +1,4 @@
 import 'package:arthub/api/api_client.dart';
-import 'package:arthub/config/themeApp.dart';
 import 'package:arthub/models/cadastro_model.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
@@ -45,7 +44,8 @@ class _TelaRegistroState extends State<TelaRegistro> {
         dataNascimento: _dataNascimentoController.text,
       );
 
-      print(cadastro.toJson());
+      // Aqui era só debug
+      // print(cadastro.toJson());
 
       final response = await ApiClient().post(
         '/auth/registrar',

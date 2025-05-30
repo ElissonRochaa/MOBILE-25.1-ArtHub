@@ -3,50 +3,48 @@ import 'package:arthub/enums/tipo_arquivo_enum.dart';
 import 'package:arthub/models/perfil_model.dart';
 
 class PublicacaoModel {
-  final int id;
   final TipoArquivoEnum tipoArquivo;
+  final String? legenda;
+  final String? nomeConteudo;
+  final String? titulo;
   final CategoriaEnum categoria;
-  final PerfilModel perfil;
-  final DateTime dataPublicacao;
-  final String legenda;
-  final String nomeConteudo;
-  final String titulo;
   final int curtidas;
-
+  final PerfilModel perfil;
+  final List<PerfilModel> perfisQueCurtiram;
 
   PublicacaoModel({
-    required this.id,
     required this.tipoArquivo,
-    required this.categoria,
-    required this.perfil,
-    required this.dataPublicacao,
     required this.legenda,
     required this.nomeConteudo,
     required this.titulo,
+    required this.categoria,
     required this.curtidas,
+    required this.perfil,
+    required this.perfisQueCurtiram,
   });
 
   factory PublicacaoModel.fromJson(Map<String, dynamic> json){
     return PublicacaoModel(
-    id: json['id'], 
     tipoArquivo: json['tipoArquivo'], 
+    legenda: json['legenda'],
+    nomeConteudo: json['nomeConteudo'],
+    titulo: json['titulo'],
     categoria: json['categoria'],
-    perfil: PerfilModel.fromJson(json['perfil']),
-    dataPublicacao: json['dataPublicacao'], 
-    legenda: json['legenda'], 
-    nomeConteudo: json['nomeConteudo'], 
-    titulo: json['titulo'], 
     curtidas: json['curtidas'],
+    perfil: PerfilModel.fromJson(json['perfil']),
+    perfisQueCurtiram: (json['perfisQueCurtiram'] as List)
+      .map((perfil) => PerfilModel.fromJson(perfil))
+      .toList(),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      'id': id,
       'tipoArquivo': tipoArquivo,
       'categoria': categoria,
       'perfil': perfil.toJson(),
-      'dataPublicacao': dataPublicacao,
+      'perfisQueCurtiram': perfisQueCurtiram.map(
+              (perfil) => perfil.toJson()).toList(),
       'legenda': legenda,
       'nomeConteudo': nomeConteudo,
       'titulo': titulo,
