@@ -1,16 +1,11 @@
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:flutter/material.dart';
 
-class PublicacaoWidget extends StatefulWidget {
+class PublicacaoWidget extends StatelessWidget {
   final PublicacaoModel publicacao;
 
   const PublicacaoWidget({super.key, required this.publicacao});
 
-  @override
-  State<PublicacaoWidget> createState() => _PublicacaoWidgetState();
-}
-
-class _PublicacaoWidgetState extends State<PublicacaoWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -26,7 +21,7 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
           ),
           const SizedBox(height: 2),
           Text(
-            '@${widget.publicacao.perfil.usuario.apelido}',
+            '@${publicacao.perfil.usuario.apelido}',
             style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
           ),
         ],
