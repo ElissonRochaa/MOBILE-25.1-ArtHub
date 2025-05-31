@@ -1,3 +1,4 @@
+import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -22,7 +23,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
     'assets/images/snoopy.jpeg',
   ];
 
-  Widget numerosPerfil(BuildContext context) {
+  Widget _numerosPerfil(BuildContext context) {
     return Positioned(
       left: 130,
       top: 170,
@@ -83,7 +84,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
     );
   }
 
-  Widget informacoesPerfil(BuildContext context) {
+  Widget _informacoesPerfil(BuildContext context) {
     return Column(
       children: [
         SizedBox(
@@ -153,7 +154,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                   ],
                 ),
               ),
-              numerosPerfil(context),
+              _numerosPerfil(context),
             ],
           ),
         ),
@@ -238,7 +239,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
               itemBuilder: (context, index) {
                 final imagePath = imagens[index % imagens.length];
 
-                return PublicacaoWidget(imagePath: imagePath);
+                return PublicacaoWidget();
               },
             ),
           ),

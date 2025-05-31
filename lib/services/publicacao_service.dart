@@ -15,4 +15,8 @@ class PublicacaoService {
 
     throw Exception('Algo deu errado ao buscar publicações');
   }
+
+  static Future<List<PublicacaoModel>> getPublicacaoByUsuario() async {
+    return null
+  }
 }

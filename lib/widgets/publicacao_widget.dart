@@ -1,10 +1,16 @@
+import 'package:arthub/models/publicacao_model.dart';
 import 'package:flutter/material.dart';
 
-class PublicacaoWidget extends StatelessWidget {
-  final String imagePath;
+class PublicacaoWidget extends StatefulWidget {
+  final PublicacaoModel publicacao;
 
-  const PublicacaoWidget({super.key, required this.imagePath});
+  const PublicacaoWidget({super.key, required this.publicacao});
 
+  @override
+  State<PublicacaoWidget> createState() => _PublicacaoWidgetState();
+}
+
+class _PublicacaoWidgetState extends State<PublicacaoWidget> {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -16,11 +22,11 @@ class PublicacaoWidget extends StatelessWidget {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(16),
-            child: Image.asset(imagePath, fit: BoxFit.cover),
+            child: Image.asset('assets/images/teste2.jpeg', fit: BoxFit.cover),
           ),
-          const SizedBox(height: 5),
+          const SizedBox(height: 2),
           Text(
-            '@esnupi',
+            '@${widget.publicacao.perfil.usuario.apelido}',
             style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
           ),
         ],
