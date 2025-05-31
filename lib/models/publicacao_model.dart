@@ -25,17 +25,53 @@ class PublicacaoModel {
 
   factory PublicacaoModel.fromJson(Map<String, dynamic> json){
     return PublicacaoModel(
-    tipoArquivo: json['tipoArquivo'], 
+    tipoArquivo: toTipoArquivoEnum(json),
     legenda: json['legenda'],
     nomeConteudo: json['nomeConteudo'],
     titulo: json['titulo'],
-    categoria: json['categoria'],
+    categoria: toCategoriaEnum(json),
     curtidas: json['curtidas'],
     perfil: PerfilModel.fromJson(json['perfil']),
     perfisQueCurtiram: (json['perfisQueCurtiram'] as List)
       .map((perfil) => PerfilModel.fromJson(perfil))
       .toList(),
     );
+  }
+
+  static CategoriaEnum toCategoriaEnum(Map<String, dynamic> json) {
+    String categoria = json['categoria'];
+    switch (categoria){
+      case 'POEMA':
+        return CategoriaEnum.poema;
+      case 'MUSICA':
+        return CategoriaEnum.musica;
+      case 'PINTURA':
+        return CategoriaEnum.pintura;
+      case 'DESENHO':
+        return CategoriaEnum.desenho;
+      case 'ESCULTURA':
+        return CategoriaEnum.escultura;
+      case 'FOTOGRAFIA':
+        return CategoriaEnum.fotografia;
+      default:
+        throw Exception("Algo deu errado no toCategoriaEnum");
+    }
+  }
+
+  static TipoArquivoEnum toTipoArquivoEnum(Map<String, dynamic> json){
+    String tipoArquivo = json['tipoArquivo'];
+    switch(tipoArquivo){
+      case 'IMAGEM':
+        return TipoArquivoEnum.imagem;
+      case 'VIDEO':
+        return TipoArquivoEnum.video;
+      case 'TEXTO':
+        return TipoArquivoEnum.texto;
+      case 'AUDIO':
+        return TipoArquivoEnum.audio;
+      default:
+        throw Exception('Algo deu errado no toTipoArquivoEnum');
+    }
   }
 
   Map<String, dynamic> toJson() {
