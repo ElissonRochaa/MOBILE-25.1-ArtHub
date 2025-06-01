@@ -19,14 +19,6 @@ class PerfilModel {
       fotoPerfil: json['fotoPerfil'],
       banner: json['banner'],
       usuario: UsuarioModel.fromJson(json['usuario']),
-      // publicacoes:
-      //     (json['publicacoes'] as List)
-      //         .map((publicacao) => PublicacaoModel.fromJson(publicacao))
-      //         .toList(),
-      // comentarios:
-      //     (json['comentarios'] as List)
-      //         .map((comentario) => ComentarioModel.fromJson(comentario))
-      //         .toList(),
     );
   }
 
@@ -36,10 +28,6 @@ class PerfilModel {
       'fotoPerfil': fotoPerfil,
       'banner': banner,
       'usuario': usuario.toJson(),
-      // 'publicacoes':
-      //     publicacoes.map((publicacao) => publicacao.toJson()).toList(),
-      // 'comentarios':
-      //     comentarios.map((comentario) => comentario.toJson()).toList(),
     };
   }
 }
