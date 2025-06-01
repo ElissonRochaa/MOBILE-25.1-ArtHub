@@ -3,6 +3,7 @@ import 'package:arthub/enums/tipo_arquivo_enum.dart';
 import 'package:arthub/models/perfil_model.dart';
 
 class PublicacaoModel {
+  final int id;
   final TipoArquivoEnum tipoArquivo;
   final String? legenda;
   final String? nomeConteudo;
@@ -13,6 +14,7 @@ class PublicacaoModel {
   final List<PerfilModel> perfisQueCurtiram;
 
   PublicacaoModel({
+    required this.id,
     required this.tipoArquivo,
     required this.legenda,
     required this.nomeConteudo,
@@ -25,6 +27,7 @@ class PublicacaoModel {
 
   factory PublicacaoModel.fromJson(Map<String, dynamic> json){
     return PublicacaoModel(
+    id: json['id'],
     tipoArquivo: toTipoArquivoEnum(json),
     legenda: json['legenda'],
     nomeConteudo: json['nomeConteudo'],
@@ -76,6 +79,7 @@ class PublicacaoModel {
 
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'tipoArquivo': tipoArquivo,
       'categoria': categoria,
       'perfil': perfil.toJson(),
