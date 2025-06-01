@@ -1,4 +1,5 @@
 import 'package:arthub/models/publicacao_model.dart';
+import 'package:arthub/services/publicacao_service.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -13,15 +14,32 @@ class TelaProprioPerfil extends StatefulWidget {
 }
 
 class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
-  bool lerTudo = false;
+  bool _lerTudo = false;
+  bool _carregandoPublicacoes = true;
+  List<PublicacaoModel> _publicacoesDoUsuario = [];
 
-  final List<String> imagens = [
-    'assets/images/teste1.jpeg',
-    'assets/images/teste2.jpeg',
-    'assets/images/cat.jpeg',
-    'assets/images/hannah.jpg',
-    'assets/images/snoopy.jpeg',
-  ];
+  void initState() {
+    super.initState();
+    _carregarPublicacoes();
+  }
+
+  Future<void> _carregarPublicacoes() async {
+    setState(() {
+      _carregandoPublicacoes = true;
+    });
+
+    try{
+      final publicacoesDoUsuario = await PublicacaoService.getPublicacaoByUsuario();
+      setState(() {
+        _carregandoPublicacoes = false;
+        _publicacoesDoUsuario = publicacoesDoUsuario;
+      });
+    } catch (e){
+      setState(() {
+        _carregandoPublicacoes = false;
+      });
+    }
+  }
 
   Widget _numerosPerfil(BuildContext context) {
     return Positioned(
@@ -163,12 +181,12 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
           child: GestureDetector(
             onTap: () {
               setState(() {
-                lerTudo = !lerTudo;
+                _lerTudo = !_lerTudo;
               });
             },
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: lerTudo ? null : 94,
+              height: _lerTudo ? null : 94,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(5),
@@ -188,7 +206,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                   bottom: 10,
                 ),
                 child:
-                    lerTudo
+                    _lerTudo
                         ? Text(
                           "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
                           style: Theme.of(
@@ -220,30 +238,42 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
     return CustomScrollView(
       slivers: [
         SliverList(
-          delegate: SliverChildListDelegate([informacoesPerfil(context)]),
+          delegate: SliverChildListDelegate([_informacoesPerfil(context)]),
         ),
-        SliverPadding(
-          padding: const EdgeInsets.only(
-            left: 15,
-            right: 12,
-            top: 30,
-            bottom: 10,
-          ),
-          sliver: SliverPadding(
-            padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-            sliver: SliverMasonryGrid.count(
-              crossAxisCount: 2,
-              mainAxisSpacing: 8,
-              crossAxisSpacing: 8,
-              childCount: 5,
-              itemBuilder: (context, index) {
-                final imagePath = imagens[index % imagens.length];
-
-                return PublicacaoWidget();
-              },
+        if(_carregandoPublicacoes)
+          SliverFillRemaining(
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          )
+        else if (_publicacoesDoUsuario.isEmpty)
+          SliverFillRemaining(
+            child: Center(
+              child: Text('O usuário não tem publicações ainda'),
+            ),
+          )
+        else
+          SliverPadding(
+            padding: const EdgeInsets.only(
+              left: 15,
+              right: 12,
+              top: 30,
+              bottom: 10,
+            ),
+            sliver: SliverPadding(
+              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+              sliver: SliverMasonryGrid.count(
+                crossAxisCount: 2,
+                mainAxisSpacing: 8,
+                crossAxisSpacing: 8,
+                childCount: 5,
+                itemBuilder: (context, index) {
+                  final PublicacaoModel publicacao = _publicacoesDoUsuario[index];
+                  return PublicacaoWidget(publicacao: publicacao,);
+                },
+              ),
             ),
           ),
-        ),
       ],
     );
   }
