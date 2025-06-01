@@ -1,4 +1,5 @@
-class UsuarioService{
-  // TODO
-  // Apenas métodos relacionados ao Usuário
+import 'package:arthub/api/api_client.dart';
+
+class UsuarioService {
+  static final ApiClient _apiClient = ApiClient();
 }

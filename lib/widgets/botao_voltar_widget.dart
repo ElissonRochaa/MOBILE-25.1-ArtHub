@@ -8,20 +8,17 @@ class BotaoVoltarWidget extends StatelessWidget {
     return Column(
       children: [
         Container(
-          width: 55,
-          height: 55,
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
-            borderRadius: BorderRadius.all(Radius.circular(55)),
+            shape: BoxShape.circle,
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
           ),
           child: IconButton(
+            onPressed: () => {Navigator.pop(context)},
             icon: Icon(
               Icons.arrow_back,
               color: Theme.of(context).colorScheme.primary,
             ),
-            onPressed: () {
-              Navigator.pop(context);
-            },
           ),
         ),
         const SizedBox(height: 8),

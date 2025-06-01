@@ -20,6 +20,7 @@ class BotaoAvancarWidget extends StatelessWidget {
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.surface,
             borderRadius: BorderRadius.all(Radius.circular(55)),
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
           ),
           child: IconButton(
             icon: Icon(
