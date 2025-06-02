@@ -1,6 +1,1 @@
-enum TipoArquivoEnum {
-  imagem,
-  video,
-  texto,
-  audio,
-}
+enum TipoArquivoEnum { imagem, video, texto, audio }
