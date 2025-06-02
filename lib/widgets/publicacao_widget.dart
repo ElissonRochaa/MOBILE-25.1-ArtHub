@@ -82,19 +82,31 @@ class PublicacaoWidget extends StatelessWidget {
         return Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Theme.of(
-              context,
-            ).colorScheme.surfaceVariant.withOpacity(0.3),
+            color: Theme.of(context).colorScheme.secondary,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: Theme.of(context).dividerColor),
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
           ),
-          child: Text(
-            publicacao.nomeConteudo ?? "Nenhum texto disponível.",
-            style: TextStyle(
-              fontSize: 16,
-              color: Theme.of(context).colorScheme.onSurface,
-            ),
-            textAlign: TextAlign.left,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                publicacao.titulo ?? "Sem título",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+              ),
+              const SizedBox(height: 8),
+              Text(
+                publicacao.nomeConteudo ?? "Nenhum texto disponível.",
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                textAlign: TextAlign.left,
+              ),
+            ],
           ),
         );
       default:
@@ -102,12 +114,16 @@ class PublicacaoWidget extends StatelessWidget {
           borderRadius: BorderRadius.circular(16),
           child: Container(
             height: 150,
-            color: Theme.of(context).colorScheme.onSecondary,
+            color: Theme.of(context).colorScheme.primary,
             child: Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.help_outline, size: 40, color: Colors.grey[500]),
+                  Icon(
+                    Icons.help_outline,
+                    size: 40,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
                   const SizedBox(height: 8),
                   Text(
                     'Tipo de arquivo desconhecido ou não suportado: ${publicacao.tipoArquivo.toString().split('.').last}',
