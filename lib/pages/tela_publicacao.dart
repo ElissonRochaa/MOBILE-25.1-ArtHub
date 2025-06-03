@@ -1,3 +1,4 @@
+import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
@@ -8,7 +9,9 @@ import 'package:provider/provider.dart';
 import '../widgets/rodape_widget.dart';
 
 class TelaPublicacao extends StatefulWidget {
-  const TelaPublicacao({super.key});
+  final PublicacaoModel publicacao;
+
+  const TelaPublicacao({super.key, required this.publicacao});
 
   @override
   State<TelaPublicacao> createState() => _TelaPublicacaoState();
@@ -19,7 +22,6 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool isImagemAberta = false;
   bool lertudo = false;
   List<String> comentarios = [];
-
 
   Widget _tags(BuildContext context, String texto) {
     return Container(
@@ -67,13 +69,13 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             child:
                 lertudo
                     ? Text(
-                      'cool cool cool cool cool cool cool cool cool cool cool cool cool cool cool',
+                      widget.publicacao.legenda ?? '',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     )
                     : Text(
-                      'cool cool cool cool cool cool cool cool cool cool cool cool cool cool cool',
+                      widget.publicacao.legenda ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -95,7 +97,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
         Padding(
           padding: const EdgeInsets.only(left: 135),
           child: Text(
-            'Título do post',
+            widget.publicacao.titulo ?? '',
             style: Theme.of(context).textTheme.displayMedium?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
@@ -117,7 +119,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   child: AspectRatio(
                     aspectRatio: 1,
                     child: Image.asset(
-                      'assets/images/teste2.jpeg',
+                      widget.publicacao.nomeConteudo ?? '',
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -129,7 +131,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
               child: Row(
                 children: [
                   Text(
-                    "@esnupi",
+                    widget.publicacao.perfil.usuario.apelido,
                     style: TextStyle(
                       color: Theme.of(context).colorScheme.onPrimary,
                     ),

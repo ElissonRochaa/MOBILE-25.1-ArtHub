@@ -1,5 +1,6 @@
 import 'package:arthub/enums/tipo_arquivo_enum.dart';
 import 'package:arthub/models/publicacao_model.dart';
+import 'package:arthub/pages/tela_publicacao.dart';
 import 'package:flutter/material.dart';
 
 class PublicacaoWidget extends StatelessWidget {
@@ -16,7 +17,7 @@ class PublicacaoWidget extends StatelessWidget {
             borderRadius: BorderRadius.circular(16),
             child: Image.network(
               publicacao.nomeConteudo!,
-              fit: BoxFit.cover,
+              fit: BoxFit.fitWidth,
               loadingBuilder: (
                 BuildContext context,
                 Widget child,
@@ -144,7 +145,11 @@ class PublicacaoWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, '/publicacao', arguments: publicacao);
+        Navigator.pushNamed(
+          context,
+          '/publicacao',
+          arguments: {'publicacao': publicacao},
+        );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,

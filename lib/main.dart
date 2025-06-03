@@ -43,7 +43,11 @@ class MyApp extends StatelessWidget {
               case '/registro':
                 return buildPageRoute(const TelaRegistro(), settings);
               case '/publicacao':
-                return buildPageRoute(const TelaPublicacao(), settings);
+                final args = settings.arguments as Map<String, dynamic>;
+                return buildPageRoute(
+                  TelaPublicacao(publicacao: args['publicacao']),
+                  settings,
+                );
               case '/esqueceu-senha':
                 return buildPageRoute(const TelaEsqueceuSenha(), settings);
               case '/login':
