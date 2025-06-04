@@ -28,6 +28,13 @@ class ApiClient {
     return await _dio.get(endPoint);
   }
 
+  Future<Response<List<int>>> getBytes(String endPoint) async {
+    return await _dio.get<List<int>>(
+      endPoint,
+      options: Options(responseType: ResponseType.bytes),
+    );
+  }
+
   Future<Response> post(String endPoint, Map<String, dynamic> json) async {
     return await _dio.post(endPoint, data: json);
   }

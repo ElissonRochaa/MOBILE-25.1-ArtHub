@@ -38,9 +38,9 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
         _carregando = false;
       });
       ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-          content: Text('Ocorreu um erro ao tentar carregar as publicações')
-          )
+        SnackBar(
+          content: Text('Ocorreu um erro ao tentar carregar as publicações'),
+        ),
       );
     }
   }
@@ -58,19 +58,17 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
               ),
               if (_carregando)
                 SliverFillRemaining(
+                  child: Center(child: CircularProgressIndicator()),
+                )
+              else if (_publicacoes.isEmpty)
+                SliverFillRemaining(
                   child: Center(
-                    child: CircularProgressIndicator(),
+                    child: Text('Nenhuma publicação foi encontrada'),
                   ),
                 )
-                else if (_publicacoes.isEmpty)
-                  SliverFillRemaining(
-                    child: Center(
-                      child: Text('Nenhuma publicação foi encontrada'),
-                    ),
-                  )
               else
                 SliverPadding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 2),
                   sliver: SliverMasonryGrid.count(
                     crossAxisCount: 2,
                     mainAxisSpacing: 8,
@@ -78,7 +76,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
                     childCount: _publicacoes.length,
                     itemBuilder: (context, index) {
                       final PublicacaoModel publicacao = _publicacoes[index];
-                      return PublicacaoWidget(publicacao: publicacao,);
+                      return PublicacaoWidget(publicacao: publicacao);
                     },
                   ),
                 ),
