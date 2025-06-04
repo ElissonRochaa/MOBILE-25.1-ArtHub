@@ -1,5 +1,3 @@
-import 'package:arthub/models/comentario_model.dart';
-import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/models/usuario_model.dart';
 
 class PerfilModel {
