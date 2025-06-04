@@ -43,11 +43,8 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       });
     }
     try {
-      if (widget.publicacao.id == null) {
-        throw Exception("ID da publicação é nulo.");
-      }
       final bytes = await PublicacaoService.getBytes(
-        widget.publicacao.id!.toString(),
+        widget.publicacao.id.toString(),
       );
       if (mounted) {
         setState(() {

@@ -20,6 +20,7 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
+  @override
   void dispose() {
     _emailController.dispose();
     _senhaController.dispose();

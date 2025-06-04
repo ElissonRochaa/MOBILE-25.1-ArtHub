@@ -5,7 +5,7 @@ import 'package:arthub/models/publicacao_model.dart';
 import 'package:dio/dio.dart';
 
 class PublicacaoService {
-  static ApiClient _apiClient = ApiClient();
+  static final ApiClient _apiClient = ApiClient();
 
   static Future<List<PublicacaoModel>> getAllPublicacao() async {
     final response = await _apiClient.get('/publicacoes');

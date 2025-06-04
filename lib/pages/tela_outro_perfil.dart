@@ -266,7 +266,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
           if (pesquisa.isNotEmpty)
             Positioned.fill(
               child: Container(
-                color: Theme.of(context).colorScheme.surface!.withOpacity(0.95),
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.95),
                 child: Column(
                   children: [
                     PerfilPesquisaWidget(pesquisa: pesquisa),

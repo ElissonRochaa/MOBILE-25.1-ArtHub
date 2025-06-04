@@ -5,7 +5,7 @@ class ApiErrorHandler{
   static String handler(DioException error){
     switch(error.type){
       case DioExceptionType.badResponse:
-        return 'BadResponse: Algo de errado aconteceu na resposta \n ${error.response}';
+        return 'BadResponse: Algo de errado aconteceu na resposta \n ${_handlerReponseError(error.response)}';
       case DioExceptionType.connectionError:
         return 'ConectionError: Houve um erro na conexão';
       case DioExceptionType.connectionTimeout:

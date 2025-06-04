@@ -18,6 +18,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
   bool _carregandoPublicacoes = true;
   List<PublicacaoModel> _publicacoesDoUsuario = [];
 
+  @override
   void initState() {
     super.initState();
     _carregarPublicacoes();
