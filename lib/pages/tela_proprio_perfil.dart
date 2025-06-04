@@ -13,6 +13,24 @@ class TelaProprioPerfil extends StatefulWidget {
 
 class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
   bool lerTudo = false;
+  // PerfilModel? perfil;
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   buscarPerfil();
+  // }
+
+  // Future<void> buscarPerfil() async {
+  //   try {
+  //     final perfilCarregado = PerfilService().getUsuario();
+  //     setState(() {
+  //       perfil = perfilCarregado;
+  //     });
+  //   } catch (e) {
+  //     showCustomSnackBar(context, "Erro ao buscar perfil: $e");
+  //   }
+  // }
 
   final List<String> imagens = [
     'assets/images/teste1.jpeg',

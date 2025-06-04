@@ -1,6 +1,5 @@
 import 'package:arthub/models/dtos/login_dto.dart';
 import 'package:arthub/services/auth_service.dart';
-import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/input_texto.dart';
@@ -18,6 +17,7 @@ class _TelaLoginState extends State<TelaLogin> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
 
+  @override
   void dispose() {
     _emailController.dispose();
     _senhaController.dispose();
