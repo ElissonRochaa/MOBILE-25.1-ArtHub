@@ -89,6 +89,7 @@ class _InputTextoState extends State<InputTexto> {
                 keyboardType: widget.inputTipo,
                 controller: widget.controller,
                 obscureText: widget.ehOculto ? !mostrar : false,
+                style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                 decoration: InputDecoration(
                   labelText: widget.label,
                   labelStyle: Theme.of(
@@ -119,7 +120,7 @@ class _InputTextoState extends State<InputTexto> {
                                       color:
                                           Theme.of(
                                             context,
-                                          ).colorScheme.onSurface,
+                                          ).colorScheme.onPrimary,
                                       Icons.remove_red_eye_outlined,
                                     )
                                     : Icon(
