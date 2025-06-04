@@ -3,6 +3,7 @@ import 'package:arthub/enums/tipo_arquivo_enum.dart';
 import 'package:arthub/models/perfil_model.dart';
 
 class PublicacaoModel {
+  final int id;
   final TipoArquivoEnum tipoArquivo;
   final String? legenda;
   final String? nomeConteudo;
@@ -13,6 +14,7 @@ class PublicacaoModel {
   final List<PerfilModel> perfisQueCurtiram;
 
   PublicacaoModel({
+    required this.id,
     required this.tipoArquivo,
     required this.legenda,
     required this.nomeConteudo,
@@ -25,11 +27,12 @@ class PublicacaoModel {
 
   factory PublicacaoModel.fromJson(Map<String, dynamic> json){
     return PublicacaoModel(
-    tipoArquivo: json['tipoArquivo'], 
+    id: json['id'],
+    tipoArquivo: toTipoArquivoEnum(json),
     legenda: json['legenda'],
     nomeConteudo: json['nomeConteudo'],
     titulo: json['titulo'],
-    categoria: json['categoria'],
+    categoria: toCategoriaEnum(json),
     curtidas: json['curtidas'],
     perfil: PerfilModel.fromJson(json['perfil']),
     perfisQueCurtiram: (json['perfisQueCurtiram'] as List)
@@ -38,8 +41,45 @@ class PublicacaoModel {
     );
   }
 
+  static CategoriaEnum toCategoriaEnum(Map<String, dynamic> json) {
+    String categoria = json['categoria'];
+    switch (categoria){
+      case 'POEMA':
+        return CategoriaEnum.poema;
+      case 'MUSICA':
+        return CategoriaEnum.musica;
+      case 'PINTURA':
+        return CategoriaEnum.pintura;
+      case 'DESENHO':
+        return CategoriaEnum.desenho;
+      case 'ESCULTURA':
+        return CategoriaEnum.escultura;
+      case 'FOTOGRAFIA':
+        return CategoriaEnum.fotografia;
+      default:
+        throw Exception("Algo deu errado no toCategoriaEnum");
+    }
+  }
+
+  static TipoArquivoEnum toTipoArquivoEnum(Map<String, dynamic> json){
+    String tipoArquivo = json['tipoArquivo'];
+    switch(tipoArquivo){
+      case 'IMAGEM':
+        return TipoArquivoEnum.imagem;
+      case 'VIDEO':
+        return TipoArquivoEnum.video;
+      case 'TEXTO':
+        return TipoArquivoEnum.texto;
+      case 'AUDIO':
+        return TipoArquivoEnum.audio;
+      default:
+        throw Exception('Algo deu errado no toTipoArquivoEnum');
+    }
+  }
+
   Map<String, dynamic> toJson() {
     return {
+      'id': id,
       'tipoArquivo': tipoArquivo,
       'categoria': categoria,
       'perfil': perfil.toJson(),

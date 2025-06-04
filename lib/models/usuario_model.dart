@@ -24,8 +24,20 @@ class UsuarioModel {
       apelido: json['apelido'],
       email: json['email'],
       telefone: json['telefone'],
-      tipoUsuario: json['tipoUsuario'],
+      tipoUsuario: toUsuarioEnum(json),
     );
+  }
+
+  static UsuarioEnum toUsuarioEnum(Map<String, dynamic> json){
+    String tipoUsuario = json['tipoUsuario'];
+    switch (tipoUsuario){
+      case 'COMUM':
+        return UsuarioEnum.comum;
+      case 'ADMINISTRADOR':
+        return UsuarioEnum.administrador;
+      default:
+        throw Exception('Algo deu errado no toUsuarioEnum');
+    }
   }
 
   Map<String, dynamic> toJson() {

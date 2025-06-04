@@ -17,7 +17,10 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
 
   Future<void> _selecionarArquivo() async {
     try{
-      FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles();
+      FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['jpg', 'jpeg', 'mp4', 'mp3']
+      );
 
       if(arquivoEscolhido != null){
         setState(() {
@@ -58,7 +61,7 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       child: Padding(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
@@ -78,10 +81,7 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(right: 20, left: 5),
-              child: ListaFiltrosWidget(),
-            ),
+            ListaFiltrosWidget(),
             SizedBox(height: 5,),
             // Campo para colocar o título da publicação
             _input('Qual o título da publicação?'),
@@ -94,24 +94,32 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
                 borderRadius: BorderRadius.circular(15)
               ),
               child: Center(
-                child: Container(
-                  width: 75,
-                  height: 75,
-                  decoration: BoxDecoration(
-                    color: Color(0xFFB4B4B4),
-                    borderRadius: BorderRadius.circular(100)
-                  ),
-                  child: _arquivoSelecionado != null ?
-                  Image.file(_arquivoSelecionado!, fit: BoxFit.cover,) :
-                  Center(
-                    child: IconButton(
-                        onPressed: _selecionarArquivo,
-                        icon: Icon(
-                          Icons.add_a_photo_rounded,
-                          size: 45,
-                        )
+                child: _arquivoSelecionado != null ?
+                GestureDetector(
+                  onTap: _selecionarArquivo,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(15),
+                    child: Image.file(
+                      _arquivoSelecionado!,
+                      width: 374,
+                      height: 374,
+                      fit: BoxFit.cover,
                     ),
-                  )
+                  ),
+                ) :
+                Container(
+                    width: 75,
+                    height: 75,
+                    decoration: BoxDecoration(
+                      color: Color(0xFFB4B4B4),
+                      borderRadius: BorderRadius.circular(100)
+                    ),
+                    child: Center(
+                      child: IconButton(
+                          onPressed: _selecionarArquivo,
+                          icon: Icon(Icons.add_a_photo_rounded, size: 45,)
+                      ),
+                    )
                 ),
               )
             ),

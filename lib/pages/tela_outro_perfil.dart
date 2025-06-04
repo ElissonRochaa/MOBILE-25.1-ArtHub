@@ -237,36 +237,36 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
       ),
       body: Stack(
         children: [
-          CustomScrollView(
-            slivers: [
-              SliverList(
-                delegate: SliverChildListDelegate([informacoesPerfil(context)]),
-              ),
-              SliverPadding(
-                padding: const EdgeInsets.only(
-                  left: 15,
-                  right: 12,
-                  top: 30,
-                  bottom: 10,
-                ),
-                sliver: SliverMasonryGrid.count(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 8,
-                  crossAxisSpacing: 8,
-                  childCount: 5,
-                  itemBuilder: (context, index) {
-                    final imagePath = imagens[index % imagens.length];
-
-                    return PublicacaoWidget(imagePath: imagePath);
-                  },
-                ),
-              ),
-            ],
-          ),
+          // CustomScrollView(
+          //   slivers: [
+          //     SliverList(
+          //       delegate: SliverChildListDelegate([informacoesPerfil(context)]),
+          //     ),
+          //     SliverPadding(
+          //       padding: const EdgeInsets.only(
+          //         left: 15,
+          //         right: 12,
+          //         top: 30,
+          //         bottom: 10,
+          //       ),
+          //       sliver: SliverMasonryGrid.count(
+          //         crossAxisCount: 2,
+          //         mainAxisSpacing: 8,
+          //         crossAxisSpacing: 8,
+          //         childCount: 5,
+          //         itemBuilder: (context, index) {
+          //           final imagePath = imagens[index % imagens.length];
+          //
+          //           return PublicacaoWidget(imagePath: imagePath);
+          //         },
+          //       ),
+          //     ),
+          //   ],
+          // ),
           if (pesquisa.isNotEmpty)
             Positioned.fill(
               child: Container(
-                color: Theme.of(context).colorScheme.surface.withOpacity(0.95),
+                color: Theme.of(context).colorScheme.surface!.withOpacity(0.95),
                 child: Column(
                   children: [
                     PerfilPesquisaWidget(pesquisa: pesquisa),

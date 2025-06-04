@@ -1,43 +1,89 @@
+import 'package:arthub/models/publicacao_model.dart';
+import 'package:arthub/services/publicacao_service.dart';
 import 'package:arthub/widgets/lista_filtros_widget.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class TelaPrincipal extends StatelessWidget {
+class TelaPrincipal extends StatefulWidget {
   TelaPrincipal({super.key});
 
-  final List<String> imagens = [
-    'assets/images/teste1.jpeg',
-    'assets/images/teste2.jpeg',
-    'assets/images/cat.jpeg',
-    'assets/images/hannah.jpg',
-    'assets/images/snoopy.jpeg',
-  ];
+  @override
+  State<TelaPrincipal> createState() => _TelaPrincipalState();
+}
+
+class _TelaPrincipalState extends State<TelaPrincipal> {
+  bool _carregando = true;
+  List<PublicacaoModel> _publicacoes = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _carregarPublicacoes();
+  }
+
+  Future<void> _carregarPublicacoes() async {
+    setState(() {
+      _carregando = true;
+    });
+
+    try {
+      final publicacoes = await PublicacaoService.getAllPublicacao();
+      setState(() {
+        _publicacoes = publicacoes;
+        _carregando = false;
+      });
+    } catch (e) {
+      setState(() {
+        _carregando = false;
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+          content: Text('Ocorreu um erro ao tentar carregar as publicações')
+          )
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: [
-        CustomScrollView(
-          slivers: [
-            SliverList(
-              delegate: SliverChildListDelegate([ListaFiltrosWidget()]),
-            ),
-            SliverPadding(
-              padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
-              sliver: SliverMasonryGrid.count(
-                crossAxisCount: 2,
-                mainAxisSpacing: 8,
-                crossAxisSpacing: 8,
-                childCount: 14,
-                itemBuilder: (context, index) {
-                  final imagePath = imagens[index % imagens.length];
-
-                  return PublicacaoWidget(imagePath: imagePath);
-                },
+        RefreshIndicator(
+          onRefresh: _carregarPublicacoes,
+          child: CustomScrollView(
+            slivers: [
+              SliverList(
+                delegate: SliverChildListDelegate([ListaFiltrosWidget()]),
               ),
-            ),
-          ],
+              if (_carregando)
+                SliverFillRemaining(
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                )
+                else if (_publicacoes.isEmpty)
+                  SliverFillRemaining(
+                    child: Center(
+                      child: Text('Nenhuma publicação foi encontrada'),
+                    ),
+                  )
+              else
+                SliverPadding(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  sliver: SliverMasonryGrid.count(
+                    crossAxisCount: 2,
+                    mainAxisSpacing: 8,
+                    crossAxisSpacing: 8,
+                    childCount: _publicacoes.length,
+                    itemBuilder: (context, index) {
+                      final PublicacaoModel publicacao = _publicacoes[index];
+                      return PublicacaoWidget(publicacao: publicacao,);
+                    },
+                  ),
+                ),
+            ],
+          ),
         ),
       ],
     );

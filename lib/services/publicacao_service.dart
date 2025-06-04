@@ -5,19 +5,30 @@ class PublicacaoService {
   static final ApiClient _apiClient = ApiClient();
 
   static Future<List<PublicacaoModel>> getAllPublicacao() async {
-    print('chegou até aqui');
     final response = await _apiClient.get('/publicacoes');
-    print(response.statusCode);
-    final List<PublicacaoModel> publicacoes =
+    List<PublicacaoModel> publicacoes =
         (response.data as List)
             .map((publicacao) => PublicacaoModel.fromJson(publicacao))
             .toList();
-    print(publicacoes[1]);
+
     if (response.statusCode == 200) {
-      print(response.statusCode);
       return publicacoes;
     }
 
     throw Exception('Algo deu errado ao buscar publicações');
+  }
+
+  static Future<List<PublicacaoModel>> getPublicacaoByUsuario() async {
+    final response = await _apiClient.get('/usuario/{idUsuario}');
+    List<PublicacaoModel> pubicacoesDoUsuario =
+        (response.data as List)
+            .map((post) => PublicacaoModel.fromJson(post))
+            .toList();
+
+    if (response.statusCode == 200) {
+      return pubicacoesDoUsuario;
+    }
+
+    throw Exception('Algo deu errado ao buscar as publicações do usuário');
   }
 }
