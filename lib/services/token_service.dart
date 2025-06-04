@@ -23,7 +23,6 @@ class TokenService{
   static Future<String> decodeToken() async {
     final token = await getToken();
     Map<String, dynamic> tokenDecodificado = await JwtDecoder.decode(token!);
-    print(tokenDecodificado['sub']);
     return tokenDecodificado['sub'];
   }
 }
