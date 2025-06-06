@@ -176,17 +176,14 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
 
   Widget _post(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.only(left: 135),
-          child: Text(
-            widget.publicacao.titulo ?? '',
-            style: Theme.of(context).textTheme.displayMedium?.copyWith(
-              color: Theme.of(context).colorScheme.onPrimary,
-            ),
-            textAlign: TextAlign.center,
+        Text(
+          widget.publicacao.titulo ?? '',
+          style: Theme.of(context).textTheme.displayMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onPrimary,
           ),
+          textAlign: TextAlign.center,
         ),
         Column(
           children: [
@@ -216,7 +213,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                 children: [
                   Expanded(
                     child: Text(
-                      widget.publicacao.perfil.usuario.apelido,
+                      '@${widget.publicacao.perfil.usuario.apelido ?? "Usuário desconhecido"}',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
