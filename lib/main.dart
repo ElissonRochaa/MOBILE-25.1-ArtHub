@@ -1,3 +1,4 @@
+import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/pages/tela_editar_perfil.dart';
 import 'package:arthub/pages/tela_esqueceu_senha.dart';
 import 'package:arthub/pages/tela_login.dart';
@@ -43,7 +44,14 @@ class MyApp extends StatelessWidget {
               case '/registro':
                 return buildPageRoute(const TelaRegistro(), settings);
               case '/publicacao':
-                return buildPageRoute(const TelaPublicacao(), settings);
+                final args = settings.arguments;
+                if (args != null && args is PublicacaoModel) {
+                  final publicacao = args;
+                  return buildPageRoute(
+                    TelaPublicacao(publicacao: publicacao),
+                    settings,
+                  );
+                }
               case '/esqueceu-senha':
                 return buildPageRoute(const TelaEsqueceuSenha(), settings);
               case '/login':
@@ -77,9 +85,9 @@ PageRouteBuilder buildPageRoute(Widget page, RouteSettings settings) {
       const curve = Curves.easeInOut;
 
       if (settings.name == '/login' || settings.name == '/registro') {
-        begin = const Offset(0.0, 1.0); // De baixo para cima
+        begin = const Offset(0.0, 1.0);
       } else {
-        begin = const Offset(1.0, 0.0); // Da direita para a esquerda
+        begin = const Offset(1.0, 0.0);
       }
 
       var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));

@@ -1,10 +1,13 @@
 import 'package:arthub/models/dtos/login_dto.dart';
 import 'package:arthub/services/auth_service.dart';
+import 'package:arthub/services/token_service.dart';
+import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/input_texto.dart';
 import 'package:arthub/widgets/stackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class TelaLogin extends StatefulWidget {
   const TelaLogin({super.key});
@@ -31,6 +34,11 @@ class _TelaLoginState extends State<TelaLogin> {
     );
     final response = await AuthService.login(usuarioLogin);
     try {
+      final email = await TokenService.decodeToken();
+      final usuario = await UsuarioService.getUsuarioByEmail(email);
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setInt(UsuarioService.emailKey, usuario.id);
+
       if (response.isNotEmpty) {
         showCustomSnackBar(context, 'Login realizado com sucesso!');
         Navigator.pushNamed(context, '/home');

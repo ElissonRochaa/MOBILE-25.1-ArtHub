@@ -7,7 +7,6 @@ import '../models/dtos/login_dto.dart';
 class AuthService {
   static final ApiClient _apiClient = ApiClient();
 
-  // Aqui o método do Login
   static Future<String> login(LoginDTO login) async {
     final response = await _apiClient.post('/auth/login', {
       'email': login.email,

@@ -1,3 +1,4 @@
+import 'package:jwt_decoder/jwt_decoder.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class TokenService {
@@ -16,5 +17,11 @@ class TokenService {
   static Future<void> removeToken() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove(_tokenKey);
+  }
+
+  static Future<String> decodeToken() async {
+    final token = await getToken();
+    Map<String, dynamic> tokenDecodificado = await JwtDecoder.decode(token!);
+    return tokenDecodificado['sub'];
   }
 }
