@@ -1,4 +1,5 @@
 import 'package:arthub/enums/usuario_enum.dart';
+import 'package:arthub/models/perfil_model.dart';
 
 class UsuarioModel {
   final int id;
