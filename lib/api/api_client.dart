@@ -2,7 +2,7 @@ import 'package:arthub/services/token_service.dart';
 import 'package:dio/dio.dart';
 
 class ApiClient {
-  final Dio _dio = Dio(BaseOptions(baseUrl: 'http:// 192.168.1.104:8080/api/v2'));
+  final Dio _dio = Dio(BaseOptions(baseUrl: 'http://localhost:8080/api/v2'));
 
   ApiClient() {
     _dio.interceptors.add(
