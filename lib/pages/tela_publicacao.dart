@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:arthub/enums/tipo_arquivo_enum.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/services/publicacao_service.dart';
@@ -24,22 +25,26 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool lertudo = false;
   List<String> comentarios = [];
 
-  Uint8List? _fetchedImageBytes;
-  bool _isLoadingImage = true;
-  String? _imageError;
+  Uint8List? _fetchedMediaBytes;
+  bool _isLoadingMedia = true;
+  String? _mediaError;
 
   @override
   void initState() {
     super.initState();
-    _fetchPublicacaoImage();
+    if (widget.publicacao.tipoArquivo == TipoArquivoEnum.imagem) {
+      _fetchMediaContent();
+    } else {
+      _isLoadingMedia = false;
+    }
   }
 
-  Future<void> _fetchPublicacaoImage() async {
+  Future<void> _fetchMediaContent() async {
     if (mounted) {
       setState(() {
-        _isLoadingImage = true;
-        _imageError = null;
-        _fetchedImageBytes = null;
+        _isLoadingMedia = true;
+        _mediaError = null;
+        _fetchedMediaBytes = null;
       });
     }
     try {
@@ -51,15 +56,15 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       );
       if (mounted) {
         setState(() {
-          _fetchedImageBytes = bytes;
-          _isLoadingImage = false;
+          _fetchedMediaBytes = bytes;
+          _isLoadingMedia = false;
         });
       }
     } catch (e) {
       if (mounted) {
         setState(() {
-          _imageError = e.toString();
-          _isLoadingImage = false;
+          _mediaError = e.toString();
+          _isLoadingMedia = false;
         });
       }
       print("Erro ao buscar imagem da publicação: $e");
@@ -133,45 +138,75 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
     );
   }
 
-  Widget _buildImageWidget() {
-    if (_isLoadingImage) {
-      return Center(child: CircularProgressIndicator());
-    }
-    if (_imageError != null) {
-      return Center(
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            'Erro ao carregar imagem: $_imageError',
-            textAlign: TextAlign.center,
-            style: TextStyle(color: Theme.of(context).colorScheme.error),
-          ),
-        ),
-      );
-    }
-    if (_fetchedImageBytes != null) {
-      return Image.memory(
-        _fetchedImageBytes!,
-        fit: BoxFit.cover,
-        errorBuilder: (context, error, stackTrace) {
-          print("Erro ao decodificar imagem (Image.memory): $error");
+  Widget _buildMediaWidget() {
+    switch (widget.publicacao.tipoArquivo) {
+      case TipoArquivoEnum.imagem:
+        if (_isLoadingMedia) {
+          return Center(child: CircularProgressIndicator());
+        }
+        if (_mediaError != null) {
           return Center(
-            child: Icon(
-              Icons.broken_image,
-              size: 50,
-              color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                'Erro ao carregar imagem: $_mediaError',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
             ),
           );
-        },
-      );
+        }
+        if (_fetchedMediaBytes != null) {
+          return Image.memory(
+            _fetchedMediaBytes!,
+            fit: BoxFit.cover,
+            errorBuilder: (context, error, stackTrace) {
+              return Center(
+                child: Icon(
+                  Icons.broken_image,
+                  size: 50,
+                  color: Theme.of(
+                    context,
+                  ).colorScheme.onSurface.withOpacity(0.6),
+                ),
+              );
+            },
+          );
+        }
+        return Center(
+          child: Icon(
+            Icons.image_not_supported,
+            size: 50,
+            color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
+          ),
+        );
+      case TipoArquivoEnum.texto:
+        return Container(
+          padding: const EdgeInsets.all(25.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.circular(10),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.primary,
+              width: 1,
+            ),
+          ),
+          child: Text(
+            widget.publicacao.nomeConteudo ?? "Nenhum texto disponível.",
+            style: TextStyle(
+              fontSize: 16,
+              color: Theme.of(context).colorScheme.onPrimary,
+            ),
+          ),
+        );
+      default:
+        return Center(
+          child: Text(
+            'Tipo de conteúdo não suportado.',
+            style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          ),
+        );
     }
-    return Center(
-      child: Icon(
-        Icons.image_not_supported,
-        size: 50,
-        color: Theme.of(context).colorScheme.onSurface.withOpacity(0.6),
-      ),
-    );
   }
 
   Widget _post(BuildContext context) {
@@ -188,10 +223,18 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
         Column(
           children: [
             Container(
-              constraints: BoxConstraints(maxWidth: 335, maxHeight: 335),
+              constraints: BoxConstraints(
+                maxWidth: 335,
+                maxHeight:
+                    widget.publicacao.tipoArquivo == TipoArquivoEnum.texto
+                        ? double.infinity
+                        : 355,
+              ),
               child: GestureDetector(
                 onTap: () {
-                  if (_fetchedImageBytes != null && _imageError == null) {
+                  if (widget.publicacao.tipoArquivo == TipoArquivoEnum.imagem &&
+                      _fetchedMediaBytes != null &&
+                      _mediaError == null) {
                     setState(() {
                       isImagemAberta = true;
                     });
@@ -201,7 +244,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   borderRadius: BorderRadius.circular(15),
                   child: AspectRatio(
                     aspectRatio: 1,
-                    child: _buildImageWidget(),
+                    child: _buildMediaWidget(),
                   ),
                 ),
               ),
@@ -410,7 +453,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             ),
           ),
           Positioned(top: 19, left: 10, child: BotaoVoltarWidget()),
-          if (isImagemAberta && _fetchedImageBytes != null)
+          if (isImagemAberta && _fetchedMediaBytes != null)
             GestureDetector(
               onTap: () {
                 setState(() {
@@ -430,7 +473,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                         panEnabled: true,
                         minScale: 0.5,
                         maxScale: 4,
-                        child: Image.memory(_fetchedImageBytes!),
+                        child: Image.memory(_fetchedMediaBytes!),
                       ),
                     ),
                   ],
