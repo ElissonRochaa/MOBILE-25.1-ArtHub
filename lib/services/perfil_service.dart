@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:arthub/api/api_client.dart';
 import 'package:arthub/models/perfil_model.dart';
 import 'package:arthub/models/usuario_model.dart';
@@ -25,10 +27,15 @@ class PerfilService {
         options: Options(responseType: ResponseType.bytes),
       );
 
-      if (response.statusCode == 200 && response.data != null){
-        return MemoryImage(response.data);
+      if (response.statusCode == 200 &&
+          (response.data == null ||
+              (response.data is List && (response.data as List).isEmpty))) {
+        return null;
       }
 
+      if (response.statusCode == 200 && response.data != null){
+        return MemoryImage(Uint8List.fromList(response.data.cast<int>()));
+      }
       return null;
     }
     catch (e) {
@@ -43,14 +50,19 @@ class PerfilService {
         options: Options(responseType: ResponseType.bytes),
       );
 
-      if (response.statusCode == 200 && response.data != null){
-        return MemoryImage(response.data);
+      if (response.statusCode == 200 &&
+          (response.data == null ||
+              (response.data is List && (response.data as List).isEmpty))) {
+        return null;
       }
 
+      if (response.statusCode == 200 && response.data != null){
+        return MemoryImage(Uint8List.fromList(response.data.cast<int>()));
+      }
       return null;
     }
     catch (e) {
-      throw Exception('Erro no getImagePerfil');
+      throw Exception('Erro no getImageBanner');
     }
   }
 
@@ -70,7 +82,7 @@ class PerfilService {
             .map((publicacao) => PerfilModel.fromJson(publicacao))
             .toList();
 
-        return [seguidoresData.length, seguindoData.length]
+        return [seguidoresData.length, seguindoData.length];
       }
 
       return [];
