@@ -1,5 +1,6 @@
 import 'package:arthub/api/api_client.dart';
 import 'package:arthub/models/perfil_model.dart';
+import 'package:arthub/models/usuario_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -50,6 +51,32 @@ class PerfilService {
     }
     catch (e) {
       throw Exception('Erro no getImagePerfil');
+    }
+  }
+
+  static Future<List<int>> getSeguidoresAndSeguindo(int perfilId) async {
+    try {
+      final responseSeguidores = await _apiClient.get('/perfis/seguidores/$perfilId');
+      final responseSeguindo = await _apiClient.get('/perfis/seguindo/$perfilId');
+
+      if ((responseSeguindo.statusCode == 200 && responseSeguindo.data != null)
+          && (responseSeguidores.statusCode == 200 && responseSeguidores.data != null)){
+
+        final seguidoresData = (responseSeguidores.data as List)
+            .map((publicacao) => PerfilModel.fromJson(publicacao))
+            .toList();
+
+        final seguindoData = (responseSeguindo.data as List)
+            .map((publicacao) => PerfilModel.fromJson(publicacao))
+            .toList();
+
+        return [seguidoresData.length, seguindoData.length]
+      }
+
+      return [];
+    }
+    catch (e) {
+      throw Exception('Erro no getSeguidoresAndSeguindo');
     }
   }
 }
