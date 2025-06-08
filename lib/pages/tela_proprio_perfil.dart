@@ -20,6 +20,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
   bool _lerTudo = false;
   bool _carregando = true;
   List<PublicacaoModel> _publicacoesDoUsuario = [];
+  List<int> _seguidoresESeguindo = [];
   PerfilModel? _perfilUsuario;
   ImageProvider? _imagemPerfil;
   ImageProvider? _imagemBanner;
@@ -44,8 +45,9 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
       final results = await Future.wait([
         PerfilService.getPerfilByUsuarioId(usuarioId),
         PublicacaoService.getPublicacaoByUsuario(usuarioId),
-        PerfilService.getImagePerfil(perfilUsuario.id),
-        PerfilService.getImageBanner(perfilUsuario.id),
+        PerfilService.getImagePerfil(perfilUsuario.id).catchError((_) => null),
+        PerfilService.getImageBanner(perfilUsuario.id).catchError((_) => null),
+        PerfilService.getSeguidoresAndSeguindo(usuarioId),
       ]);
 
       if (!mounted) return;
@@ -53,8 +55,9 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
       setState(() {
         _perfilUsuario = results[0] as PerfilModel;
         _publicacoesDoUsuario = results[1] as List<PublicacaoModel>;
-        _imagemPerfil = results[2] as ImageProvider;
-        _imagemBanner = results[3] as ImageProvider;
+        _imagemPerfil = results[2] as ImageProvider?;
+        _imagemBanner = results[3] as ImageProvider?;
+        _seguidoresESeguindo = results[4] as List<int>;
         _carregando = false;
       });
 
@@ -88,7 +91,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
           Row(
             children: [
               Text(
-                "20 seguidores",
+                "${_seguidoresESeguindo[0]} seguidores",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -105,7 +108,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
               ),
               SizedBox(width: 20),
               Text(
-                "22 seguindo",
+                "${_seguidoresESeguindo[1]} seguindo",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -143,7 +146,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                 height: 159,
                 decoration: BoxDecoration(
                   image: DecorationImage(
-                    image: _imagemBanner ?? AssetImage("assets/images/gato_horizontal.jpg"),
+                    image: _imagemBanner ?? AssetImage('assets/images/banner_default.png'),
                     fit: BoxFit.cover,
                   )
                 ),
@@ -300,7 +303,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
-                childCount: 5,
+                childCount: _publicacoesDoUsuario.length,
                 itemBuilder: (context, index) {
                   final PublicacaoModel publicacao = _publicacoesDoUsuario[index];
                   return PublicacaoWidget(publicacao: publicacao,);
