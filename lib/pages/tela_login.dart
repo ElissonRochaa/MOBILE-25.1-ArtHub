@@ -31,8 +31,8 @@ class _TelaLoginState extends State<TelaLogin> {
       email: _emailController.text,
       senha: _senhaController.text,
     );
-    final response = await AuthService.login(usuarioLogin);
     try {
+      final response = await AuthService.login(usuarioLogin);
       final email = await TokenService.decodeToken();
       final usuario = await UsuarioService.getUsuarioByEmail(email);
       final prefs = await SharedPreferences.getInstance();
@@ -44,6 +44,7 @@ class _TelaLoginState extends State<TelaLogin> {
       } else {
         showCustomSnackBar(context, 'Email ou senha incorretos!');
       }
+
     } catch (e) {
       showCustomSnackBar(context, 'Falha nas credencias! Tente novamente');
     }
