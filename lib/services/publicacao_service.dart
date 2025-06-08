@@ -28,7 +28,6 @@ class PublicacaoService {
             .map((post) => PublicacaoModel.fromJson(post))
             .toList();
     if (response.statusCode == 200) {
-      print(response.data);
       return publicacoesDoUsuario;
     }
 
