@@ -24,8 +24,8 @@ class ApiClient {
     );
   }
 
-  Future<Response> get(String endPoint) async {
-    return await _dio.get(endPoint);
+  Future<Response> get(String endPoint, {Options? options}) async {
+    return await _dio.get(endPoint, options: options);
   }
 
   Future<Response<List<int>>> getBytes(String endPoint) async {

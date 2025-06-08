@@ -21,7 +21,8 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
   bool _carregando = true;
   List<PublicacaoModel> _publicacoesDoUsuario = [];
   PerfilModel? _perfilUsuario;
-
+  ImageProvider? _imagemPerfil;
+  ImageProvider? _imagemBanner;
 
   @override
   void initState() {
@@ -30,7 +31,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
   }
 
   Future<void> _carregarDadosPerfil() async {
-    // if (!mounted) return;
+    if (!mounted) return;
 
     setState(() {
       _carregando = true;
@@ -38,21 +39,22 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
 
     try{
       final usuarioId = await UsuarioService.getUsuarioId() as int;
+      final perfilUsuario = await PerfilService.getPerfilByUsuarioId(usuarioId);
 
-      // tá dando erro aqui dentro
-      // final results = await Future.wait([
-      //   PerfilService.getPerfilByUsuarioId(usuarioId),
-      //   PublicacaoService.getPublicacaoByUsuario(usuarioId),
-      // ]);
+      final results = await Future.wait([
+        PerfilService.getPerfilByUsuarioId(usuarioId),
+        PublicacaoService.getPublicacaoByUsuario(usuarioId),
+        PerfilService.getImagePerfil(perfilUsuario.id),
+        PerfilService.getImageBanner(perfilUsuario.id),
+      ]);
 
-      PerfilModel perfil = await PerfilService.getPerfilByUsuarioId(usuarioId);
-      List<PublicacaoModel> publicacoes = await PublicacaoService.getPublicacaoByUsuario(usuarioId);
-
-      // if (!mounted) return;
+      if (!mounted) return;
 
       setState(() {
-        _perfilUsuario = perfil;
-        _publicacoesDoUsuario = publicacoes;
+        _perfilUsuario = results[0] as PerfilModel;
+        _publicacoesDoUsuario = results[1] as List<PublicacaoModel>;
+        _imagemPerfil = results[2] as ImageProvider;
+        _imagemBanner = results[3] as ImageProvider;
         _carregando = false;
       });
 
@@ -135,12 +137,17 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              Image.asset(
-                "assets/images/gato_horizontal.jpg",
+              Positioned(
+                child: Container(
                 width: MediaQuery.sizeOf(context).width,
                 height: 159,
-                fit: BoxFit.cover,
-              ),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: _imagemBanner ?? AssetImage("assets/images/gato_horizontal.jpg"),
+                    fit: BoxFit.cover,
+                  )
+                ),
+              )),
               Positioned(
                 top: 100,
                 left: 15,
@@ -149,7 +156,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                   width: 105,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/hannah.jpg'),
+                      image: _imagemPerfil ?? AssetImage('assets/images/perfil_default.jpg'),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(70),
