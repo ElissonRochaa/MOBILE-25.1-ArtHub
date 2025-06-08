@@ -2,6 +2,7 @@ import 'dart:typed_data';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/services/publicacao_service.dart';
+import 'package:arthub/services/token_service.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
@@ -23,15 +24,30 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool isImagemAberta = false;
   bool lertudo = false;
   List<String> comentarios = [];
-
   Uint8List? _fetchedImageBytes;
   bool _isLoadingImage = true;
   String? _imageError;
+  String? _userEmailLogado;
 
   @override
   void initState() {
     super.initState();
     _fetchPublicacaoImage();
+    _carregarUsuarioLogado();
+  }
+
+  Future<void> _carregarUsuarioLogado() async {
+    try {
+      String email = await TokenService.decodeToken();
+      if (mounted) {
+        setState(() {
+          _userEmailLogado = email;
+          print("Usuário logado email: $_userEmailLogado");
+        });
+      }
+    } catch (e) {
+      print("Erro ao obter usuário logado: $e");
+    }
   }
 
   Future<void> _fetchPublicacaoImage() async {
@@ -221,7 +237,6 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                     ),
                   ),
                   Row(
-                    // Agrupa os ícones
                     children: [
                       GestureDetector(
                         onTap: () {
@@ -381,6 +396,13 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDono =
+        _userEmailLogado != null &&
+        widget.publicacao.perfil.usuario.email.toString() == _userEmailLogado;
+    print(
+      "Email do dono da publicação: ${widget.publicacao.perfil.usuario.email}",
+    );
+
     var pesquisa = context.watch<BarraPesquisaProvider>().texto;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -389,65 +411,92 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
         title: BarraPesquisaWidget(),
         automaticallyImplyLeading: false,
       ),
-      body: Stack(
+      body: Column(
         children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 15),
-                _post(context),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: comentarios.length,
-                  itemBuilder: (context, index) {
-                    return _comentario(context, comentarios[index]);
-                  },
-                ),
-                SizedBox(height: 20),
-              ],
-            ),
-          ),
-          Positioned(top: 19, left: 10, child: BotaoVoltarWidget()),
-          if (isImagemAberta && _fetchedImageBytes != null)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  isImagemAberta = false;
-                });
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.black54,
+          Stack(
+            children: [
+              SingleChildScrollView(
                 child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 10),
-                      child: InteractiveViewer(
-                        panEnabled: true,
-                        minScale: 0.5,
-                        maxScale: 4,
-                        child: Image.memory(_fetchedImageBytes!),
-                      ),
+                    const SizedBox(height: 15),
+                    _post(context),
+                    ListView.builder(
+                      shrinkWrap: true,
+                      physics: NeverScrollableScrollPhysics(),
+                      itemCount: comentarios.length,
+                      itemBuilder: (context, index) {
+                        return _comentario(context, comentarios[index]);
+                      },
                     ),
+                    SizedBox(height: 20),
                   ],
                 ),
               ),
-            ),
-          if (pesquisa.isNotEmpty)
-            Positioned.fill(
-              child: Container(
-                color: Colors.white.withValues(alpha: 0.95),
-                child: Column(
-                  children: [
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                  ],
+              Positioned(top: 19, left: 10, child: BotaoVoltarWidget()),
+              if (isImagemAberta && _fetchedImageBytes != null)
+                GestureDetector(
+                  onTap: () {
+                    setState(() {
+                      isImagemAberta = false;
+                    });
+                  },
+                  child: Container(
+                    height: MediaQuery.of(context).size.height,
+                    width: MediaQuery.of(context).size.width,
+                    color: Colors.black54,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 10),
+                          child: InteractiveViewer(
+                            panEnabled: true,
+                            minScale: 0.5,
+                            maxScale: 4,
+                            child: Image.memory(_fetchedImageBytes!),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              if (pesquisa.isNotEmpty)
+                Positioned.fill(
+                  child: Container(
+                    color: Colors.white.withAlpha(242),
+                    child: Column(
+                      children: [
+                        PerfilPesquisaWidget(pesquisa: pesquisa),
+                        PerfilPesquisaWidget(pesquisa: pesquisa),
+                        PerfilPesquisaWidget(pesquisa: pesquisa),
+                        PerfilPesquisaWidget(pesquisa: pesquisa),
+                      ],
+                    ),
+                  ),
+                ),
+            ],
+          ),
+          if (isDono == true)
+            Positioned(
+              bottom: 32,
+              right: 24,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.pushNamed(
+                    context,
+                    '/editar_publicacao',
+                    arguments: widget.publicacao,
+                  );
+                },
+                child: CircleAvatar(
+                  radius: 28,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  child: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    size: 32,
+                  ),
                 ),
               ),
             ),
