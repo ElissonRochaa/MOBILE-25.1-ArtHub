@@ -77,6 +77,8 @@ flutter:
     - assets/images/logo_arthub.png
     - assets/images/teste1.jpeg
     - assets/images/teste2.jpeg
+    - assets/images/banner_default.png
+    - assets/images/perfil_default.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
