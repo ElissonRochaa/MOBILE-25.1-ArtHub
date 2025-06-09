@@ -485,7 +485,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                 onTap: () {
                   Navigator.pushNamed(
                     context,
-                    '/editar_publicacao',
+                    '/tela_editar_publicacao',
                     arguments: widget.publicacao,
                   );
                 },
