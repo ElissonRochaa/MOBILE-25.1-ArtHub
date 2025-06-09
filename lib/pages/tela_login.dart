@@ -28,27 +28,36 @@ class _TelaLoginState extends State<TelaLogin> {
   }
 
   Future<void> _login() async {
-    final usuarioLogin = LoginDTO(
-      email: _emailController.text,
-      senha: _senhaController.text,
-    );
+  if (_emailController.text.isEmpty || _senhaController.text.isEmpty) {
+    showCustomSnackBar(context, 'Preencha todos os campos!');
+    return;
+  }
+
+  final usuarioLogin = LoginDTO(
+    email: _emailController.text,
+    senha: _senhaController.text,
+  );
+
+  try {
     final response = await AuthService.login(usuarioLogin);
-    try {
+
+    if (response.isNotEmpty) {
       final email = await TokenService.decodeToken();
       final usuario = await UsuarioService.getUsuarioByEmail(email);
       final prefs = await SharedPreferences.getInstance();
       await prefs.setInt(UsuarioService.emailKey, usuario.id);
 
-      if (response.isNotEmpty) {
-        showCustomSnackBar(context, 'Login realizado com sucesso!');
-        Navigator.pushNamed(context, '/home');
-      } else {
-        showCustomSnackBar(context, 'Email ou senha incorretos!');
-      }
-    } catch (e) {
-      showCustomSnackBar(context, 'Falha nas credencias! Tente novamente');
+      showCustomSnackBar(context, 'Login realizado com sucesso!');
+      Navigator.pushNamed(context, '/home');
+    } else {
+      showCustomSnackBar(context, 'Email ou senha incorretos!');
     }
+  } catch (e) {
+    showCustomSnackBar(context, 'Falha so fazer login! Tente novamente.');
   }
+}
+
+
 
   @override
   Widget build(BuildContext context) {

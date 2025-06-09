@@ -13,13 +13,17 @@ class AuthService {
       'senha': login.senha,
     });
 
-    if (response.statusCode == 200) {
-      final token = response.data;
-      TokenService.saveToken(token);
-      return token;
-    } else {
-      throw Exception('Falha ao fazer o login');
-    }
+     if (response.statusCode == 200) {
+    final token = response.data;
+    TokenService.saveToken(token);
+    return token;
+  } else if (response.statusCode == 401 || response.statusCode == 403) {
+    // Login inválido, mas não um erro grave
+    return '';
+  } else {
+    // Erros inesperados (ex: servidor fora, erro 500)
+    throw Exception('Erro inesperado ao fazer login (${response.statusCode})');
+  }
   }
 
   // Aqui o método do Cadastro
