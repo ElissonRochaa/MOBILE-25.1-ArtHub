@@ -1,11 +1,16 @@
 import 'package:arthub/api/api_client.dart';
 import 'package:arthub/models/cadastro_model.dart';
+import 'package:arthub/services/auth_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/stackbar.dart';
 import 'package:arthub/widgets/input_texto.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
+bool isEmailValid(String email) {
+  return email.endsWith('@upe.br');
+}
 
 class TelaRegistro extends StatefulWidget {
   const TelaRegistro({super.key});
@@ -35,34 +40,43 @@ class _TelaRegistroState extends State<TelaRegistro> {
   }
 
   Future<void> _registrar() async {
-    try {
-      final cadastro = CadastroModel(
-        nome: _nomeController.text,
-        apelido: _apelidoController.text,
-        telefone: _telefoneController.text,
-        email: _emailController.text,
-        senha: _senhaController.text,
-        dataNascimento: _dataNascimentoController.text,
-      );
-
-      // Aqui era só debug
-      // print(cadastro.toJson());
-
-      final response = await ApiClient().post(
-        '/auth/registrar',
-        cadastro.toJson(),
-      );
-
-      if (response.statusCode == 200) {
-        showCustomSnackBar(context, 'Cadastro realizado com sucesso!');
-        Navigator.pushReplacementNamed(context, '/login');
-      } else {
-        showCustomSnackBar(context, 'Cadastro não realizado! ALgo deu errado!');
-      }
-    } catch (e) {
-      showCustomSnackBar(context, 'Algo deu errado! Verifique o domínio do email! (Deve ser @upe.br)!');
-    }
+  // Validação dos campos vazios
+  if (_nomeController.text.isEmpty ||
+      _apelidoController.text.isEmpty ||
+      _telefoneController.text.isEmpty ||
+      _emailController.text.isEmpty ||
+      _senhaController.text.isEmpty ||
+      _dataNascimentoController.text.isEmpty) {
+    showCustomSnackBar(context, 'Por favor, preencha todos os campos');
+    return;
   }
+
+  // Validação do email
+  if (!isEmailValid(_emailController.text)) {
+    showCustomSnackBar(context, 'O email deve terminar com @upe.br');
+    return;
+  }
+
+  try {
+    final cadastro = CadastroModel(
+      nome: _nomeController.text,
+      apelido: _apelidoController.text,
+      telefone: _telefoneController.text,
+      email: _emailController.text,
+      senha: _senhaController.text,
+      dataNascimento: _dataNascimentoController.text,
+    );
+
+    await AuthService.cadastrarUsuario(cadastro);
+
+    showCustomSnackBar(context, 'Cadastro realizado com sucesso!');
+    Navigator.pushReplacementNamed(context, '/login');
+
+  } catch (e) {
+      showCustomSnackBar(context, 'Cadastro não realizado! Algo deu errado!');
+  }
+}
+
 
   @override
   Widget build(BuildContext context) {

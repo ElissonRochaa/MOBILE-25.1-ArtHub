@@ -53,7 +53,7 @@ class _TelaLoginState extends State<TelaLogin> {
       showCustomSnackBar(context, 'Email ou senha incorretos!');
     }
   } catch (e) {
-    showCustomSnackBar(context, 'Falha so fazer login! Tente novamente.');
+    showCustomSnackBar(context, 'Falha ao fazer login! Tente novamente.');
   }
 }
 
