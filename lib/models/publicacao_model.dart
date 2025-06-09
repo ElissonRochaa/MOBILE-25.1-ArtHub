@@ -97,7 +97,7 @@ class PublicacaoModel {
     //Model do Put
     return {
       'id': id,
-      'categoria': categoria,
+      'categoria': categoria.name,
       'legenda': legenda,
       'nomeConteudo': nomeConteudo,
       'titulo': titulo,
