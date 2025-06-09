@@ -7,6 +7,7 @@ import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import '../widgets/rodape_widget.dart';
 
@@ -19,7 +20,38 @@ class TelaPublicacao extends StatefulWidget {
   State<TelaPublicacao> createState() => _TelaPublicacaoState();
 }
 
+class MyCustomAudioSource extends StreamAudioSource {
+  final Uint8List bytes;
+
+  MyCustomAudioSource(this.bytes) : super(tag: 'MyCustomAudioSource');
+
+  @override
+  Future<StreamAudioResponse> request([int? start, int? end]) async {
+    start ??= 0;
+    end ??= bytes.length;
+    return StreamAudioResponse(
+      sourceLength: bytes.length,
+      contentLength: end - start,
+      offset: start,
+      stream: Stream.value(bytes.sublist(start, end)),
+      contentType: 'audio/mpeg',
+    );
+  }
+}
+
 class _TelaPublicacaoState extends State<TelaPublicacao> {
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
+  }
+
+  String _formatDuration(Duration d) {
+    final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return "$minutes:$seconds";
+  }
+
   bool isCurtido = false;
   bool isImagemAberta = false;
   bool lertudo = false;
@@ -29,13 +61,68 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool _isLoadingMedia = true;
   String? _mediaError;
 
+  final _audioPlayer = AudioPlayer();
+
   @override
   void initState() {
     super.initState();
-    if (widget.publicacao.tipoArquivo == TipoArquivoEnum.imagem) {
-      _fetchMediaContent();
-    } else {
-      _isLoadingMedia = false;
+    switch (widget.publicacao.tipoArquivo) {
+      case TipoArquivoEnum.imagem:
+        _fetchMediaContent();
+        break;
+      case TipoArquivoEnum.audio:
+        _initAudioPlayer();
+        break;
+      case TipoArquivoEnum.texto:
+        if (mounted) {
+          setState(() {
+            _isLoadingMedia = false;
+          });
+        }
+        break;
+      default:
+        if (mounted) {
+          setState(() {
+            _isLoadingMedia = false;
+            _mediaError = "Tipo de arquivo não suportado";
+          });
+        }
+    }
+  }
+
+  Future<void> _initAudioPlayer() async {
+    if (mounted) {
+      setState(() {
+        _isLoadingMedia = true;
+        _mediaError = null;
+      });
+    }
+    try {
+      if (widget.publicacao.id == null) {
+        throw Exception("ID da publicação é nulo.");
+      }
+
+      final bytes = await PublicacaoService.getBytes(
+        widget.publicacao.id!.toString(),
+      );
+
+      final audioSource = MyCustomAudioSource(bytes);
+
+      await _audioPlayer.setAudioSource(audioSource);
+
+      if (mounted) {
+        setState(() {
+          _isLoadingMedia = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _mediaError = "Erro ao carregar áudio: ${e.toString()}";
+          _isLoadingMedia = false;
+        });
+      }
+      print("Erro ao inicializar áudio (_initAudioPlayer): $e");
     }
   }
 
@@ -197,6 +284,139 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
               fontSize: 16,
               color: Theme.of(context).colorScheme.onPrimary,
             ),
+          ),
+        );
+      case TipoArquivoEnum.audio:
+        if (_isLoadingMedia) {
+          return Center(
+            child: CircularProgressIndicator(
+              color: Theme.of(context).colorScheme.primary,
+            ),
+          );
+        }
+        if (_mediaError != null) {
+          return Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                'Erro ao carregar áudio:\n$_mediaError',
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Theme.of(context).colorScheme.error),
+              ),
+            ),
+          );
+        }
+        return Container(
+          padding: const EdgeInsets.all(20),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.circular(15),
+            border: Border.all(
+              color: Theme.of(context).colorScheme.primary.withOpacity(0.5),
+            ),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              StreamBuilder<PlayerState>(
+                stream: _audioPlayer.playerStateStream,
+                builder: (context, snapshot) {
+                  final playerState = snapshot.data;
+                  final processingState = playerState?.processingState;
+                  final playing = playerState?.playing;
+
+                  if (processingState == ProcessingState.loading ||
+                      processingState == ProcessingState.buffering) {
+                    return CircularProgressIndicator(
+                      color: Theme.of(context).colorScheme.primary,
+                    );
+                  } else if (playing != true) {
+                    return IconButton(
+                      icon: const Icon(Icons.play_arrow_rounded),
+                      iconSize: 64,
+                      color: Theme.of(context).colorScheme.primary,
+                      onPressed: _audioPlayer.play,
+                    );
+                  } else if (processingState != ProcessingState.completed) {
+                    return IconButton(
+                      icon: const Icon(Icons.pause_rounded),
+                      iconSize: 64,
+                      color: Theme.of(context).colorScheme.primary,
+                      onPressed: _audioPlayer.pause,
+                    );
+                  } else {
+                    return IconButton(
+                      icon: const Icon(Icons.replay_rounded),
+                      iconSize: 64,
+                      color: Theme.of(context).colorScheme.primary,
+                      onPressed: () => _audioPlayer.seek(Duration.zero),
+                    );
+                  }
+                },
+              ),
+              const SizedBox(height: 16),
+              StreamBuilder<Duration?>(
+                stream: _audioPlayer.durationStream,
+                builder: (context, snapshot) {
+                  final duration = snapshot.data ?? Duration.zero;
+                  return StreamBuilder<Duration>(
+                    stream: _audioPlayer.positionStream,
+                    builder: (context, snapshot) {
+                      var position = snapshot.data ?? Duration.zero;
+                      if (position > duration) {
+                        position = duration;
+                      }
+                      return Column(
+                        children: [
+                          Slider(
+                            min: 0.0,
+                            max: duration.inMilliseconds.toDouble() + 1.0,
+                            value: position.inMilliseconds.toDouble(),
+                            onChanged: (value) {
+                              _audioPlayer.seek(
+                                Duration(milliseconds: value.toInt()),
+                              );
+                            },
+                            activeColor: Theme.of(context).colorScheme.primary,
+                            inactiveColor: Theme.of(
+                              context,
+                            ).colorScheme.primary.withOpacity(0.3),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16.0,
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  _formatDuration(position),
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.onSecondary,
+                                  ),
+                                ),
+                                Text(
+                                  _formatDuration(duration),
+                                  style: TextStyle(
+                                    color:
+                                        Theme.of(
+                                          context,
+                                        ).colorScheme.onSecondary,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      );
+                    },
+                  );
+                },
+              ),
+            ],
           ),
         );
       default:

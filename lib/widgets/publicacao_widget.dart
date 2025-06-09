@@ -43,16 +43,13 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
         _fetchedImageBytes = null;
       });
     }
-
     try {
       if (widget.publicacao.id == null) {
         throw Exception("ID da publicação é nulo.");
       }
-
       final bytes = await PublicacaoService.getBytes(
         widget.publicacao.id!.toString(),
       );
-
       if (mounted) {
         setState(() {
           _fetchedImageBytes = bytes;
@@ -77,13 +74,12 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
           return Container(
             height: 200,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.3),
+              color: Theme.of(context).colorScheme.onSecondary,
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Center(child: CircularProgressIndicator()),
           );
         }
-
         if (_mediaError != null) {
           return Container(
             height: 200,
@@ -173,6 +169,38 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.left,
+              ),
+            ],
+          ),
+        );
+      case TipoArquivoEnum.audio:
+        return Container(
+          height: 200,
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.graphic_eq,
+                size: 48,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                widget.publicacao.titulo ?? "Áudio",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),
