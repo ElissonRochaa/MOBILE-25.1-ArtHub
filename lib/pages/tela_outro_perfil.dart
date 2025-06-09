@@ -1,10 +1,8 @@
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TelaOutroPerfil extends StatefulWidget {
   const TelaOutroPerfil({super.key});
@@ -266,7 +264,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
           if (pesquisa.isNotEmpty)
             Positioned.fill(
               child: Container(
-                color: Theme.of(context).colorScheme.surface!.withOpacity(0.95),
+                color: Theme.of(context).colorScheme.surface.withOpacity(0.95),
                 child: Column(
                   children: [
                     PerfilPesquisaWidget(pesquisa: pesquisa),

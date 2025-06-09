@@ -22,17 +22,8 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
   void initState() {
     super.initState();
     if (widget.publicacao.tipoArquivo == TipoArquivoEnum.imagem) {
-      if (widget.publicacao.id != null) {
-        _fetchMediaContent();
-      } else {
-        if (mounted) {
-          setState(() {
-            _mediaError = "ID da publicação ausente para buscar imagem.";
-            _isLoadingMedia = false;
-          });
+      _fetchMediaContent();
         }
-      }
-    }
   }
 
   Future<void> _fetchMediaContent() async {
@@ -45,12 +36,8 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
     }
 
     try {
-      if (widget.publicacao.id == null) {
-        throw Exception("ID da publicação é nulo.");
-      }
-
       final bytes = await PublicacaoService.getBytes(
-        widget.publicacao.id!.toString(),
+        widget.publicacao.id.toString(),
       );
 
       if (mounted) {
