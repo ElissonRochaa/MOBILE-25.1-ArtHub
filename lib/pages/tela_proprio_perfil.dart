@@ -243,8 +243,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                 child:
                     _lerTudo
                         ? Text(
-                          perfil.biografia == null ?
-                              '' : perfil.biografia as String,
+                          perfil.biografia ?? '',
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium?.copyWith(
@@ -252,8 +251,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                           ),
                         )
                         : Text(
-                          perfil.biografia == null ?
-                              '' : perfil.biografia as String,
+                          perfil.biografia ?? '',
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(
