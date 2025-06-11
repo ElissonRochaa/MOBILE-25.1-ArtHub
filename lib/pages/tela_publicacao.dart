@@ -28,10 +28,12 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool _isLoadingImage = true;
   String? _imageError;
   String? _userEmailLogado;
+  late PublicacaoModel _publicacaoAtual;
 
   @override
   void initState() {
     super.initState();
+    _publicacaoAtual = widget.publicacao;
     _fetchPublicacaoImage();
     _carregarUsuarioLogado();
   }
@@ -59,11 +61,11 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       });
     }
     try {
-      if (widget.publicacao.id == null) {
+      if (_publicacaoAtual.id == null) {
         throw Exception("ID da publicação é nulo.");
       }
       final bytes = await PublicacaoService.getBytes(
-        widget.publicacao.id!.toString(),
+        _publicacaoAtual.id!.toString(),
       );
       if (mounted) {
         setState(() {
@@ -128,13 +130,13 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             child:
                 lertudo
                     ? Text(
-                      widget.publicacao.legenda ?? '',
+                      _publicacaoAtual.legenda ?? '',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     )
                     : Text(
-                      widget.publicacao.legenda ?? '',
+                      _publicacaoAtual.legenda ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -195,7 +197,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          widget.publicacao.titulo ?? '',
+          _publicacaoAtual.titulo ?? '',
           style: Theme.of(context).textTheme.displayMedium?.copyWith(
             color: Theme.of(context).colorScheme.onPrimary,
           ),
@@ -229,7 +231,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                 children: [
                   Expanded(
                     child: Text(
-                      '@${widget.publicacao.perfil.usuario.apelido ?? "Usuário desconhecido"}',
+                      '@${_publicacaoAtual.perfil.usuario.apelido ?? "Usuário desconhecido"}',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
@@ -398,9 +400,9 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   Widget build(BuildContext context) {
     final bool isDono =
         _userEmailLogado != null &&
-        widget.publicacao.perfil.usuario.email.toString() == _userEmailLogado;
+        _publicacaoAtual.perfil.usuario.email.toString() == _userEmailLogado;
     print(
-      "Email do dono da publicação: ${widget.publicacao.perfil.usuario.email}",
+      "Email do dono da publicação: ${_publicacaoAtual.perfil.usuario.email}",
     );
 
     var pesquisa = context.watch<BarraPesquisaProvider>().texto;
@@ -482,12 +484,19 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
               bottom: 32,
               right: 24,
               child: GestureDetector(
-                onTap: () {
-                  Navigator.pushNamed(
+                onTap: () async {
+                  final editada = await Navigator.pushNamed(
                     context,
                     '/tela_editar_publicacao',
-                    arguments: widget.publicacao,
+                    arguments: _publicacaoAtual,
                   );
+                  if (editada != null && mounted) {
+                    setState(() {
+                      _publicacaoAtual = editada as PublicacaoModel;
+                    });
+                    _fetchPublicacaoImage();
+                    print("Publicação editada: ${_publicacaoAtual.titulo}");
+                  }
                 },
                 child: CircleAvatar(
                   radius: 28,
