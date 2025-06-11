@@ -1,8 +1,10 @@
 import 'dart:typed_data';
 import 'package:arthub/enums/tipo_arquivo_enum.dart';
+import 'package:arthub/enums/categoria_enum.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/services/publicacao_service.dart';
+import 'package:arthub/services/token_service.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
@@ -62,6 +64,27 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   String? _mediaError;
 
   final _audioPlayer = AudioPlayer();
+  String? _userEmailLogado;
+  late PublicacaoModel _publicacaoAtual;
+
+  String categoriaToTexto(CategoriaEnum categoria) {
+    switch (categoria) {
+      case CategoriaEnum.poema:
+        return 'Poema';
+      case CategoriaEnum.musica:
+        return 'Música';
+      case CategoriaEnum.pintura:
+        return 'Pintura';
+      case CategoriaEnum.desenho:
+        return 'Desenho';
+      case CategoriaEnum.escultura:
+        return 'Escultura';
+      case CategoriaEnum.fotografia:
+        return 'Fotografia';
+      default:
+        return categoria.name;
+    }
+  }
 
   @override
   void initState() {
@@ -87,6 +110,37 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             _mediaError = "Tipo de arquivo não suportado";
           });
         }
+    }
+    _publicacaoAtual = widget.publicacao;
+    _buscarPublicacaoAtualizada();
+    _carregarUsuarioLogado();
+  }
+
+  Future<void> _buscarPublicacaoAtualizada() async {
+    try {
+      final nova = await PublicacaoService.getById(widget.publicacao.id);
+      if (mounted) {
+        setState(() {
+          _publicacaoAtual = nova;
+        });
+        _fetchMediaContent();
+      }
+    } catch (e) {
+      print('Erro ao buscar publicação atualizada: $e');
+    }
+  }
+
+  Future<void> _carregarUsuarioLogado() async {
+    try {
+      String email = await TokenService.decodeToken();
+      if (mounted) {
+        setState(() {
+          _userEmailLogado = email;
+          print("Usuário logado email: $_userEmailLogado");
+        });
+      }
+    } catch (e) {
+      print("Erro ao obter usuário logado: $e");
     }
   }
 
@@ -135,11 +189,11 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       });
     }
     try {
-      if (widget.publicacao.id == null) {
+      if (_publicacaoAtual.id == null) {
         throw Exception("ID da publicação é nulo.");
       }
       final bytes = await PublicacaoService.getBytes(
-        widget.publicacao.id!.toString(),
+        _publicacaoAtual.id!.toString(),
       );
       if (mounted) {
         setState(() {
@@ -187,11 +241,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _tags(context, 'Fotografia'),
-                _tags(context, 'Escultura'),
-                _tags(context, 'Escultura'),
-                _tags(context, 'Escultura'),
-                _tags(context, 'Escultura'),
+                _tags(context, categoriaToTexto(_publicacaoAtual.categoria)),
               ],
             ),
           ),
@@ -204,13 +254,13 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             child:
                 lertudo
                     ? Text(
-                      widget.publicacao.legenda ?? '',
+                      _publicacaoAtual.legenda ?? '',
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
                     )
                     : Text(
-                      widget.publicacao.legenda ?? '',
+                      _publicacaoAtual.legenda ?? '',
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: Theme.of(context).textTheme.bodyLarge?.copyWith(
@@ -434,7 +484,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Text(
-          widget.publicacao.titulo ?? '',
+          _publicacaoAtual.titulo ?? '',
           style: Theme.of(context).textTheme.displayMedium?.copyWith(
             color: Theme.of(context).colorScheme.onPrimary,
           ),
@@ -476,7 +526,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                 children: [
                   Expanded(
                     child: Text(
-                      '@${widget.publicacao.perfil.usuario.apelido ?? "Usuário desconhecido"}',
+                      '@${_publicacaoAtual.perfil.usuario.apelido ?? "Usuário desconhecido"}',
                       style: TextStyle(
                         color: Theme.of(context).colorScheme.onPrimary,
                       ),
@@ -484,7 +534,6 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                     ),
                   ),
                   Row(
-                    // Agrupa os ícones
                     children: [
                       GestureDetector(
                         onTap: () {
@@ -644,6 +693,10 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
 
   @override
   Widget build(BuildContext context) {
+    final bool isDono =
+        _userEmailLogado != null &&
+        _publicacaoAtual.perfil.usuario.email.toString() == _userEmailLogado;
+
     var pesquisa = context.watch<BarraPesquisaProvider>().texto;
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
@@ -654,6 +707,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       ),
       body: Stack(
         children: [
+          // Conteúdo principal
           SingleChildScrollView(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
@@ -672,22 +726,21 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
               ],
             ),
           ),
+          // Botão voltar
           Positioned(top: 19, left: 10, child: BotaoVoltarWidget()),
+          // Imagem ampliada
           if (isImagemAberta && _fetchedMediaBytes != null)
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  isImagemAberta = false;
-                });
-              },
-              child: Container(
-                height: MediaQuery.of(context).size.height,
-                width: MediaQuery.of(context).size.width,
-                color: Colors.black54,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Padding(
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isImagemAberta = false;
+                  });
+                },
+                child: Container(
+                  color: Colors.black54,
+                  child: Center(
+                    child: Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 10),
                       child: InteractiveViewer(
                         panEnabled: true,
@@ -696,14 +749,15 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                         child: Image.memory(_fetchedMediaBytes!),
                       ),
                     ),
-                  ],
+                  ),
                 ),
               ),
             ),
+
           if (pesquisa.isNotEmpty)
             Positioned.fill(
               child: Container(
-                color: Colors.white.withValues(alpha: 0.95),
+                color: Colors.white.withAlpha(242),
                 child: Column(
                   children: [
                     PerfilPesquisaWidget(pesquisa: pesquisa),
@@ -711,6 +765,35 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                     PerfilPesquisaWidget(pesquisa: pesquisa),
                     PerfilPesquisaWidget(pesquisa: pesquisa),
                   ],
+                ),
+              ),
+            ),
+          if (isDono == true && !isImagemAberta)
+            Positioned(
+              bottom: 32,
+              right: 24,
+              child: GestureDetector(
+                onTap: () async {
+                  final editada = await Navigator.pushNamed(
+                    context,
+                    '/tela_editar_publicacao',
+                    arguments: _publicacaoAtual,
+                  );
+                  if (editada != null && mounted) {
+                    setState(() {
+                      _publicacaoAtual = editada as PublicacaoModel;
+                    });
+                    _fetchMediaContent();
+                  }
+                },
+                child: CircleAvatar(
+                  radius: 28,
+                  backgroundColor: Theme.of(context).colorScheme.primary,
+                  child: Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.onPrimary,
+                    size: 32,
+                  ),
                 ),
               ),
             ),
