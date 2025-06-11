@@ -98,8 +98,6 @@ class PerfilService {
           '/perfis/$donoId',
           data: dto.toJson()
       );
-
-      print(response.data);
     }
     catch (e) {
       throw Exception('Erro no putPerfil');
