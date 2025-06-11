@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:arthub/enums/tipo_arquivo_enum.dart';
 import 'package:arthub/models/publicacao_model.dart';
@@ -6,10 +7,15 @@ import 'package:arthub/services/publicacao_service.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
+import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
+import 'package:video_player/video_player.dart';
 import '../widgets/rodape_widget.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'dart:html' as html;
 
 class TelaPublicacao extends StatefulWidget {
   final PublicacaoModel publicacao;
@@ -43,6 +49,9 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   @override
   void dispose() {
     _audioPlayer.dispose();
+    _videoPlayerController.dispose();
+    _chewieController?.dispose();
+    _tempVideoFile?.delete();
     super.dispose();
   }
 
@@ -63,6 +72,10 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
 
   final _audioPlayer = AudioPlayer();
 
+  late VideoPlayerController _videoPlayerController;
+  ChewieController? _chewieController;
+  File? _tempVideoFile;
+
   @override
   void initState() {
     super.initState();
@@ -80,6 +93,9 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
           });
         }
         break;
+      case TipoArquivoEnum.video:
+        _initVideoPlayer();
+        break;
       default:
         if (mounted) {
           setState(() {
@@ -87,6 +103,55 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             _mediaError = "Tipo de arquivo não suportado";
           });
         }
+    }
+  }
+
+  Future<void> _initVideoPlayer() async {
+    if (mounted) setState(() => _isLoadingMedia = true);
+
+    try {
+      if (widget.publicacao.id == null) {
+        throw Exception("ID da publicação é nulo.");
+      }
+      final videoBytes = await PublicacaoService.getBytes(
+        widget.publicacao.id!.toString(),
+      );
+      if (videoBytes.isEmpty) {
+        throw Exception("Os bytes do vídeo retornaram vazios.");
+      }
+      if (kIsWeb) {
+        final blob = html.Blob([videoBytes], 'video/mp4');
+
+        final url = html.Url.createObjectUrlFromBlob(blob);
+
+        _videoPlayerController = VideoPlayerController.networkUrl(
+          Uri.parse(url),
+        );
+      } else {
+        final tempDir = await getTemporaryDirectory();
+        _tempVideoFile = File(
+          '${tempDir.path}/video_${widget.publicacao.id}.mp4',
+        );
+        await _tempVideoFile!.writeAsBytes(videoBytes);
+        _videoPlayerController = VideoPlayerController.file(_tempVideoFile!);
+      }
+
+      await _videoPlayerController!.initialize();
+
+      _chewieController = ChewieController(
+        videoPlayerController: _videoPlayerController!,
+        autoPlay: true,
+      );
+
+      if (mounted) setState(() => _isLoadingMedia = false);
+    } catch (e) {
+      print("Erro ao inicializar vídeo a partir de bytes: $e");
+      if (mounted) {
+        setState(() {
+          _mediaError = "Não foi possível carregar o vídeo.";
+          _isLoadingMedia = false;
+        });
+      }
     }
   }
 
@@ -286,6 +351,19 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             ),
           ),
         );
+      case TipoArquivoEnum.video:
+        if (_isLoadingMedia) {
+          return const Center(child: CircularProgressIndicator());
+        }
+        if (_mediaError != null) {
+          return Center(child: Text(_mediaError!));
+        }
+        if (_chewieController != null &&
+            _chewieController!.videoPlayerController.value.isInitialized) {
+          return Chewie(controller: _chewieController!);
+        } else {
+          return const Center(child: Text("Erro ao carregar player de vídeo."));
+        }
       case TipoArquivoEnum.audio:
         if (_isLoadingMedia) {
           return Center(
