@@ -25,25 +25,26 @@ class PublicacaoModel {
     required this.perfisQueCurtiram,
   });
 
-  factory PublicacaoModel.fromJson(Map<String, dynamic> json){
+  factory PublicacaoModel.fromJson(Map<String, dynamic> json) {
     return PublicacaoModel(
-    id: json['id'],
-    tipoArquivo: toTipoArquivoEnum(json),
-    legenda: json['legenda'],
-    nomeConteudo: json['nomeConteudo'],
-    titulo: json['titulo'],
-    categoria: toCategoriaEnum(json),
-    curtidas: json['curtidas'],
-    perfil: PerfilModel.fromJson(json['perfil']),
-    perfisQueCurtiram: (json['perfisQueCurtiram'] as List)
-      .map((perfil) => PerfilModel.fromJson(perfil))
-      .toList(),
+      id: json['id'],
+      tipoArquivo: toTipoArquivoEnum(json),
+      legenda: json['legenda'],
+      nomeConteudo: json['nomeConteudo'],
+      titulo: json['titulo'],
+      categoria: toCategoriaEnum(json),
+      curtidas: json['curtidas'],
+      perfil: PerfilModel.fromJson(json['perfil']),
+      perfisQueCurtiram:
+          (json['perfisQueCurtiram'] as List)
+              .map((perfil) => PerfilModel.fromJson(perfil))
+              .toList(),
     );
   }
 
   static CategoriaEnum toCategoriaEnum(Map<String, dynamic> json) {
     String categoria = json['categoria'];
-    switch (categoria){
+    switch (categoria) {
       case 'POEMA':
         return CategoriaEnum.poema;
       case 'MUSICA':
@@ -61,9 +62,9 @@ class PublicacaoModel {
     }
   }
 
-  static TipoArquivoEnum toTipoArquivoEnum(Map<String, dynamic> json){
+  static TipoArquivoEnum toTipoArquivoEnum(Map<String, dynamic> json) {
     String tipoArquivo = json['tipoArquivo'];
-    switch(tipoArquivo){
+    switch (tipoArquivo) {
       case 'IMAGEM':
         return TipoArquivoEnum.imagem;
       case 'VIDEO':
@@ -83,12 +84,24 @@ class PublicacaoModel {
       'tipoArquivo': tipoArquivo,
       'categoria': categoria,
       'perfil': perfil.toJson(),
-      'perfisQueCurtiram': perfisQueCurtiram.map(
-              (perfil) => perfil.toJson()).toList(),
+      'perfisQueCurtiram':
+          perfisQueCurtiram.map((perfil) => perfil.toJson()).toList(),
       'legenda': legenda,
       'nomeConteudo': nomeConteudo,
       'titulo': titulo,
       'curtidas': curtidas,
+    };
+  }
+
+  Map<String, dynamic> toEditJson() {
+    //Model do Put
+    return {
+      'id': id,
+      'categoria':
+          categoria.name.toUpperCase(), //Categoria é um ENUM, é tudo maiúsculo
+      'legenda': legenda,
+      'nomeConteudo': nomeConteudo,
+      'titulo': titulo,
     };
   }
 }
