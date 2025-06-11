@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:arthub/enums/categoria_enum.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/services/publicacao_service.dart';
@@ -29,6 +30,25 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   String? _imageError;
   String? _userEmailLogado;
   late PublicacaoModel _publicacaoAtual;
+
+  String categoriaToTexto(CategoriaEnum categoria) {
+    switch (categoria) {
+      case CategoriaEnum.poema:
+        return 'Poema';
+      case CategoriaEnum.musica:
+        return 'Música';
+      case CategoriaEnum.pintura:
+        return 'Pintura';
+      case CategoriaEnum.desenho:
+        return 'Desenho';
+      case CategoriaEnum.escultura:
+        return 'Escultura';
+      case CategoriaEnum.fotografia:
+        return 'Fotografia';
+      default:
+        return categoria.name;
+    }
+  }
 
   @override
   void initState() {
@@ -113,11 +133,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             scrollDirection: Axis.horizontal,
             child: Row(
               children: [
-                _tags(context, 'Fotografia'),
-                _tags(context, 'Escultura'),
-                _tags(context, 'Escultura'),
-                _tags(context, 'Escultura'),
-                _tags(context, 'Escultura'),
+                _tags(context, categoriaToTexto(_publicacaoAtual.categoria)),
               ],
             ),
           ),
