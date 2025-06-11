@@ -2,10 +2,21 @@ import 'dart:convert';
 import 'dart:typed_data';
 import 'package:arthub/api/api_client.dart';
 import 'package:arthub/models/publicacao_model.dart';
+import 'package:arthub/services/token_service.dart';
+import 'package:arthub/services/usuario_service.dart';
 import 'package:dio/dio.dart';
 
 class PublicacaoService {
   static final ApiClient _apiClient = ApiClient();
+
+  // Future<int> getIdDono() async {
+  //   String email = await TokenService.decodeToken(); //Extrai o email do token
+  //   final usuario = await UsuarioService.getUsuarioByEmail(
+  //     email,
+  //   ); //Busca o usuário pelo email
+
+  //   return usuario.id; //Pega o ID!
+  // }
 
   static Future<List<PublicacaoModel>> getAllPublicacao() async {
     final response = await _apiClient.get('/publicacoes');
@@ -59,5 +70,37 @@ class PublicacaoService {
     } catch (e) {
       throw Exception('Erro desconhecido ao buscar imagem: $e');
     }
+  }
+
+  static Future<PublicacaoModel> putPublicacao(
+    PublicacaoModel publicacao,
+  ) async {
+    String email = await TokenService.decodeToken(); //Extrai Email
+    final usuario = await UsuarioService.getUsuarioByEmail(
+      email,
+    ); //Pega o usuário pelo email
+    int idDono = usuario.id; //Pega o ID do usuário
+    // Acreditem, a gente vai usar isso sempre!
+    // final data = publicacao.toEditJson();
+    // print("Teste de JSON: $data");
+    final response = await _apiClient.put(
+      '/publicacoes/$idDono',
+      data: publicacao.toEditJson(),
+    );
+
+    if (response.statusCode == 200) {
+      return PublicacaoModel.fromJson(response.data);
+    }
+
+    throw Exception('Algo deu errado ao atualizar a publicação');
+  }
+
+  static Future<PublicacaoModel> getById(int idPublicacao) async {
+    //Buscar publicação por ID
+    final response = await _apiClient.get('/publicacoes/$idPublicacao');
+    if (response.statusCode == 200) {
+      return PublicacaoModel.fromJson(response.data);
+    }
+    throw Exception('Erro ao buscar publicação por ID');
   }
 }

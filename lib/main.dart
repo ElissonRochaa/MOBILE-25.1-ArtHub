@@ -1,5 +1,6 @@
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/pages/tela_editar_perfil.dart';
+import 'package:arthub/pages/tela_editar_publicacao.dart';
 import 'package:arthub/pages/tela_esqueceu_senha.dart';
 import 'package:arthub/pages/tela_login.dart';
 import 'package:arthub/pages/tela_logotipo.dart';
@@ -64,6 +65,15 @@ class MyApp extends StatelessWidget {
                 return buildPageRoute(const TelaEditarPerfil(), settings);
               case '/outro-perfil':
                 return buildPageRoute(const TelaOutroPerfil(), settings);
+              case '/tela_editar_publicacao':
+                final args = settings.arguments;
+                if (args != null && args is PublicacaoModel) {
+                  final publicacao = args;
+                  return buildPageRoute(
+                    TelaEditarPublicacao(publicacao: publicacao),
+                    settings,
+                  );
+                }
               default:
                 return null;
             }
