@@ -127,7 +127,7 @@ class _InputTextoState extends State<InputTexto> {
                                       color:
                                           Theme.of(
                                             context,
-                                          ).colorScheme.onSurface,
+                                          ).colorScheme.onPrimary,
                                       Icons.remove_red_eye,
                                     ),
                           )

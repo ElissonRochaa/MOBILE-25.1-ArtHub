@@ -1,5 +1,8 @@
+import 'package:arthub/models/perfil_model.dart';
 import 'package:arthub/models/publicacao_model.dart';
+import 'package:arthub/services/perfil_service.dart';
 import 'package:arthub/services/publicacao_service.dart';
+import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
@@ -15,33 +18,58 @@ class TelaProprioPerfil extends StatefulWidget {
 
 class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
   bool _lerTudo = false;
-  bool _carregandoPublicacoes = true;
+  bool _carregando = true;
   List<PublicacaoModel> _publicacoesDoUsuario = [];
+  List<int> _seguidoresESeguindo = [];
+  PerfilModel? _perfilUsuario;
+  ImageProvider? _imagemPerfil;
+  ImageProvider? _imagemBanner;
 
+  @override
   void initState() {
     super.initState();
-    _carregarPublicacoes();
+    _carregarDadosPerfil();
   }
 
-  Future<void> _carregarPublicacoes() async {
+  Future<void> _carregarDadosPerfil() async {
+    if (!mounted) return;
+
     setState(() {
-      _carregandoPublicacoes = true;
+      _carregando = true;
     });
 
     try{
-      final publicacoesDoUsuario = await PublicacaoService.getPublicacaoByUsuario();
+      final usuarioId = await UsuarioService.getUsuarioId() as int;
+      final perfilUsuario = await PerfilService.getPerfilByUsuarioId(usuarioId);
+
+      final results = await Future.wait([
+        PerfilService.getPerfilByUsuarioId(usuarioId),
+        PublicacaoService.getPublicacaoByUsuario(usuarioId),
+        PerfilService.getImagePerfil(perfilUsuario.id).catchError((_) => null),
+        PerfilService.getImageBanner(perfilUsuario.id).catchError((_) => null),
+        PerfilService.getSeguidoresAndSeguindo(usuarioId),
+      ]);
+
+      if (!mounted) return;
+
       setState(() {
-        _carregandoPublicacoes = false;
-        _publicacoesDoUsuario = publicacoesDoUsuario;
+        _perfilUsuario = results[0] as PerfilModel;
+        _publicacoesDoUsuario = results[1] as List<PublicacaoModel>;
+        _imagemPerfil = results[2] as ImageProvider?;
+        _imagemBanner = results[3] as ImageProvider?;
+        _seguidoresESeguindo = results[4] as List<int>;
+        _carregando = false;
       });
+
     } catch (e){
-      setState(() {
-        _carregandoPublicacoes = false;
-      });
+      print(e);
+      setState(() {_carregando = false;});
     }
   }
 
   Widget _numerosPerfil(BuildContext context) {
+    final perfil = _perfilUsuario!;
+
     return Positioned(
       left: 130,
       top: 170,
@@ -49,13 +77,13 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Hannah Montana",
+            perfil.usuario.nome,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
           ),
           Text(
-            "@hannahmontana",
+            perfil.usuario.apelido,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
@@ -63,7 +91,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
           Row(
             children: [
               Text(
-                "20 seguidores",
+                "${_seguidoresESeguindo[0]} seguidores",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -80,7 +108,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
               ),
               SizedBox(width: 20),
               Text(
-                "22 seguindo",
+                "${_seguidoresESeguindo[1]} seguindo",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 14,
@@ -103,6 +131,8 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
   }
 
   Widget _informacoesPerfil(BuildContext context) {
+    final perfil = _perfilUsuario!;
+
     return Column(
       children: [
         SizedBox(
@@ -110,12 +140,17 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
           child: Stack(
             clipBehavior: Clip.none,
             children: [
-              Image.asset(
-                "assets/images/gato_horizontal.jpg",
+              Positioned(
+                child: Container(
                 width: MediaQuery.sizeOf(context).width,
                 height: 159,
-                fit: BoxFit.cover,
-              ),
+                decoration: BoxDecoration(
+                  image: DecorationImage(
+                    image: _imagemBanner ?? AssetImage('assets/images/banner_default.png'),
+                    fit: BoxFit.cover,
+                  )
+                ),
+              )),
               Positioned(
                 top: 100,
                 left: 15,
@@ -124,7 +159,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                   width: 105,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: AssetImage('assets/images/hannah.jpg'),
+                      image: _imagemPerfil ?? AssetImage('assets/images/perfil_default.jpg'),
                       fit: BoxFit.cover,
                     ),
                     borderRadius: BorderRadius.circular(70),
@@ -208,7 +243,8 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                 child:
                     _lerTudo
                         ? Text(
-                          "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                          perfil.biografia == null ?
+                              '' : perfil.biografia as String,
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium?.copyWith(
@@ -216,7 +252,8 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                           ),
                         )
                         : Text(
-                          "You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3You get the best of both words <3",
+                          perfil.biografia == null ?
+                              '' : perfil.biografia as String,
                           maxLines: 3,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(
@@ -237,14 +274,19 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
   Widget build(BuildContext context) {
     return CustomScrollView(
       slivers: [
-        SliverList(
-          delegate: SliverChildListDelegate([_informacoesPerfil(context)]),
-        ),
-        if(_carregandoPublicacoes)
+        if (_perfilUsuario != null)
+          SliverList(
+            delegate: SliverChildListDelegate([_informacoesPerfil(context)]),
+          ),
+        if(_carregando)
           SliverFillRemaining(
             child: Center(
               child: CircularProgressIndicator(),
             ),
+          )
+        else if (_perfilUsuario == null)
+          SliverFillRemaining(
+            child: Center(child: Text('Erro ao carregar o perfil'),),
           )
         else if (_publicacoesDoUsuario.isEmpty)
           SliverFillRemaining(
@@ -254,19 +296,14 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
           )
         else
           SliverPadding(
-            padding: const EdgeInsets.only(
-              left: 15,
-              right: 12,
-              top: 30,
-              bottom: 10,
-            ),
+            padding: const EdgeInsets.only(left: 15, right: 12, top: 30, bottom: 10,),
             sliver: SliverPadding(
               padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
               sliver: SliverMasonryGrid.count(
                 crossAxisCount: 2,
                 mainAxisSpacing: 8,
                 crossAxisSpacing: 8,
-                childCount: 5,
+                childCount: _publicacoesDoUsuario.length,
                 itemBuilder: (context, index) {
                   final PublicacaoModel publicacao = _publicacoesDoUsuario[index];
                   return PublicacaoWidget(publicacao: publicacao,);

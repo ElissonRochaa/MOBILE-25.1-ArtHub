@@ -5,7 +5,7 @@ import 'package:arthub/models/publicacao_model.dart';
 import 'package:dio/dio.dart';
 
 class PublicacaoService {
-  static ApiClient _apiClient = ApiClient();
+  static final ApiClient _apiClient = ApiClient();
 
   static Future<List<PublicacaoModel>> getAllPublicacao() async {
     final response = await _apiClient.get('/publicacoes');
@@ -21,15 +21,14 @@ class PublicacaoService {
     throw Exception('Algo deu errado ao buscar publicações');
   }
 
-  static Future<List<PublicacaoModel>> getPublicacaoByUsuario() async {
-    final response = await _apiClient.get('/usuario/{idUsuario}');
-    List<PublicacaoModel> pubicacoesDoUsuario =
+  static Future<List<PublicacaoModel>> getPublicacaoByUsuario(int usuarioId) async {
+    final response = await _apiClient.get('/publicacoes/usuario/$usuarioId');
+    List<PublicacaoModel> publicacoesDoUsuario =
         (response.data as List)
             .map((post) => PublicacaoModel.fromJson(post))
             .toList();
-
     if (response.statusCode == 200) {
-      return pubicacoesDoUsuario;
+      return publicacoesDoUsuario;
     }
 
     throw Exception('Algo deu errado ao buscar as publicações do usuário');
