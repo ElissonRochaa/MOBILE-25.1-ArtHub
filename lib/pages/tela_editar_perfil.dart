@@ -31,12 +31,18 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
   }
 
   Future<void> _enviarAlteracoes() async {
-    final perfilEditado = PerfilEditadoDTO(
-        apelido: _apelidoController.text,
-        biografia: _biografiaController.text,
-    );
     try {
       final usuarioId = await UsuarioService.getUsuarioId();
+      final usuario = await UsuarioService.getUsuarioById(usuarioId!);
+      final perfil = await PerfilService.getPerfilByUsuarioId(usuarioId!);
+
+      final perfilEditado = PerfilEditadoDTO(
+        apelido: _apelidoController.text.isNotEmpty ?
+                _apelidoController.text : usuario.apelido,
+        biografia: _biografiaController.text.isNotEmpty ?
+                _biografiaController.text : perfil.biografia!,
+      );
+
       await PerfilService.putPerfil(perfilEditado, usuarioId);
 
       Navigator.pop(context);
@@ -47,7 +53,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
     }
   }
 
-  Widget _campo(BuildContext context, String label) {
+  Widget _campo(BuildContext context, String label, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Material(
@@ -55,6 +61,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
         shadowColor: Theme.of(context).colorScheme.onSurface,
         borderRadius: BorderRadius.circular(10),
         child: TextFormField(
+          controller: controller,
           decoration: InputDecoration(
             labelText: label,
             labelStyle: TextStyle(
@@ -307,7 +314,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
             const SizedBox(height: 16),
 
             // Campos de input
-            _campo(context, 'Apelido'),
+            _campo(context, 'Apelido', _apelidoController),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -402,6 +409,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                           ),
                           const SizedBox(height: 3),
                           TextFormField(
+                            controller: _biografiaController,
                             maxLines: 2,
                             decoration: InputDecoration(
                               filled: true,
