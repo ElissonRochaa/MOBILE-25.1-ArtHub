@@ -96,7 +96,7 @@ class PerfilService {
     try{
       final response = await _apiClient.put(
           '/perfis/$donoId',
-          dto.toJson()
+          data: dto.toJson()
       );
 
       print(response.data);
