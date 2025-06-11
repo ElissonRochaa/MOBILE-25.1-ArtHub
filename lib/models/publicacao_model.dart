@@ -97,7 +97,8 @@ class PublicacaoModel {
     //Model do Put
     return {
       'id': id,
-      'categoria': categoria.name,
+      'categoria':
+          categoria.name.toUpperCase(), //Categoria é um ENUM, é tudo maiúsculo
       'legenda': legenda,
       'nomeConteudo': nomeConteudo,
       'titulo': titulo,

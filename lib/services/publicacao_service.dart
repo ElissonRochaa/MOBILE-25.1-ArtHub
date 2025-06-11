@@ -82,7 +82,8 @@ class PublicacaoService {
     ); //Pega o usuário pelo email
     int idDono = usuario.id; //Pega o ID do usuário
     // Acreditem, a gente vai usar isso sempre!
-
+    final data = publicacao.toEditJson();
+    print("Dados da publicação para edição: $data");
     final response = await _apiClient.put(
       '/publicacoes/$idDono',
       data: publicacao.toEditJson(),
