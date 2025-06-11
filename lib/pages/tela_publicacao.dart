@@ -55,7 +55,22 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
     super.initState();
     _publicacaoAtual = widget.publicacao;
     _fetchPublicacaoImage();
+    _buscarPublicacaoAtualizada();
     _carregarUsuarioLogado();
+  }
+
+  Future<void> _buscarPublicacaoAtualizada() async {
+    try {
+      final nova = await PublicacaoService.getById(widget.publicacao.id);
+      if (mounted) {
+        setState(() {
+          _publicacaoAtual = nova;
+        });
+        _fetchPublicacaoImage();
+      }
+    } catch (e) {
+      print('Erro ao buscar publicação atualizada: $e');
+    }
   }
 
   Future<void> _carregarUsuarioLogado() async {

@@ -3,6 +3,7 @@ import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/services/publicacao_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/input_texto.dart';
+import 'package:arthub/widgets/rodape_widget.dart';
 import 'package:flutter/material.dart';
 
 class TelaEditarPublicacao extends StatefulWidget {
@@ -84,7 +85,10 @@ class _TelaEditarPublicacaoState extends State<TelaEditarPublicacao> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text('Editar Publicação')),
+      appBar: AppBar(
+        title: Text('Editar Publicação'),
+        backgroundColor: Theme.of(context).colorScheme.primary,
+      ),
       body:
           _loading
               ? Center(child: CircularProgressIndicator())
@@ -115,10 +119,33 @@ class _TelaEditarPublicacaoState extends State<TelaEditarPublicacao> {
                                     .map(
                                       (cat) => DropdownMenuItem(
                                         value: cat,
-                                        child: Text(cat.name.toUpperCase()),
+                                        child: Text(
+                                          cat.name.toUpperCase(),
+                                          style: TextStyle(
+                                            color:
+                                                Theme.of(
+                                                  context,
+                                                ).colorScheme.onPrimary,
+                                          ),
+                                        ),
                                       ),
                                     )
                                     .toList(),
+                            selectedItemBuilder:
+                                (context) =>
+                                    CategoriaEnum.values
+                                        .map(
+                                          (cat) => Text(
+                                            cat.name.toUpperCase(),
+                                            style: TextStyle(
+                                              color:
+                                                  Theme.of(
+                                                    context,
+                                                  ).colorScheme.onPrimary,
+                                            ),
+                                          ),
+                                        )
+                                        .toList(),
                             onChanged: (cat) {
                               if (cat != null)
                                 setState(() => _categoriaSelecionada = cat);
@@ -140,6 +167,7 @@ class _TelaEditarPublicacaoState extends State<TelaEditarPublicacao> {
                   ],
                 ),
               ),
+      bottomNavigationBar: RodapeWidget(),
     );
   }
 

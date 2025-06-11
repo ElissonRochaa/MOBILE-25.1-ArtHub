@@ -95,4 +95,13 @@ class PublicacaoService {
 
     throw Exception('Algo deu errado ao atualizar a publicação');
   }
+
+  static Future<PublicacaoModel> getById(int idPublicacao) async {
+    //Buscar publicação por ID
+    final response = await _apiClient.get('/publicacoes/$idPublicacao');
+    if (response.statusCode == 200) {
+      return PublicacaoModel.fromJson(response.data);
+    }
+    throw Exception('Erro ao buscar publicação por ID');
+  }
 }
