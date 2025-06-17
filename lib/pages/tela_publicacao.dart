@@ -102,6 +102,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   @override
   void initState() {
     super.initState();
+    _publicacaoAtual = widget.publicacao;
     switch (widget.publicacao.tipoArquivo) {
       case TipoArquivoEnum.imagem:
         _fetchMediaContent();
@@ -828,21 +829,6 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                       ),
                     ),
                   ),
-                ),
-              ),
-            ),
-
-          if (pesquisa.isNotEmpty)
-            Positioned.fill(
-              child: Container(
-                color: Colors.white.withAlpha(242),
-                child: Column(
-                  children: [
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                  ],
                 ),
               ),
             ),
