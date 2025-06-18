@@ -23,12 +23,9 @@ class _TelaEsqueceuSenhaState extends State<TelaEsqueceuSenha> {
     }
 
     setState(() => _isLoading = true);
+    await EmailService.solicitarRecuperacaoSenha(email);
 
-    final resposta = await EmailService.solicitarRecuperacaoSenha(email);
-
-    ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text(resposta)),
-    );
+    showCustomSnackBar(context, "Verifique sua caixa de entrada.");
 
     setState(() => _isLoading = false);
   }
