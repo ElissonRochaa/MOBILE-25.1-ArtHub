@@ -85,9 +85,19 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
           ),
           Row(
             children: [
-              Text('${data.contadores[0]} seguidores'),
+              Text(
+                '${data.contadores[0]} seguidores',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
               const SizedBox(width: 20),
-              Text('${data.contadores[1]} seguindo'),
+              Text(
+                '${data.contadores[1]} seguindo',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
             ],
           ),
         ],
