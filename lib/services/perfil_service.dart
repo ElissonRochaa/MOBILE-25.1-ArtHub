@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'dart:typed_data';
-
 import 'package:arthub/api/api_client.dart';
 import 'package:arthub/models/dtos/perfil_editado_DTO.dart';
 import 'package:arthub/models/perfil_model.dart';
+import 'package:arthub/models/publicacao_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -12,16 +13,15 @@ class PerfilService {
   static Future<PerfilModel> getPerfilByUsuarioId(int usuarioId) async {
     final response = await _apiClient.get('/perfis/$usuarioId');
 
-    if (response.statusCode != 200){
-      throw Exception('Erro no getPerfilByUsuario');
+    if (response.statusCode != 200) {
+      throw Exception('Erro no getPerfilByUsuarioId');
     }
 
-    final perfil = PerfilModel.fromJson(response.data);
-    return perfil;
+    return PerfilModel.fromJson(response.data);
   }
 
   static Future<ImageProvider?> getImagePerfil(int perfilId) async {
-    try{
+    try {
       final response = await _apiClient.get(
         '/perfis/fotoPerfil/$perfilId',
         options: Options(responseType: ResponseType.bytes),
@@ -33,18 +33,17 @@ class PerfilService {
         return null;
       }
 
-      if (response.statusCode == 200 && response.data != null){
+      if (response.statusCode == 200 && response.data != null) {
         return MemoryImage(Uint8List.fromList(response.data.cast<int>()));
       }
       return null;
-    }
-    catch (e) {
+    } catch (e) {
       throw Exception('Erro no getImagePerfil');
     }
   }
 
   static Future<ImageProvider?> getImageBanner(int perfilId) async {
-    try{
+    try {
       final response = await _apiClient.get(
         '/perfis/banner/$perfilId',
         options: Options(responseType: ResponseType.bytes),
@@ -56,50 +55,90 @@ class PerfilService {
         return null;
       }
 
-      if (response.statusCode == 200 && response.data != null){
+      if (response.statusCode == 200 && response.data != null) {
         return MemoryImage(Uint8List.fromList(response.data.cast<int>()));
       }
       return null;
-    }
-    catch (e) {
+    } catch (e) {
       throw Exception('Erro no getImageBanner');
     }
   }
 
   static Future<List<int>> getSeguidoresAndSeguindo(int perfilId) async {
     try {
-      final responseSeguidores = await _apiClient.get('/perfis/seguidores/$perfilId');
-      final responseSeguindo = await _apiClient.get('/perfis/seguindo/$perfilId');
+      final responseSeguidores = await _apiClient.get(
+        '/perfis/seguidores/$perfilId',
+      );
+      final responseSeguindo = await _apiClient.get(
+        '/perfis/seguindo/$perfilId',
+      );
 
-      if ((responseSeguindo.statusCode == 200 && responseSeguindo.data != null)
-          && (responseSeguidores.statusCode == 200 && responseSeguidores.data != null)){
+      if ((responseSeguindo.statusCode == 200 &&
+              responseSeguindo.data != null) &&
+          (responseSeguidores.statusCode == 200 &&
+              responseSeguidores.data != null)) {
+        final seguidoresData =
+            (responseSeguidores.data as List)
+                .map((perfil) => PerfilModel.fromJson(perfil))
+                .toList();
 
-        final seguidoresData = (responseSeguidores.data as List)
-            .map((publicacao) => PerfilModel.fromJson(publicacao))
-            .toList();
-
-        final seguindoData = (responseSeguindo.data as List)
-            .map((publicacao) => PerfilModel.fromJson(publicacao))
-            .toList();
+        final seguindoData =
+            (responseSeguindo.data as List)
+                .map((perfil) => PerfilModel.fromJson(perfil))
+                .toList();
 
         return [seguidoresData.length, seguindoData.length];
       }
 
-      return [];
-    }
-    catch (e) {
+      return [0, 0];
+    } catch (e) {
       throw Exception('Erro no getSeguidoresAndSeguindo');
     }
   }
 
-  static Future<void> putPerfil(PerfilEditadoDTO dto, int? donoId) async {
-    try{
-      final response = await _apiClient.put(
-          '/perfis/$donoId',
-          data: dto.toJson()
-      );
+  static Future<List<PublicacaoModel>> getPublicacoesByUsuarioId(
+    int usuarioId,
+  ) async {
+    try {
+      final response = await _apiClient.get('/publicacoes/usuario/$usuarioId');
+
+      if (response.statusCode == 200 && response.data != null) {
+        final List<dynamic> data = response.data;
+        return data.map((json) => PublicacaoModel.fromJson(json)).toList();
+      }
+
+      return [];
+    } catch (e) {
+      throw Exception('Erro no getPublicacoesByUsuarioId');
     }
-    catch (e) {
+  }
+
+  static Future<List<PerfilModel>> pesquisarPerfis(String query) async {
+    if (query.trim().isEmpty) {
+      return [];
+    }
+
+    try {
+      final response = await _apiClient.get('/perfis/pesquisar?q=$query');
+
+      if (response.statusCode == 200 && response.data != null) {
+        final List<dynamic> data = response.data;
+        return data.map((json) => PerfilModel.fromJson(json)).toList();
+      }
+      return [];
+    } catch (e) {
+      print('Erro ao pesquisar perfis: $e');
+      throw Exception('Erro ao pesquisar perfis');
+    }
+  }
+
+  static Future<void> putPerfil(PerfilEditadoDTO dto, int? donoId) async {
+    try {
+      final response = await _apiClient.put(
+        '/perfis/$donoId',
+        data: dto.toJson(),
+      );
+    } catch (e) {
       throw Exception('Erro no putPerfil');
     }
   }

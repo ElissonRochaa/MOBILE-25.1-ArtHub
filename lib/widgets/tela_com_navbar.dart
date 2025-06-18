@@ -57,25 +57,7 @@ class _TelaComNavbarState extends State<TelaComNavbar> {
             },
         letIndexChange: (index) => true,
       ),
-      body: Stack(
-        children: [
-          _pages[currentPageIndex],
-          if (pesquisa.isNotEmpty)
-            Positioned.fill(
-              child: Container(
-                color: Theme.of(context).colorScheme.surface!.withOpacity(0.95),
-                child: Column(
-                  children: [
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                    PerfilPesquisaWidget(pesquisa: pesquisa),
-                  ],
-                ),
-              ),
-            ),
-        ],
-      ),
+      body: Stack(children: [_pages[currentPageIndex]]),
     );
   }
 }
