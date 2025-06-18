@@ -1,13 +1,166 @@
+import 'dart:io';
+import 'dart:typed_data';
+
+import 'package:universal_io/io.dart' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:arthub/models/dtos/perfil_editado_DTO.dart';
 import 'package:arthub/provider/modo_tema_provider.dart';
+import 'package:arthub/services/perfil_service.dart';
+import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/rodape_widget.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
+import 'package:arthub/widgets/stackbar.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class TelaEditarPerfil extends StatelessWidget {
+class TelaEditarPerfil extends StatefulWidget {
   const TelaEditarPerfil({super.key});
 
-  Widget _campo(BuildContext context, String label) {
+  @override
+  State<TelaEditarPerfil> createState() => _TelaEditarPerfilState();
+}
+
+class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
+  final TextEditingController _apelidoController = TextEditingController();
+  final TextEditingController _biografiaController = TextEditingController();
+
+  late Future<ImageProvider> _fotoPerfilFuture;
+  late Future<ImageProvider> _bannerFuture;
+
+  File? _novaFotoPerfil;
+  Uint8List? _novaFotoPerfilWeb;
+  File? _novoBanner;
+  Uint8List? _novoBannerWeb;
+
+  @override
+  void dispose(){
+    _apelidoController.dispose();
+    _biografiaController.dispose();
+    super.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fotoPerfilFuture = _getFotoPerfilProvider();
+    _bannerFuture = _getBannerProvider();
+  }
+
+  Future<void> _enviarAlteracoes() async {
+    final usuarioId = await UsuarioService.getUsuarioId();
+    final usuario = await UsuarioService.getUsuarioById(usuarioId!);
+    final perfil = await PerfilService.getPerfilByUsuarioId(usuarioId);
+
+    final perfilEditado = PerfilEditadoDTO(
+      apelido: _apelidoController.text.isNotEmpty ?
+        '@${_apelidoController.text.trim().replaceAll(' ', '')}' : usuario.apelido,
+      biografia: _biografiaController.text.isNotEmpty ?
+        _biografiaController.text : perfil.biografia!,
+    );
+
+    await PerfilService.putPerfil(perfilEditado, usuarioId);
+    await PerfilService.uploadImagem(perfil.id, _novaFotoPerfil, _novaFotoPerfilWeb, true);
+    await PerfilService.uploadImagem(perfil.id, _novoBanner, _novoBannerWeb, false);
+
+    Navigator.pop(context);
+    showCustomSnackBar(context, 'Alteraçõe realizadas com sucesso');
+  }
+
+  bool get isMobile => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+
+  Future<void> _selecionarFotoPerfil() async {
+    try{
+      FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+      );
+
+      if(arquivoEscolhido != null){
+        setState(() {
+          if (isMobile){
+            setState(() {
+              _novaFotoPerfil = File(arquivoEscolhido.files.single.path!);
+            });
+          }
+          else {
+            setState(() {
+              _novaFotoPerfilWeb = arquivoEscolhido.files.single.bytes;
+            });
+          }
+        });
+      }
+    }
+    catch (e) {
+      throw Exception('Erro no _selecionarArquivo de TelaEditarPerfil');
+    }
+  }
+
+  Future<void> _selecionarBanner() async {
+    try{
+      FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+      );
+
+      if(arquivoEscolhido != null){
+        setState(() {
+          if (isMobile){
+            setState(() {
+              _novoBanner = File(arquivoEscolhido.files.single.path!);
+            });
+          }
+          else {
+            setState(() {
+              _novoBannerWeb = arquivoEscolhido.files.single.bytes;
+            });
+          }
+        });
+      }
+    }
+    catch (e) {
+      throw Exception('Erro no _selecionarArquivo de TelaEditarPerfil');
+    }
+  }
+
+  Future<ImageProvider> _getFotoPerfilProvider()  async {
+    final usuarioId = await UsuarioService.getUsuarioId();
+    final fotoPerfil = await PerfilService.getImagePerfil(usuarioId!).catchError((_) => null);
+
+    if (isMobile){
+      return fotoPerfil ?? (_novaFotoPerfil != null ?
+      FileImage(_novaFotoPerfil!) :
+      AssetImage('assets/images/perfil_default.jpg') as ImageProvider
+      );
+    }
+    else {
+      return fotoPerfil ?? (_novaFotoPerfilWeb != null ?
+      MemoryImage(_novaFotoPerfilWeb!) :
+      AssetImage('assets/images/perfil_default.jpg') as ImageProvider
+      );
+    }
+  }
+
+  Future<ImageProvider> _getBannerProvider() async {
+    final usuarioId = await UsuarioService.getUsuarioId();
+    final bannerPerfil = await PerfilService.getImageBanner(usuarioId!).catchError((_) => null);
+
+    if (isMobile){
+      return bannerPerfil ?? (_novoBanner != null ?
+      FileImage(_novoBanner!) :
+      AssetImage('assets/images/banner_default.png') as ImageProvider
+      );
+    }
+    else {
+      return bannerPerfil ?? (
+          _novoBannerWeb != null ?
+          MemoryImage(_novoBannerWeb!) :
+          AssetImage('assets/images/banner_default.png') as ImageProvider
+      );
+    }
+  }
+
+  Widget _campo(BuildContext context, String label, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Material(
@@ -15,6 +168,7 @@ class TelaEditarPerfil extends StatelessWidget {
         shadowColor: Theme.of(context).colorScheme.onSurface,
         borderRadius: BorderRadius.circular(10),
         child: TextFormField(
+          controller: controller,
           decoration: InputDecoration(
             labelText: label,
             labelStyle: TextStyle(
@@ -236,40 +390,41 @@ class TelaEditarPerfil extends StatelessWidget {
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
-
             SizedBox(height: 12),
-            Stack(
-              alignment: Alignment.bottomRight,
-              children: [
-                CircleAvatar(
-                  radius: 40,
-                  backgroundImage: AssetImage('assets/images/hannah.jpg'),
-                ),
-                InkWell(
-                  onTap: () {
-                    {
-                      print("Ícone de edição foto de perfil clicado");
-                    }
-                  },
-                  child: CircleAvatar(
-                    radius: 14,
-                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                    child: Icon(
-                      Icons.edit,
-                      size: 16,
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
-                  ),
-                ),
-              ],
+            FutureBuilder(
+                future: _fotoPerfilFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting){
+                    return CircularProgressIndicator();
+                  }
+                  return Stack(
+                    alignment: Alignment.bottomRight,
+                    children: [
+                      CircleAvatar(
+                        radius: 40,
+                        backgroundImage: snapshot.data ?? AssetImage('assets/images/perfil_default.jpg') as ImageProvider,
+                      ),
+                      InkWell(
+                        onTap: _selecionarFotoPerfil,
+                        child: CircleAvatar(
+                          radius: 14,
+                          backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                          child: Icon(
+                            Icons.edit,
+                            size: 16,
+                            color: Theme.of(context).colorScheme.surface,
+                          ),
+                        ),
+                      )
+                    ],
+                  );
+                }
             ),
 
             const SizedBox(height: 16),
 
             // Campos de input
-            _campo(context, 'Nome'),
-            _campo(context, 'Apelido'),
-            _campo(context, 'Email'),
+            _campo(context, 'Apelido', _apelidoController),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -300,37 +455,43 @@ class TelaEditarPerfil extends StatelessWidget {
                           ),
                         ),
                         SizedBox(height: 3),
-                        Stack(
-                          alignment: Alignment.topRight,
-                          children: [
-                            Container(
-                              width: 120,
-                              height: 70,
-                              decoration: BoxDecoration(
-                                color: Colors.grey[300],
-                                borderRadius: BorderRadius.circular(8),
-                                image: const DecorationImage(
-                                  image: AssetImage(
-                                    'assets/images/gato_horizontal.jpg',
+                        FutureBuilder(
+                            future: _bannerFuture,
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState == ConnectionState.waiting){
+                                return CircularProgressIndicator();
+                              }
+                              return Stack(
+                                alignment: Alignment.topRight,
+                                children: [
+                                  Container(
+                                    width: 120,
+                                    height: 70,
+                                    decoration: BoxDecoration(
+                                      color: Colors.grey[300],
+                                      borderRadius: BorderRadius.circular(8),
+                                      image: DecorationImage(
+                                        image: snapshot.data
+                                            ?? AssetImage('assets/images/banner_default.png') as ImageProvider,
+                                        fit: BoxFit.cover,
+                                      )
+                                    ),
                                   ),
-                                  fit: BoxFit.cover,
-                                ),
-                              ),
-                            ),
-                            InkWell(
-                              onTap: () {
-                                {
-                                  print("Ícone de edição banner clicado");
-                                }
-                              },
-                              child: CircleAvatar(
-                                radius: 14,
-                                backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                child: Icon(Icons.edit, size: 16),
-                              ),
-                            ),
-                          ],
+                                  InkWell(
+                                    onTap: _selecionarBanner,
+                                    child: CircleAvatar(
+                                      radius: 14,
+                                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                                      child: Icon(
+                                        Icons.edit,
+                                        size: 16,
+                                        color: Theme.of(context).colorScheme.surface,
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              );
+                            }
                         ),
                       ],
                     ),
@@ -364,23 +525,22 @@ class TelaEditarPerfil extends StatelessWidget {
                           ),
                           const SizedBox(height: 3),
                           TextFormField(
+                            controller: _biografiaController,
                             maxLines: 2,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor:
-                                  Theme.of(context).colorScheme.secondary,
+                              fillColor: Theme.of(context).colorScheme.secondary,
+                              contentPadding: EdgeInsets.all(12),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
+                                  color: Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(
-                                  color:
-                                      Theme.of(context).colorScheme.secondary,
+                                  color: Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -399,7 +559,7 @@ class TelaEditarPerfil extends StatelessWidget {
             ),
 
             BotaoEstilizadoWidget(
-              funcao: () => {print("Alterações salvas")},
+              funcao: () => {_enviarAlteracoes()},
               texto: 'Salvar alterações',
             ),
 

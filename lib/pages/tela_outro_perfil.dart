@@ -1,6 +1,7 @@
 import 'package:arthub/models/perfil_model.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/services/perfil_service.dart';
+import 'package:arthub/services/publicacao_service.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
@@ -51,7 +52,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
       PerfilService.getSeguidoresAndSeguindo(usuarioId),
       PerfilService.getImagePerfil(usuarioId),
       PerfilService.getImageBanner(usuarioId),
-      PerfilService.getPublicacoesByUsuarioId(usuarioId),
+      PublicacaoService.getPublicacaoByUsuario(usuarioId),
     ]);
 
     return PerfilPageData(
