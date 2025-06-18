@@ -19,7 +19,7 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
     try{
       FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles(
         type: FileType.custom,
-        allowedExtensions: ['jpg', 'jpeg', 'mp4', 'mp3']
+        allowedExtensions: ['jpg', 'png', 'jpeg', 'mp4', 'mp3']
       );
 
       if(arquivoEscolhido != null){
