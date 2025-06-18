@@ -2,13 +2,16 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'dart:convert';
 
+import 'package:arthub/services/publicacao_service.dart';
+import 'package:arthub/services/token_service.dart';
+import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
-import 'package:arthub/widgets/lista_filtros_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
 import 'package:video_player/video_player.dart';
+import 'package:arthub/enums/categoria_enum.dart';
 
 class TelaCriarPublicacao extends StatefulWidget {
   const TelaCriarPublicacao({super.key});
@@ -24,6 +27,10 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
   VideoPlayerController? _videoController;
   AudioPlayer? _audioPlayer;
   TextEditingController _textoController = TextEditingController();
+  TextEditingController _tituloController = TextEditingController();
+  TextEditingController _legendaController = TextEditingController();
+
+  CategoriaEnum? _categoriaSelecionada;
 
   Future<void> _selecionarArquivo() async {
     try {
@@ -182,6 +189,8 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
     _videoController?.dispose();
     _audioPlayer?.dispose();
     _textoController.dispose();
+    _tituloController.dispose();
+    _legendaController.dispose();
     super.dispose();
   }
 
@@ -199,22 +208,42 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
-            // Aqui o carrossel de categorias:
             Padding(
               padding: const EdgeInsets.only(top: 20),
               child: Text(
-                'Em quais categorias essa publicação se encaixa?',
+                'Em qual categoria essa publicação se encaixa?',
                 style: Theme.of(context).textTheme.titleMedium?.copyWith(
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
               ),
             ),
-            ListaFiltrosWidget(),
+            SizedBox(height: 10),
+            DropdownButtonFormField<CategoriaEnum>(
+              value: _categoriaSelecionada,
+              decoration: InputDecoration(
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                hintText: 'Selecione uma categoria',
+              ),
+              items:
+                  CategoriaEnum.values.map((categoria) {
+                    return DropdownMenuItem<CategoriaEnum>(
+                      value: categoria,
+                      child: Text(categoria.name.toUpperCase()),
+                    );
+                  }).toList(),
+              onChanged: (categoria) {
+                setState(() {
+                  _categoriaSelecionada = categoria;
+                });
+              },
+            ),
             SizedBox(height: 5),
-            // Campo para colocar o título da publicação
-            _input('Qual o título da publicação?'),
+            _input('Qual o título da publicação?', _tituloController),
             SizedBox(height: 15),
-            // Campo para texto ou mídia
             Container(
               height: 374,
               width: 374,
@@ -281,13 +310,61 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
               ),
             ),
             SizedBox(height: 15),
-            _input('Qual a legenda da publicação?'),
+            _input('Qual a legenda da publicação?', _legendaController),
             SizedBox(height: 25),
             BotaoEstilizadoWidget(
-              funcao: () {
-                print('Publicação foi criada');
-                print('Texto: ${_textoController.text}');
-                print('Arquivo: $_fileExtension');
+              funcao: () async {
+                if (_categoriaSelecionada == null) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Selecione uma categoria!')),
+                  );
+                  return;
+                }
+                try {
+                  String email = await TokenService.decodeToken();
+                  final usuario = await UsuarioService.getUsuarioByEmail(email);
+                  int idDono = usuario.id;
+
+                  // Primeiro cria os atributos da publicação
+                  final Map<String, dynamic> dadosPublicacao = {
+                    'titulo': _tituloController.text,
+                    'legenda': _legendaController.text,
+                    'categoria': _categoriaSelecionada!.name.toUpperCase(),
+                    'nomeConteudo':
+                        (_fileExtension == null || _fileExtension == '')
+                            ? _textoController.text
+                            : null,
+                    'tipoArquivo':
+                        (_fileExtension == null || _fileExtension == '')
+                            ? 'TEXTO'
+                            : (_fileExtension == 'mp4'
+                                ? 'VIDEO'
+                                : (_fileExtension == 'mp3'
+                                    ? 'AUDIO'
+                                    : 'IMAGEM')),
+                  };
+                  // Cria a publicação como receptáculo (vazia)
+                  final publicacao = await PublicacaoService.criarPublicacao(
+                    dadosPublicacao,
+                    idDono,
+                  );
+                  // Se tiver mídia, faz o upload (put lá no back-end)
+                  if (_arquivoBytes != null && _fileExtension != null) {
+                    await PublicacaoService.uploadMidia(
+                      publicacao.id,
+                      _arquivoBytes!,
+                      'arquivo.$_fileExtension',
+                    );
+                  }
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Publicação criada com sucesso!')),
+                  );
+                  Navigator.pushNamed(context, '/home');
+                } catch (e) {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text('Erro ao criar publicação: $e')),
+                  );
+                }
               },
               texto: 'Compartilhar Publicação',
             ),
@@ -297,7 +374,7 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
     );
   }
 
-  Widget _input(String texto) {
+  Widget _input(String texto, TextEditingController controller) {
     return Container(
       width: MediaQuery.of(context).size.width - 54,
       height: 60,
@@ -307,6 +384,7 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
         border: Border.all(width: 1, color: Color(0xFFCAC4D0)),
       ),
       child: TextFormField(
+        controller: controller,
         obscureText: false,
         decoration: InputDecoration(
           hintText: texto,
