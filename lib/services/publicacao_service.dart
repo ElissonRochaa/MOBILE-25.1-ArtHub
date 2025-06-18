@@ -1,10 +1,21 @@
 import 'dart:typed_data';
 import 'package:arthub/api/api_client.dart';
 import 'package:arthub/models/publicacao_model.dart';
+import 'package:arthub/services/token_service.dart';
+import 'package:arthub/services/usuario_service.dart';
 import 'package:dio/dio.dart';
 
 class PublicacaoService {
   static final ApiClient _apiClient = ApiClient();
+
+  // Future<int> getIdDono() async {
+  //   String email = await TokenService.decodeToken(); //Extrai o email do token
+  //   final usuario = await UsuarioService.getUsuarioByEmail(
+  //     email,
+  //   ); //Busca o usuário pelo email
+
+  //   return usuario.id; //Pega o ID!
+  // }
 
   static Future<List<PublicacaoModel>> getAllPublicacao() async {
     final response = await _apiClient.get('/publicacoes');
@@ -20,15 +31,16 @@ class PublicacaoService {
     throw Exception('Algo deu errado ao buscar publicações');
   }
 
-  static Future<List<PublicacaoModel>> getPublicacaoByUsuario() async {
-    final response = await _apiClient.get('/usuario/{idUsuario}');
-    List<PublicacaoModel> pubicacoesDoUsuario =
+  static Future<List<PublicacaoModel>> getPublicacaoByUsuario(
+    int usuarioId,
+  ) async {
+    final response = await _apiClient.get('/publicacoes/usuario/$usuarioId');
+    List<PublicacaoModel> publicacoesDoUsuario =
         (response.data as List)
             .map((post) => PublicacaoModel.fromJson(post))
             .toList();
-
     if (response.statusCode == 200) {
-      return pubicacoesDoUsuario;
+      return publicacoesDoUsuario;
     }
 
     throw Exception('Algo deu errado ao buscar as publicações do usuário');
@@ -58,6 +70,70 @@ class PublicacaoService {
       );
     } catch (e) {
       throw Exception('Erro desconhecido ao buscar imagem: $e');
+    }
+  }
+
+  static Future<PublicacaoModel> putPublicacao(
+    PublicacaoModel publicacao,
+  ) async {
+    String email = await TokenService.decodeToken(); //Extrai Email
+    final usuario = await UsuarioService.getUsuarioByEmail(
+      email,
+    ); //Pega o usuário pelo email
+    int idDono = usuario.id; //Pega o ID do usuário
+    // Acreditem, a gente vai usar isso sempre!
+    // final data = publicacao.toEditJson();
+    // print("Teste de JSON: $data");
+    final response = await _apiClient.put(
+      '/publicacoes/$idDono',
+      data: publicacao.toEditJson(),
+    );
+
+    if (response.statusCode == 200) {
+      return PublicacaoModel.fromJson(response.data);
+    }
+
+    throw Exception('Algo deu errado ao atualizar a publicação');
+  }
+
+  static Future<PublicacaoModel> getById(int idPublicacao) async {
+    //Buscar publicação por ID
+    final response = await _apiClient.get('/publicacoes/$idPublicacao');
+    if (response.statusCode == 200) {
+      return PublicacaoModel.fromJson(response.data);
+    }
+    throw Exception('Erro ao buscar publicação por ID');
+  }
+
+  static Future<PublicacaoModel> criarPublicacao(
+    Map<String, dynamic> data,
+    int idDono,
+  ) async {
+    final response = await _apiClient.postData(
+      '/publicacoes/$idDono',
+      data: data,
+    );
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return PublicacaoModel.fromJson(response.data);
+    }
+    throw Exception('Erro ao criar publicação');
+  }
+
+  static Future<void> uploadMidia(
+    int idPublicacao,
+    Uint8List bytes,
+    String fileName,
+  ) async {
+    final formData = FormData.fromMap({
+      'file': MultipartFile.fromBytes(bytes, filename: fileName),
+    });
+    final response = await _apiClient.putImage(
+      '/publicacoes/add-media/$idPublicacao',
+      formData,
+      Options(contentType: 'multipart/form-data'),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Erro ao enviar mídia');
     }
   }
 }

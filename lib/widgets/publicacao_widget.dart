@@ -1,8 +1,13 @@
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:arthub/enums/tipo_arquivo_enum.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/services/publicacao_service.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+import 'package:video_player/video_player.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:html' as html;
 
 class PublicacaoWidget extends StatefulWidget {
   final PublicacaoModel publicacao;
@@ -18,10 +23,65 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
   bool _isLoadingMedia = false;
   String? _mediaError;
 
+  VideoPlayerController? _videoController;
+  File? _tempVideoFile;
+
   @override
   void initState() {
     super.initState();
     if (widget.publicacao.tipoArquivo == TipoArquivoEnum.imagem) {
+      if (widget.publicacao.id != null) {
+        _fetchMediaContent();
+      }
+    } else if (widget.publicacao.tipoArquivo == TipoArquivoEnum.video) {
+      if (widget.publicacao.id != null) {
+        _initVideoPreview();
+      }
+    }
+  }
+
+  Future<void> _initVideoPreview() async {
+    if (!mounted) return;
+    setState(() {
+      _isLoadingMedia = true;
+    });
+    try {
+      final videoBytes = await PublicacaoService.getBytes(
+        widget.publicacao.id!.toString(),
+      );
+
+      if (kIsWeb) {
+        final blob = html.Blob([videoBytes], 'video/mp4');
+        final url = html.Url.createObjectUrlFromBlob(blob);
+        _videoController = VideoPlayerController.networkUrl(Uri.parse(url));
+      } else {
+        final tempDir = await getTemporaryDirectory();
+        _tempVideoFile = File(
+          '${tempDir.path}/preview_${widget.publicacao.id}.mp4',
+        );
+        await _tempVideoFile!.writeAsBytes(videoBytes);
+        _videoController = VideoPlayerController.file(_tempVideoFile!);
+      }
+
+      await _videoController!.initialize();
+      _videoController!.setLooping(true);
+      _videoController!.setVolume(0.0);
+      _videoController!.play();
+
+      if (mounted) {
+        setState(() {
+          _isLoadingMedia = false;
+        });
+      }
+    } catch (e) {
+      if (mounted) {
+        setState(() {
+          _mediaError = "Erro no preview do vídeo";
+          _isLoadingMedia = false;
+        });
+      }
+      print("Erro ao inicializar preview do vídeo: $e");
+    }
       _fetchMediaContent();
         }
   }
@@ -34,12 +94,13 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
         _fetchedImageBytes = null;
       });
     }
-
     try {
+      if (widget.publicacao.id == null) {
+        throw Exception("ID da publicação é nulo.");
+      }
       final bytes = await PublicacaoService.getBytes(
         widget.publicacao.id.toString(),
       );
-
       if (mounted) {
         setState(() {
           _fetchedImageBytes = bytes;
@@ -64,13 +125,12 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
           return Container(
             height: 200,
             decoration: BoxDecoration(
-              color: Theme.of(context).colorScheme.onSecondary.withOpacity(0.3),
+              color: Theme.of(context).colorScheme.onSecondary,
               borderRadius: BorderRadius.circular(16),
             ),
             child: const Center(child: CircularProgressIndicator()),
           );
         }
-
         if (_mediaError != null) {
           return Container(
             height: 200,
@@ -160,6 +220,86 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
                   color: Theme.of(context).colorScheme.onSurface,
                 ),
                 textAlign: TextAlign.left,
+              ),
+            ],
+          ),
+        );
+      case TipoArquivoEnum.video:
+        if (_isLoadingMedia ||
+            _videoController == null ||
+            !_videoController!.value.isInitialized) {
+          return Container(
+            height: 200,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.onSecondary,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: const Center(child: CircularProgressIndicator()),
+          );
+        }
+        if (_mediaError != null) {
+          return Container(
+            height: 200,
+            decoration: BoxDecoration(
+              color: Theme.of(context).colorScheme.errorContainer,
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: Center(child: Icon(Icons.error_outline)),
+          );
+        }
+        return ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Stack(
+            children: [
+              AspectRatio(
+                aspectRatio: _videoController!.value.aspectRatio,
+                child: VideoPlayer(_videoController!),
+              ),
+              Positioned.fill(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () {
+                      Navigator.pushNamed(
+                        context,
+                        '/publicacao',
+                        arguments: widget.publicacao,
+                      );
+                    },
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      case TipoArquivoEnum.audio:
+        return Container(
+          height: 200,
+          padding: const EdgeInsets.all(16.0),
+          decoration: BoxDecoration(
+            color: Theme.of(context).colorScheme.secondary,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: Theme.of(context).colorScheme.primary),
+          ),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.graphic_eq,
+                size: 48,
+                color: Theme.of(context).colorScheme.primary,
+              ),
+              const SizedBox(height: 16),
+              Text(
+                widget.publicacao.titulo ?? "Áudio",
+                style: TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.onSurface,
+                ),
+                textAlign: TextAlign.center,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
               ),
             ],
           ),

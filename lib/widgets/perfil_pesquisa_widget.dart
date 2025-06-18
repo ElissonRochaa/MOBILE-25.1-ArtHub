@@ -1,72 +1,61 @@
 import 'package:flutter/material.dart';
+import '../models/perfil_model.dart';
 
 class PerfilPesquisaWidget extends StatelessWidget {
-  final String pesquisa;
+  final PerfilModel perfil;
 
-  const PerfilPesquisaWidget({super.key, required this.pesquisa});
+  const PerfilPesquisaWidget({super.key, required this.perfil});
 
   @override
   Widget build(BuildContext context) {
+    final String imageUrl = 'http://localhost:8080${perfil.fotoPerfil}';
+
     return Padding(
-      padding: const EdgeInsets.only(top: 10, bottom: 2),
+      padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 16),
       child: GestureDetector(
         onTap: () {
-          Navigator.pushNamed(context, '/outro-perfil');
+          Navigator.pushNamed(
+            context,
+            '/outro-perfil',
+            arguments: perfil.usuario.id,
+          );
         },
         child: Container(
-          padding: const EdgeInsets.all(20),
+          padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
             color: Theme.of(context).colorScheme.primary,
-            borderRadius: BorderRadius.circular(35),
-            boxShadow: const [
-              BoxShadow(
-                color: Color.fromRGBO(10, 10, 10, 0.3),
-                offset: Offset(5, 5),
-                blurRadius: 2.0,
-              ),
-            ],
+            borderRadius: BorderRadius.circular(20),
           ),
-          width: 332,
           child: Row(
             children: [
-              Container(
-                height: 50,
-                width: 50,
-                decoration: BoxDecoration(
-                  image: const DecorationImage(
-                    image: AssetImage('assets/images/snoopy.jpeg'),
-                    fit: BoxFit.cover,
-                  ),
-                  borderRadius: BorderRadius.circular(70),
-                ),
+              CircleAvatar(
+                radius: 25,
+                backgroundImage: NetworkImage(imageUrl),
+                onBackgroundImageError: (_, __) {},
+                child:
+                    perfil.fotoPerfil == null
+                        ? const Icon(Icons.person, size: 30)
+                        : null,
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 15),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'Snoopy chill guy',
+                    perfil.usuario.nome,
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
                       color: Theme.of(context).colorScheme.onPrimary,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                   const SizedBox(height: 4),
-                  Row(
-                    children: [
-                      Text(
-                        '@esnupi',
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                      const SizedBox(width: 10),
-                      Text(
-                        '10M seguidores',
-                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                          color: Theme.of(context).colorScheme.onPrimary,
-                        ),
-                      ),
-                    ],
+                  Text(
+                    '@${perfil.usuario.apelido}',
+                    style: Theme.of(context).textTheme.labelMedium?.copyWith(
+                      color: Theme.of(
+                        context,
+                      ).colorScheme.onPrimary.withOpacity(0.8),
+                    ),
                   ),
                 ],
               ),

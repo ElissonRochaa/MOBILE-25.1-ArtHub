@@ -11,62 +11,94 @@ class BarraPesquisaWidget extends StatefulWidget {
 
 class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
   final TextEditingController controller = TextEditingController();
+  final FocusNode _focusNode = FocusNode();
 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      context.read<BarraPesquisaProvider>().setTexto(
-        '',
-      ); //Aqui limpa o texto da barra!
+    _focusNode.addListener(() {
+      if (!_focusNode.hasFocus) {
+        Future.delayed(const Duration(milliseconds: 200), () {
+          context.read<BarraPesquisaProvider>().removeOverlay();
+        });
+      }
     });
   }
 
   @override
+  void dispose() {
+    controller.dispose();
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: SizedBox(
-            height: 31,
-            width: MediaQuery.of(context).size.width * 0.9,
-            child: SearchBar(
-              controller: controller,
-              onChanged:
-                  (value) =>
-                      context.read<BarraPesquisaProvider>().setTexto(value),
-              hintText: '',
-              leading: Icon(
-                Icons.search,
-                color: Theme.of(context).colorScheme.primary,
-              ),
-              backgroundColor: WidgetStatePropertyAll(
-                Theme.of(context).colorScheme.surface,
-              ),
-              side: WidgetStatePropertyAll(
-                BorderSide(
-                  color: Theme.of(context).colorScheme.tertiary,
-                  width: 2,
+    return Consumer<BarraPesquisaProvider>(
+      builder: (context, provider, child) {
+        if (provider.texto.isEmpty && controller.text.isNotEmpty) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            controller.clear();
+          });
+        }
+
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Expanded(
+              child: SizedBox(
+                height: 31,
+                child: SearchBar(
+                  controller: controller,
+                  focusNode: _focusNode,
+                  hintText: '',
+                  onChanged: (value) {
+                    provider.onTextoAlterado(context, value);
+                  },
+                  onTap: () {
+                    if (controller.text.isNotEmpty) {
+                      provider.onTextoAlterado(context, controller.text);
+                    }
+                  },
+                  leading: Icon(
+                    Icons.search,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  backgroundColor: MaterialStatePropertyAll(
+                    Theme.of(context).colorScheme.surface,
+                  ),
+                  side: MaterialStatePropertyAll(
+                    BorderSide(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      width: 2,
+                    ),
+                  ),
+                  shape: MaterialStatePropertyAll(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  padding: const MaterialStatePropertyAll(
+                    EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                  textStyle: MaterialStateProperty.all(
+                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                  ),
                 ),
               ),
-              shape: WidgetStatePropertyAll(
-                RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
-              ),
-              padding: const WidgetStatePropertyAll(
-                EdgeInsets.symmetric(horizontal: 10),
+            ),
+            const SizedBox(width: 8),
+            Align(
+              child: Image.asset(
+                'assets/images/logo_arthub.png',
+                color: Theme.of(context).colorScheme.onPrimary,
+                height: 120,
               ),
             ),
-          ),
-        ),
-        Align(
-          child: Image.asset(
-            'assets/images/logo_arthub.png',
-            color: Theme.of(context).colorScheme.onPrimary,
-            height: 120,
-          ),
-        ),
-      ],
+          ],
+        );
+      },
     );
   }
 }
