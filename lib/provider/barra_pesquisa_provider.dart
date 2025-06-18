@@ -7,6 +7,20 @@ import '../widgets/resultado_pesquisa_widget.dart';
 class BarraPesquisaProvider extends ChangeNotifier {
   final PerfilService _perfilService = PerfilService();
 
+  List<PerfilModel> _resultados = [];
+
+  List<PerfilModel> get resultados => _resultados;
+
+  void setResultados(List<PerfilModel> novosResultados) {
+    _resultados = novosResultados;
+    notifyListeners();
+  }
+
+  void clearResultados() {
+    _resultados = [];
+    notifyListeners();
+  }
+
   String _texto = '';
   List<PerfilModel> _perfisEncontrados = [];
   bool _isLoading = false;

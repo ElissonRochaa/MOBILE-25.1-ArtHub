@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:arthub/api/api_client.dart';
 import 'package:arthub/models/perfil_model.dart';
-import 'package:arthub/models/usuario_model.dart';
+import 'package:arthub/models/publicacao_model.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 
@@ -13,11 +13,10 @@ class PerfilService {
     final response = await _apiClient.get('/perfis/$usuarioId');
 
     if (response.statusCode != 200) {
-      throw Exception('Erro no getPerfilByUsuario');
+      throw Exception('Erro no getPerfilByUsuarioId');
     }
 
-    final perfil = await PerfilModel.fromJson(response.data);
-    return perfil;
+    return PerfilModel.fromJson(response.data);
   }
 
   static Future<ImageProvider?> getImagePerfil(int perfilId) async {
@@ -79,20 +78,37 @@ class PerfilService {
               responseSeguidores.data != null)) {
         final seguidoresData =
             (responseSeguidores.data as List)
-                .map((publicacao) => PerfilModel.fromJson(publicacao))
+                .map((perfil) => PerfilModel.fromJson(perfil))
                 .toList();
 
         final seguindoData =
             (responseSeguindo.data as List)
-                .map((publicacao) => PerfilModel.fromJson(publicacao))
+                .map((perfil) => PerfilModel.fromJson(perfil))
                 .toList();
 
         return [seguidoresData.length, seguindoData.length];
       }
 
-      return [];
+      return [0, 0];
     } catch (e) {
       throw Exception('Erro no getSeguidoresAndSeguindo');
+    }
+  }
+
+  static Future<List<PublicacaoModel>> getPublicacoesByUsuarioId(
+    int usuarioId,
+  ) async {
+    try {
+      final response = await _apiClient.get('/publicacoes/usuario/$usuarioId');
+
+      if (response.statusCode == 200 && response.data != null) {
+        final List<dynamic> data = response.data;
+        return data.map((json) => PublicacaoModel.fromJson(json)).toList();
+      }
+
+      return [];
+    } catch (e) {
+      throw Exception('Erro no getPublicacoesByUsuarioId');
     }
   }
 
