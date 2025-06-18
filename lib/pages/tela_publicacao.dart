@@ -604,12 +604,21 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
-                      '@${_publicacaoAtual.perfil.usuario.apelido ?? "Usuário desconhecido"}',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/outro-perfil',
+                          arguments: _publicacaoAtual.perfil.usuario.id,
+                        );
+                      },
+                      child: Text(
+                        '@${_publicacaoAtual.perfil.usuario.apelido ?? "Usuário desconhecido"}',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Row(
