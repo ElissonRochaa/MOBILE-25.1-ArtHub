@@ -34,7 +34,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
     try {
       final usuarioId = await UsuarioService.getUsuarioId();
       final usuario = await UsuarioService.getUsuarioById(usuarioId!);
-      final perfil = await PerfilService.getPerfilByUsuarioId(usuarioId!);
+      final perfil = await PerfilService.getPerfilByUsuarioId(usuarioId);
 
       final perfilEditado = PerfilEditadoDTO(
         apelido: _apelidoController.text.isNotEmpty ?

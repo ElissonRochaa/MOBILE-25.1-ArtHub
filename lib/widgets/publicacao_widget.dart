@@ -82,8 +82,6 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
       }
       print("Erro ao inicializar preview do vídeo: $e");
     }
-      _fetchMediaContent();
-        }
   }
 
   Future<void> _fetchMediaContent() async {
@@ -99,7 +97,7 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
         throw Exception("ID da publicação é nulo.");
       }
       final bytes = await PublicacaoService.getBytes(
-        widget.publicacao.id.toString(),
+        widget.publicacao.id!.toString(),
       );
       if (mounted) {
         setState(() {

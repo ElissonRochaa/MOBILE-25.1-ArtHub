@@ -147,8 +147,9 @@ class _TelaEditarPublicacaoState extends State<TelaEditarPublicacao> {
                                         )
                                         .toList(),
                             onChanged: (cat) {
-                              if (cat != null)
+                              if (cat != null) {
                                 setState(() => _categoriaSelecionada = cat);
+                              }
                             },
                             validator:
                                 (value) =>

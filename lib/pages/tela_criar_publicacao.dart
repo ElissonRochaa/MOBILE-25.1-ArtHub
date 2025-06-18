@@ -26,9 +26,9 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
   String? _fileExtension;
   VideoPlayerController? _videoController;
   AudioPlayer? _audioPlayer;
-  TextEditingController _textoController = TextEditingController();
-  TextEditingController _tituloController = TextEditingController();
-  TextEditingController _legendaController = TextEditingController();
+  final TextEditingController _textoController = TextEditingController();
+  final TextEditingController _tituloController = TextEditingController();
+  final TextEditingController _legendaController = TextEditingController();
 
   CategoriaEnum? _categoriaSelecionada;
 

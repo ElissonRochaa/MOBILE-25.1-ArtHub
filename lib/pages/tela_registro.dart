@@ -1,4 +1,3 @@
-import 'package:arthub/api/api_client.dart';
 import 'package:arthub/models/cadastro_model.dart';
 import 'package:arthub/services/auth_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
