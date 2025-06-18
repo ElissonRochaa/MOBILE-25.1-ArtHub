@@ -32,11 +32,6 @@ class AuthService {
       'telefone': cadastro.telefone,
       'dataNascimento': cadastro.dataNascimento,
     });
-
-    //Aqui era só debug
-    // print(response.data);
-    // print(response.statusCode);
-
     if (response.statusCode != 201) {
       throw Exception('Falha ao cadastrar usuário');
     }

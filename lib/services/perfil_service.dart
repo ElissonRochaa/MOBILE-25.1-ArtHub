@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:arthub/api/api_client.dart';
+import 'package:arthub/models/dtos/perfil_editado_DTO.dart';
 import 'package:arthub/models/perfil_model.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:dio/dio.dart';
@@ -128,6 +129,17 @@ class PerfilService {
     } catch (e) {
       print('Erro ao pesquisar perfis: $e');
       throw Exception('Erro ao pesquisar perfis');
+    }
+  }
+
+  static Future<void> putPerfil(PerfilEditadoDTO dto, int? donoId) async {
+    try {
+      final response = await _apiClient.put(
+        '/perfis/$donoId',
+        data: dto.toJson(),
+      );
+    } catch (e) {
+      throw Exception('Erro no putPerfil');
     }
   }
 }

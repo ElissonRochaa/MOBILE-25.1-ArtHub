@@ -1,13 +1,59 @@
+import 'dart:io';
+
+import 'package:arthub/models/dtos/perfil_editado_DTO.dart';
 import 'package:arthub/provider/modo_tema_provider.dart';
+import 'package:arthub/services/perfil_service.dart';
+import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/rodape_widget.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
+import 'package:arthub/widgets/stackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class TelaEditarPerfil extends StatelessWidget {
+class TelaEditarPerfil extends StatefulWidget {
   const TelaEditarPerfil({super.key});
 
-  Widget _campo(BuildContext context, String label) {
+  @override
+  State<TelaEditarPerfil> createState() => _TelaEditarPerfilState();
+}
+
+class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
+  final TextEditingController _apelidoController = TextEditingController();
+  final TextEditingController _biografiaController = TextEditingController();
+  File? _novaFotoPerfil;
+  File? _novoBanner;
+
+  @override
+  void dispose(){
+    _apelidoController.dispose();
+    _biografiaController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _enviarAlteracoes() async {
+    try {
+      final usuarioId = await UsuarioService.getUsuarioId();
+      final usuario = await UsuarioService.getUsuarioById(usuarioId!);
+      final perfil = await PerfilService.getPerfilByUsuarioId(usuarioId!);
+
+      final perfilEditado = PerfilEditadoDTO(
+        apelido: _apelidoController.text.isNotEmpty ?
+                _apelidoController.text : usuario.apelido,
+        biografia: _biografiaController.text.isNotEmpty ?
+                _biografiaController.text : perfil.biografia!,
+      );
+
+      await PerfilService.putPerfil(perfilEditado, usuarioId);
+
+      Navigator.pop(context);
+      showCustomSnackBar(context, 'Alteraçõe realizadas com sucesso');
+    }
+    catch (e) {
+      showCustomSnackBar(context, 'Algo de errado ocorreu ao atualizar o perfil');
+    }
+  }
+
+  Widget _campo(BuildContext context, String label, TextEditingController controller) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Material(
@@ -15,6 +61,7 @@ class TelaEditarPerfil extends StatelessWidget {
         shadowColor: Theme.of(context).colorScheme.onSurface,
         borderRadius: BorderRadius.circular(10),
         child: TextFormField(
+          controller: controller,
           decoration: InputDecoration(
             labelText: label,
             labelStyle: TextStyle(
@@ -267,9 +314,7 @@ class TelaEditarPerfil extends StatelessWidget {
             const SizedBox(height: 16),
 
             // Campos de input
-            _campo(context, 'Nome'),
-            _campo(context, 'Apelido'),
-            _campo(context, 'Email'),
+            _campo(context, 'Apelido', _apelidoController),
 
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
@@ -364,6 +409,7 @@ class TelaEditarPerfil extends StatelessWidget {
                           ),
                           const SizedBox(height: 3),
                           TextFormField(
+                            controller: _biografiaController,
                             maxLines: 2,
                             decoration: InputDecoration(
                               filled: true,
@@ -399,7 +445,7 @@ class TelaEditarPerfil extends StatelessWidget {
             ),
 
             BotaoEstilizadoWidget(
-              funcao: () => {print("Alterações salvas")},
+              funcao: () => {_enviarAlteracoes()},
               texto: 'Salvar alterações',
             ),
 

@@ -182,8 +182,9 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                       offset: Offset(10, 0),
                       child: IconButton(
                         color: Theme.of(context).colorScheme.onPrimary,
-                        onPressed: () {
-                          Navigator.pushNamed(context, "/editar-perfil");
+                        onPressed: () async {
+                          await Navigator.pushNamed(context, "/editar-perfil");
+                          _carregarDadosPerfil();
                         },
                         icon: Icon(Icons.edit_outlined),
                         style: ButtonStyle(
@@ -221,7 +222,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
             },
             child: Container(
               width: MediaQuery.of(context).size.width,
-              height: _lerTudo ? null : 94,
+              height: _lerTudo ? null : 40,
               decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.secondary,
                 borderRadius: BorderRadius.circular(5),
@@ -243,8 +244,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                 child:
                     _lerTudo
                         ? Text(
-                          perfil.biografia == null ?
-                              '' : perfil.biografia as String,
+                          perfil.biografia ?? '',
                           style: Theme.of(
                             context,
                           ).textTheme.bodyMedium?.copyWith(
@@ -252,9 +252,8 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
                           ),
                         )
                         : Text(
-                          perfil.biografia == null ?
-                              '' : perfil.biografia as String,
-                          maxLines: 3,
+                          perfil.biografia ?? '',
+                          maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                           style: Theme.of(
                             context,

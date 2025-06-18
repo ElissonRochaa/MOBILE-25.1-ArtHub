@@ -39,6 +39,18 @@ class ApiClient {
     return await _dio.post(endPoint, data: json);
   }
 
+  Future<Response> postImage(String endPoint, {Options? options}) async {
+    return await _dio.post(endPoint, options: options);
+  }
+
+  Future<Response> postData(
+    String endPoint, {
+    dynamic data,
+    Options? options,
+  }) async {
+    return await _dio.post(endPoint, data: data, options: options);
+  }
+
   Future<Response> delete(String endPoit, Map<String, dynamic> json) async {
     return await _dio.delete(endPoit, data: json);
   }
@@ -48,5 +60,13 @@ class ApiClient {
     required Map<String, dynamic> data,
   }) async {
     return await _dio.put(endPoint, data: data);
+  }
+
+  Future<Response> putImage(
+    String endPoint,
+    FormData formData,
+    Options options,
+  ) async {
+    return await _dio.put(endPoint, data: formData, options: options);
   }
 }

@@ -32,7 +32,9 @@ class PublicacaoService {
     throw Exception('Algo deu errado ao buscar publicações');
   }
 
-  static Future<List<PublicacaoModel>> getPublicacaoByUsuario(int usuarioId) async {
+  static Future<List<PublicacaoModel>> getPublicacaoByUsuario(
+    int usuarioId,
+  ) async {
     final response = await _apiClient.get('/publicacoes/usuario/$usuarioId');
     List<PublicacaoModel> publicacoesDoUsuario =
         (response.data as List)
@@ -102,5 +104,37 @@ class PublicacaoService {
       return PublicacaoModel.fromJson(response.data);
     }
     throw Exception('Erro ao buscar publicação por ID');
+  }
+
+  static Future<PublicacaoModel> criarPublicacao(
+    Map<String, dynamic> data,
+    int idDono,
+  ) async {
+    final response = await _apiClient.postData(
+      '/publicacoes/$idDono',
+      data: data,
+    );
+    if (response.statusCode == 201 || response.statusCode == 200) {
+      return PublicacaoModel.fromJson(response.data);
+    }
+    throw Exception('Erro ao criar publicação');
+  }
+
+  static Future<void> uploadMidia(
+    int idPublicacao,
+    Uint8List bytes,
+    String fileName,
+  ) async {
+    final formData = FormData.fromMap({
+      'file': MultipartFile.fromBytes(bytes, filename: fileName),
+    });
+    final response = await _apiClient.putImage(
+      '/publicacoes/add-media/$idPublicacao',
+      formData,
+      Options(contentType: 'multipart/form-data'),
+    );
+    if (response.statusCode != 200) {
+      throw Exception('Erro ao enviar mídia');
+    }
   }
 }
