@@ -5,36 +5,19 @@ import '../services/perfil_service.dart';
 import '../widgets/resultado_pesquisa_widget.dart';
 
 class BarraPesquisaProvider extends ChangeNotifier {
-  final PerfilService _perfilService = PerfilService();
-
   List<PerfilModel> _resultados = [];
-
-  List<PerfilModel> get resultados => _resultados;
-
-  void setResultados(List<PerfilModel> novosResultados) {
-    _resultados = novosResultados;
-    notifyListeners();
-  }
-
-  void clearResultados() {
-    _resultados = [];
-    notifyListeners();
-  }
-
   String _texto = '';
-  List<PerfilModel> _perfisEncontrados = [];
   bool _isLoading = false;
   Timer? _debounce;
-
   OverlayEntry? _overlayEntry;
 
+  List<PerfilModel> get resultados => _resultados;
   String get texto => _texto;
-  List<PerfilModel> get perfisEncontrados => _perfisEncontrados;
   bool get isLoading => _isLoading;
 
   void onTextoAlterado(BuildContext context, String novoTexto) {
-    if (_debounce?.isActive ?? false) _debounce?.cancel();
-    _debounce = Timer(const Duration(milliseconds: 500), () {
+    if (_debounce?.isActive ?? false) _debounce!.cancel();
+    _debounce = Timer(const Duration(milliseconds: 400), () {
       _texto = novoTexto;
       _pesquisarPerfis(context);
     });
@@ -44,7 +27,7 @@ class BarraPesquisaProvider extends ChangeNotifier {
     removeOverlay();
 
     if (_texto.trim().isEmpty) {
-      _perfisEncontrados = [];
+      _resultados = [];
       _isLoading = false;
       notifyListeners();
       return;
@@ -54,12 +37,13 @@ class BarraPesquisaProvider extends ChangeNotifier {
     notifyListeners();
 
     try {
-      _perfisEncontrados = await PerfilService.pesquisarPerfis(_texto);
-      if (_perfisEncontrados.isNotEmpty) {
+      _resultados = await PerfilService.pesquisarPerfis(_texto);
+      if (_texto.isNotEmpty && _resultados.isNotEmpty) {
         _showOverlay(context);
       }
     } catch (e) {
-      _perfisEncontrados = [];
+      print("Erro ao pesquisar perfis: $e");
+      _resultados = [];
     } finally {
       _isLoading = false;
       notifyListeners();
@@ -73,11 +57,21 @@ class BarraPesquisaProvider extends ChangeNotifier {
 
     _overlayEntry = OverlayEntry(
       builder: (context) {
-        return Positioned(
-          left: offset.dx,
-          top: offset.dy + size.height + 5,
-          width: size.width,
-          child: ResultadosPesquisaOverlay(perfis: _perfisEncontrados),
+        return Stack(
+          children: [
+            Positioned.fill(
+              child: GestureDetector(
+                onTap: () => limparPesquisa(),
+                child: Container(color: Colors.transparent),
+              ),
+            ),
+            Positioned(
+              left: offset.dx,
+              top: offset.dy + size.height + 5,
+              width: size.width,
+              child: ResultadosPesquisaOverlay(perfis: _resultados),
+            ),
+          ],
         );
       },
     );
@@ -92,7 +86,7 @@ class BarraPesquisaProvider extends ChangeNotifier {
 
   void limparPesquisa() {
     _texto = '';
-    _perfisEncontrados = [];
+    _resultados = [];
     _debounce?.cancel();
     removeOverlay();
     notifyListeners();

@@ -1,6 +1,6 @@
+import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import '../provider/barra_pesquisa_provider.dart';
 
 class BarraPesquisaWidget extends StatefulWidget {
   const BarraPesquisaWidget({super.key});
@@ -17,8 +17,10 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
   void initState() {
     super.initState();
     _focusNode.addListener(() {
-      if (!_focusNode.hasFocus && controller.text.isEmpty) {
-        context.read<BarraPesquisaProvider>().limparPesquisa();
+      if (!_focusNode.hasFocus) {
+        Future.delayed(const Duration(milliseconds: 200), () {
+          context.read<BarraPesquisaProvider>().removeOverlay();
+        });
       }
     });
   }
@@ -35,10 +37,14 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
     return Consumer<BarraPesquisaProvider>(
       builder: (context, provider, child) {
         if (provider.texto.isEmpty && controller.text.isNotEmpty) {
-          controller.clear();
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            controller.clear();
+          });
         }
+
         return Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Expanded(
               child: SizedBox(
@@ -46,6 +52,7 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
                 child: SearchBar(
                   controller: controller,
                   focusNode: _focusNode,
+                  hintText: '',
                   onChanged: (value) {
                     provider.onTextoAlterado(context, value);
                   },
@@ -54,15 +61,39 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
                       provider.onTextoAlterado(context, controller.text);
                     }
                   },
-                  hintText: 'Pesquisar...',
-                  textStyle: MaterialStateProperty.all(
-                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
-                  ),
                   leading: Icon(
                     Icons.search,
                     color: Theme.of(context).colorScheme.primary,
-                  ), // ...
+                  ),
+                  backgroundColor: MaterialStatePropertyAll(
+                    Theme.of(context).colorScheme.surface,
+                  ),
+                  side: MaterialStatePropertyAll(
+                    BorderSide(
+                      color: Theme.of(context).colorScheme.tertiary,
+                      width: 2,
+                    ),
+                  ),
+                  shape: MaterialStatePropertyAll(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                  ),
+                  padding: const MaterialStatePropertyAll(
+                    EdgeInsets.symmetric(horizontal: 10),
+                  ),
+                  textStyle: MaterialStateProperty.all(
+                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                  ),
                 ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Align(
+              child: Image.asset(
+                'assets/images/logo_arthub.png',
+                color: Theme.of(context).colorScheme.onPrimary,
+                height: 120,
               ),
             ),
           ],
