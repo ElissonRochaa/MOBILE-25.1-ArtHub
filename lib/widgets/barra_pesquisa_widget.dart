@@ -83,7 +83,7 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
                     EdgeInsets.symmetric(horizontal: 10),
                   ),
                   textStyle: MaterialStateProperty.all(
-                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ),
               ),

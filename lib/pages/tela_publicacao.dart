@@ -851,12 +851,12 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   }
                 },
                 child: CircleAvatar(
-                  radius: 28,
+                  radius: 20,
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   child: Icon(
                     Icons.edit,
                     color: Theme.of(context).colorScheme.onPrimary,
-                    size: 32,
+                    size: 18,
                   ),
                 ),
               ),
