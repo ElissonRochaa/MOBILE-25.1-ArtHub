@@ -40,4 +40,22 @@ class AuthService {
       throw Exception('Falha ao cadastrar usuário');
     }
   }
+
+   static Future<String> redefinirSenha(String email, String novaSenha) async {
+    try {
+      final response = await _apiClient.post('/email/resetar-senha', {
+        'email': email,
+        'novaSenha': novaSenha,
+      });
+
+      if (response.statusCode == 200) {
+        return 'Senha redefinida com sucesso!';
+      } else {
+        return 'Erro: ${response.statusCode}';
+      }
+    } catch (e) {
+      return 'Erro ao redefinir senha: $e';
+    }
+  }
+
 }

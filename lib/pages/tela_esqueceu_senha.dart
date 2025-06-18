@@ -1,9 +1,37 @@
-import 'package:arthub/widgets/botao_estilizado_widget.dart';
-import 'package:arthub/widgets/botao_voltar_widget.dart';
+import 'package:arthub/widgets/stackbar.dart';
 import 'package:flutter/material.dart';
+import 'package:arthub/services/email_service.dart';
+import 'package:arthub/widgets/botao_voltar_widget.dart';
 
-class TelaEsqueceuSenha extends StatelessWidget {
-  const TelaEsqueceuSenha({super.key});
+class TelaEsqueceuSenha extends StatefulWidget {
+  const TelaEsqueceuSenha({Key? key}) : super(key: key);
+
+  @override
+  State<TelaEsqueceuSenha> createState() => _TelaEsqueceuSenhaState();
+}
+
+class _TelaEsqueceuSenhaState extends State<TelaEsqueceuSenha> {
+  final TextEditingController _emailController = TextEditingController();
+  bool _isLoading = false;
+
+  Future<void> _enviarEmailRecuperacao() async {
+    final email = _emailController.text.trim();
+
+    if (email.isEmpty || !email.contains('@')) {
+      showCustomSnackBar(context, "Email vazio ou inválido.");
+      return;
+    }
+
+    setState(() => _isLoading = true);
+
+    final resposta = await EmailService.solicitarRecuperacaoSenha(email);
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(resposta)),
+    );
+
+    setState(() => _isLoading = false);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,50 +64,53 @@ class TelaEsqueceuSenha extends StatelessWidget {
             ),
           ),
           Positioned(left: 10, top: 10, child: BotaoVoltarWidget()),
+
           Positioned(
             top: MediaQuery.of(context).size.height / 2 - 150,
             left: 20,
             right: 20,
             child: Padding(
-              padding: EdgeInsets.only(left: 20, right: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20),
               child: Column(
                 children: [
                   Text(
                     'Informe seu email cadastrado para receber instruções de recuperação de senha:',
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.surface,
-                    ),
+                          color: Theme.of(context).colorScheme.surface,
+                        ),
                     textAlign: TextAlign.center,
                   ),
                   SizedBox(height: 20),
                   TextField(
+                    controller: _emailController,
                     decoration: InputDecoration(
                       filled: true,
                       fillColor: Theme.of(context).colorScheme.surface,
                       labelText: 'Email',
-                      labelStyle: Theme.of(
-                        context,
-                      ).textTheme.displayMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.onPrimary,
-                      ),
+                      labelStyle: Theme.of(context).textTheme.displayMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimary,
+                          ),
                       enabledBorder: OutlineInputBorder(
-                        borderSide: BorderSide(color: Colors.white),
+                        borderSide: BorderSide(color: Theme.of(context).colorScheme.surface),
                         borderRadius: BorderRadius.all(Radius.circular(5)),
                       ),
                     ),
                     style: Theme.of(context).textTheme.displayMedium?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimary,
-                    ),
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
                   ),
                   const SizedBox(height: 20),
-                  BotaoEstilizadoWidget(
-                    funcao: () => {Navigator.pushNamed(context, '/login')},
-                    texto: 'Enviar e-mail',
+                  ElevatedButton(
+                    onPressed: _isLoading ? null : _enviarEmailRecuperacao,
+                    child: _isLoading
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text('Enviar email'),
                   ),
                 ],
               ),
             ),
           ),
+
           Positioned(
             top: 750,
             left: 160,
