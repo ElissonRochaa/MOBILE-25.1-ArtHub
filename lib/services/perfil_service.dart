@@ -97,6 +97,25 @@ class PerfilService {
     }
   }
 
+  static Future<List<PerfilModel>> pesquisarPerfis(String query) async {
+    if (query.trim().isEmpty) {
+      return [];
+    }
+
+    try {
+      final response = await _apiClient.get('/perfis/pesquisar?q=$query');
+
+      if (response.statusCode == 200 && response.data != null) {
+        final List<dynamic> data = response.data;
+        return data.map((json) => PerfilModel.fromJson(json)).toList();
+      }
+      return [];
+    } catch (e) {
+      print('Erro ao pesquisar perfis: $e');
+      throw Exception('Erro ao pesquisar perfis');
+    }
+  }
+
   static Future<void> putPerfil(PerfilEditadoDTO dto, int? donoId) async {
     try{
       await _apiClient.put(
