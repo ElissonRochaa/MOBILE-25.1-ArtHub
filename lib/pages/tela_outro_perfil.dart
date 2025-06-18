@@ -1,6 +1,7 @@
 import 'package:arthub/models/perfil_model.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/services/perfil_service.dart';
+import 'package:arthub/widgets/botao_voltar_widget.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:flutter/material.dart';
@@ -125,6 +126,7 @@ class _TelaOutroPerfilState extends State<TelaOutroPerfil> {
                 ),
               ),
               numerosPerfil(context, data),
+              const Positioned(top: 10, left: 10, child: BotaoVoltarWidget()),
             ],
           ),
         ),
