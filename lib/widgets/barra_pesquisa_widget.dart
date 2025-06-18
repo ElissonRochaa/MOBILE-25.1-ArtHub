@@ -82,8 +82,8 @@ class _BarraPesquisaWidgetState extends State<BarraPesquisaWidget> {
                   padding: const WidgetStatePropertyAll(
                     EdgeInsets.symmetric(horizontal: 10),
                   ),
-                  textStyle: WidgetStateProperty.all(
-                    TextStyle(color: Theme.of(context).colorScheme.onSurface),
+                  textStyle: MaterialStateProperty.all(
+                    TextStyle(color: Theme.of(context).colorScheme.onPrimary),
                   ),
                 ),
               ),

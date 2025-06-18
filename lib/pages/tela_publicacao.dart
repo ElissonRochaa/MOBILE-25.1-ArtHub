@@ -604,12 +604,21 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Expanded(
-                    child: Text(
-                      '@${_publicacaoAtual.perfil.usuario.apelido ?? "Usuário desconhecido"}',
-                      style: TextStyle(
-                        color: Theme.of(context).colorScheme.onPrimary,
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                          context,
+                          '/outro-perfil',
+                          arguments: _publicacaoAtual.perfil.usuario.id,
+                        );
+                      },
+                      child: Text(
+                        '@${_publicacaoAtual.perfil.usuario.apelido ?? "Usuário desconhecido"}',
+                        style: TextStyle(
+                          color: Theme.of(context).colorScheme.onPrimary,
+                        ),
+                        overflow: TextOverflow.ellipsis,
                       ),
-                      overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   Row(
@@ -851,12 +860,12 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   }
                 },
                 child: CircleAvatar(
-                  radius: 28,
+                  radius: 20,
                   backgroundColor: Theme.of(context).colorScheme.primary,
                   child: Icon(
                     Icons.edit,
                     color: Theme.of(context).colorScheme.onPrimary,
-                    size: 32,
+                    size: 18,
                   ),
                 ),
               ),

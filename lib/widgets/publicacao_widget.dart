@@ -348,11 +348,22 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
         children: [
           _buildMediaContent(context),
           const SizedBox(height: 8),
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
-            child: Text(
-              '@${widget.publicacao.perfil.usuario.apelido ?? "Usuário desconhecido"}',
-              style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(
+                context,
+                '/outro-perfil',
+                arguments: widget.publicacao.perfil.usuario.id,
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 4.0),
+              child: Text(
+                '@${widget.publicacao.perfil.usuario.apelido ?? "Usuário desconhecido"}',
+                style: TextStyle(
+                  color: Theme.of(context).colorScheme.onPrimary,
+                ),
+              ),
             ),
           ),
         ],
