@@ -135,24 +135,27 @@ class PerfilService {
   }
 
   static Future<void> putPerfil(PerfilEditadoDTO dto, int? donoId) async {
-    try{
-      await _apiClient.put(
-          '/perfis/$donoId',
-          data: dto.toJson());
-    }
-    catch (e) {
+    try {
+      await _apiClient.put('/perfis/$donoId', data: dto.toJson());
+    } catch (e) {
       throw Exception('Erro no putPerfil');
     }
   }
 
-  static ({String extension, String mimeType}) _definirExtensao({File? imageFile, Uint8List? imageWeb}){
+  static ({String extension, String mimeType}) _definirExtensao({
+    File? imageFile,
+    Uint8List? imageWeb,
+  }) {
     try {
       String extension = 'jpg';
 
-      if (imageFile != null){
-        extension = path.extension(imageFile.path).toLowerCase().replaceAll('.', '');
-      } else if (imageWeb != null){
-        if (imageWeb.length >= 2){
+      if (imageFile != null) {
+        extension = path
+            .extension(imageFile.path)
+            .toLowerCase()
+            .replaceAll('.', '');
+      } else if (imageWeb != null) {
+        if (imageWeb.length >= 2) {
           if (imageWeb[0] == 0xFF && imageWeb[1] == 0xD8) {
             extension = 'jpg';
           } else if (imageWeb[0] == 0x89 && imageWeb[1] == 0x50) {
@@ -161,50 +164,57 @@ class PerfilService {
         }
       }
 
-      final mimeType = switch(extension) {
+      final mimeType = switch (extension) {
         'jpg' || 'jpeg' => 'image/jpeg',
         'png' => 'image/png',
-        _ => throw Exception('Formato de imagem não suportado $extension')
+        _ => throw Exception('Formato de imagem não suportado $extension'),
       };
 
       return (extension: extension, mimeType: mimeType);
-    }
-    catch (e){
+    } catch (e) {
       throw Exception('Erro no _definirExtensao');
     }
   }
 
-  static Future<void> uploadImagem(int perfilId, File? imageFile,
-      Uint8List? imageWeb, bool fotoOuBanner) async {
+  static Future<void> uploadImagem(
+    int perfilId,
+    File? imageFile,
+    Uint8List? imageWeb,
+    bool fotoOuBanner,
+  ) async {
+    if (imageFile == null && imageWeb == null) {
+      return; // Se não tiver imagem, não faz upload nenhum
+    }
     try {
-      final tipo = _definirExtensao(
-          imageFile: imageFile,
-          imageWeb: imageWeb
-      );
+      final tipo = _definirExtensao(imageFile: imageFile, imageWeb: imageWeb);
 
       final formData = FormData.fromMap({
-        'file': imageFile != null
-            ? await MultipartFile.fromFile(
-            imageFile.path,
-            filename: 'perfil_$perfilId.${tipo.extension}',
-            contentType: DioMediaType.parse(tipo.mimeType))
-            : MultipartFile.fromBytes(
-            imageWeb!.toList(),
-            filename: 'perfil_$perfilId.${tipo.extension}',
-            contentType: DioMediaType.parse(tipo.mimeType))
+        'file':
+            imageFile != null
+                ? await MultipartFile.fromFile(
+                  imageFile.path,
+                  filename: 'perfil_$perfilId.${tipo.extension}',
+                  contentType: DioMediaType.parse(tipo.mimeType),
+                )
+                : MultipartFile.fromBytes(
+                  imageWeb!.toList(),
+                  filename: 'perfil_$perfilId.${tipo.extension}',
+                  contentType: DioMediaType.parse(tipo.mimeType),
+                ),
       });
 
       final response = await _apiClient.putImage(
-        fotoOuBanner ? '/perfis/uploadPerfil/$perfilId' : '/perfis/uploadBanner/$perfilId',
+        fotoOuBanner
+            ? '/perfis/uploadPerfil/$perfilId'
+            : '/perfis/uploadBanner/$perfilId',
         formData,
         Options(contentType: 'multipart/form-data'),
       );
 
-      if (response.statusCode != 200){
+      if (response.statusCode != 200) {
         throw Exception('Falha no upload: ${response.statusCode}');
       }
-    }
-    catch (e) {
+    } catch (e) {
       throw Exception('Erro no uploadImagem');
     }
   }

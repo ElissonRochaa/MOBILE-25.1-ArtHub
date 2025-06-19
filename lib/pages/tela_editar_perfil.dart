@@ -25,26 +25,90 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
   final TextEditingController _apelidoController = TextEditingController();
   final TextEditingController _biografiaController = TextEditingController();
 
-  late Future<ImageProvider> _fotoPerfilFuture;
-  late Future<ImageProvider> _bannerFuture;
-
   File? _novaFotoPerfil;
   Uint8List? _novaFotoPerfilWeb;
   File? _novoBanner;
   Uint8List? _novoBannerWeb;
 
+  ImageProvider? _fotoPerfilProvider;
+  ImageProvider? _bannerProvider;
+
   @override
-  void dispose(){
+  void initState() {
+    super.initState();
+    _carregarImagensIniciais();
+  }
+
+  Future<void> _carregarImagensIniciais() async {
+    final usuarioId = await UsuarioService.getUsuarioId();
+    final fotoPerfil = await PerfilService.getImagePerfil(
+      usuarioId!,
+    ).catchError((_) => null);
+    final bannerPerfil = await PerfilService.getImageBanner(
+      usuarioId,
+    ).catchError((_) => null);
+
+    setState(() {
+      _fotoPerfilProvider =
+          fotoPerfil ?? const AssetImage('assets/images/perfil_default.jpg');
+      _bannerProvider =
+          bannerPerfil ?? const AssetImage('assets/images/banner_default.png');
+    });
+  }
+
+  @override
+  void dispose() {
     _apelidoController.dispose();
     _biografiaController.dispose();
     super.dispose();
   }
 
-  @override
-  void initState() {
-    super.initState();
-    _fotoPerfilFuture = _getFotoPerfilProvider();
-    _bannerFuture = _getBannerProvider();
+  bool get isMobile => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
+
+  Future<void> _selecionarFotoPerfil() async {
+    try {
+      FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+      );
+
+      if (arquivoEscolhido != null) {
+        setState(() {
+          if (isMobile) {
+            _novaFotoPerfil = File(arquivoEscolhido.files.single.path!);
+            _fotoPerfilProvider = FileImage(_novaFotoPerfil!);
+          } else {
+            _novaFotoPerfilWeb = arquivoEscolhido.files.single.bytes;
+            _fotoPerfilProvider = MemoryImage(_novaFotoPerfilWeb!);
+          }
+        });
+      }
+    } catch (e) {
+      throw Exception('Erro ao selecionar foto de perfil');
+    }
+  }
+
+  Future<void> _selecionarBanner() async {
+    try {
+      FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+      );
+
+      if (arquivoEscolhido != null) {
+        setState(() {
+          if (isMobile) {
+            _novoBanner = File(arquivoEscolhido.files.single.path!);
+            _bannerProvider = FileImage(_novoBanner!);
+          } else {
+            _novoBannerWeb = arquivoEscolhido.files.single.bytes;
+            _bannerProvider = MemoryImage(_novoBannerWeb!);
+          }
+        });
+      }
+    } catch (e) {
+      throw Exception('Erro ao selecionar banner');
+    }
   }
 
   Future<void> _enviarAlteracoes() async {
@@ -53,114 +117,44 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
     final perfil = await PerfilService.getPerfilByUsuarioId(usuarioId);
 
     final perfilEditado = PerfilEditadoDTO(
-      apelido: _apelidoController.text.isNotEmpty ?
-      '@${_apelidoController.text.trim().replaceAll(' ', '')}' : usuario.apelido,
-      biografia: _biografiaController.text.isNotEmpty ?
-      _biografiaController.text : perfil.biografia!,
+      apelido:
+          _apelidoController.text.isNotEmpty
+              ? '@${_apelidoController.text.trim().replaceAll(' ', '')}'
+              : usuario.apelido,
+      biografia:
+          _biografiaController.text.isNotEmpty
+              ? _biografiaController.text
+              : perfil.biografia!,
     );
 
     await PerfilService.putPerfil(perfilEditado, usuarioId);
-    await PerfilService.uploadImagem(perfil.id, _novaFotoPerfil, _novaFotoPerfilWeb, true);
-    await PerfilService.uploadImagem(perfil.id, _novoBanner, _novoBannerWeb, false);
+
+    if (_novaFotoPerfil != null || _novaFotoPerfilWeb != null) {
+      await PerfilService.uploadImagem(
+        perfil.id,
+        _novaFotoPerfil,
+        _novaFotoPerfilWeb,
+        true,
+      );
+    }
+    if (_novoBanner != null || _novoBannerWeb != null) {
+      await PerfilService.uploadImagem(
+        perfil.id,
+        _novoBanner,
+        _novoBannerWeb,
+        false,
+      );
+    }
 
     Navigator.pop(context);
-    showCustomSnackBar(context, 'Alteraçõe realizadas com sucesso');
+    showCustomSnackBar(context, 'Alterações realizadas com sucesso');
   }
 
-  bool get isMobile => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
-
-  Future<void> _selecionarFotoPerfil() async {
-    try{
-      FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-        allowMultiple: false,
-      );
-
-      if(arquivoEscolhido != null){
-        setState(() {
-          if (isMobile){
-            setState(() {
-              _novaFotoPerfil = File(arquivoEscolhido.files.single.path!);
-            });
-          }
-          else {
-            setState(() {
-              _novaFotoPerfilWeb = arquivoEscolhido.files.single.bytes;
-            });
-          }
-        });
-      }
-    }
-    catch (e) {
-      throw Exception('Erro no _selecionarArquivo de TelaEditarPerfil');
-    }
-  }
-
-  Future<void> _selecionarBanner() async {
-    try{
-      FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles(
-        type: FileType.image,
-        allowMultiple: false,
-      );
-
-      if(arquivoEscolhido != null){
-        setState(() {
-          if (isMobile){
-            setState(() {
-              _novoBanner = File(arquivoEscolhido.files.single.path!);
-            });
-          }
-          else {
-            setState(() {
-              _novoBannerWeb = arquivoEscolhido.files.single.bytes;
-            });
-          }
-        });
-      }
-    }
-    catch (e) {
-      throw Exception('Erro no _selecionarArquivo de TelaEditarPerfil');
-    }
-  }
-
-  Future<ImageProvider> _getFotoPerfilProvider()  async {
-    final usuarioId = await UsuarioService.getUsuarioId();
-    final fotoPerfil = await PerfilService.getImagePerfil(usuarioId!).catchError((_) => null);
-
-    if (isMobile){
-      return fotoPerfil ?? (_novaFotoPerfil != null ?
-      FileImage(_novaFotoPerfil!) :
-      AssetImage('assets/images/perfil_default.jpg') as ImageProvider
-      );
-    }
-    else {
-      return fotoPerfil ?? (_novaFotoPerfilWeb != null ?
-      MemoryImage(_novaFotoPerfilWeb!) :
-      AssetImage('assets/images/perfil_default.jpg') as ImageProvider
-      );
-    }
-  }
-
-  Future<ImageProvider> _getBannerProvider() async {
-    final usuarioId = await UsuarioService.getUsuarioId();
-    final bannerPerfil = await PerfilService.getImageBanner(usuarioId!).catchError((_) => null);
-
-    if (isMobile){
-      return bannerPerfil ?? (_novoBanner != null ?
-      FileImage(_novoBanner!) :
-      AssetImage('assets/images/banner_default.png') as ImageProvider
-      );
-    }
-    else {
-      return bannerPerfil ?? (
-          _novoBannerWeb != null ?
-          MemoryImage(_novoBannerWeb!) :
-          AssetImage('assets/images/banner_default.png') as ImageProvider
-      );
-    }
-  }
-
-  Widget _campo(BuildContext context, String label, TextEditingController controller) {
+  Widget _campo(
+    BuildContext context,
+    String label,
+    TextEditingController controller,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Material(
@@ -189,7 +183,6 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),
-
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.secondary,
@@ -239,7 +232,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
         break;
       case 'Excluir conta':
         mensagem =
-        'Tem certeza que deseja excluir sua conta? Esta ação não poderá ser desfeita.';
+            'Tem certeza que deseja excluir sua conta? Esta ação não poderá ser desfeita.';
         pergunta = 'Excluir conta?';
         break;
       case 'Sair':
@@ -390,42 +383,33 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
-            SizedBox(height: 12),
-            FutureBuilder(
-                future: _fotoPerfilFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting){
-                    return CircularProgressIndicator();
-                  }
-                  return Stack(
-                    alignment: Alignment.bottomRight,
-                    children: [
-                      CircleAvatar(
-                        radius: 40,
-                        backgroundImage: snapshot.data ?? AssetImage('assets/images/perfil_default.jpg') as ImageProvider,
-                      ),
-                      InkWell(
-                        onTap: _selecionarFotoPerfil,
-                        child: CircleAvatar(
-                          radius: 14,
-                          backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                          child: Icon(
-                            Icons.edit,
-                            size: 16,
-                            color: Theme.of(context).colorScheme.surface,
-                          ),
-                        ),
-                      )
-                    ],
-                  );
-                }
+            const SizedBox(height: 12),
+            // Foto de perfil (preview imediato)
+            Stack(
+              alignment: Alignment.bottomRight,
+              children: [
+                CircleAvatar(
+                  radius: 40,
+                  backgroundImage:
+                      _fotoPerfilProvider ??
+                      const AssetImage('assets/images/perfil_default.jpg'),
+                ),
+                InkWell(
+                  onTap: _selecionarFotoPerfil,
+                  child: CircleAvatar(
+                    radius: 14,
+                    backgroundColor: Theme.of(context).colorScheme.onPrimary,
+                    child: Icon(
+                      Icons.edit,
+                      size: 16,
+                      color: Theme.of(context).colorScheme.surface,
+                    ),
+                  ),
+                ),
+              ],
             ),
-
             const SizedBox(height: 16),
-
-            // Campos de input
             _campo(context, 'Apelido', _apelidoController),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Row(
@@ -454,51 +438,45 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                             color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
-                        SizedBox(height: 3),
-                        FutureBuilder(
-                            future: _bannerFuture,
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState == ConnectionState.waiting){
-                                return CircularProgressIndicator();
-                              }
-                              return Stack(
-                                alignment: Alignment.topRight,
-                                children: [
-                                  Container(
-                                    width: 120,
-                                    height: 70,
-                                    decoration: BoxDecoration(
-                                        color: Colors.grey[300],
-                                        borderRadius: BorderRadius.circular(8),
-                                        image: DecorationImage(
-                                          image: snapshot.data
-                                              ?? AssetImage('assets/images/banner_default.png') as ImageProvider,
-                                          fit: BoxFit.cover,
-                                        )
-                                    ),
-                                  ),
-                                  InkWell(
-                                    onTap: _selecionarBanner,
-                                    child: CircleAvatar(
-                                      radius: 14,
-                                      backgroundColor: Theme.of(context).colorScheme.onPrimary,
-                                      child: Icon(
-                                        Icons.edit,
-                                        size: 16,
-                                        color: Theme.of(context).colorScheme.surface,
+                        const SizedBox(height: 3),
+                        Stack(
+                          alignment: Alignment.topRight,
+                          children: [
+                            Container(
+                              width: 120,
+                              height: 70,
+                              decoration: BoxDecoration(
+                                color: Colors.grey[300],
+                                borderRadius: BorderRadius.circular(8),
+                                image: DecorationImage(
+                                  image:
+                                      _bannerProvider ??
+                                      const AssetImage(
+                                        'assets/images/banner_default.png',
                                       ),
-                                    ),
-                                  )
-                                ],
-                              );
-                            }
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                            InkWell(
+                              onTap: _selecionarBanner,
+                              child: CircleAvatar(
+                                radius: 14,
+                                backgroundColor:
+                                    Theme.of(context).colorScheme.onPrimary,
+                                child: Icon(
+                                  Icons.edit,
+                                  size: 16,
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
-
                   const SizedBox(width: 16),
-
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.all(8),
@@ -529,18 +507,21 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                             maxLines: 2,
                             decoration: InputDecoration(
                               filled: true,
-                              fillColor: Theme.of(context).colorScheme.secondary,
-                              contentPadding: EdgeInsets.all(12),
+                              fillColor:
+                                  Theme.of(context).colorScheme.secondary,
+                              contentPadding: const EdgeInsets.all(12),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                               enabledBorder: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(
-                                  color: Theme.of(context).colorScheme.secondary,
+                                  color:
+                                      Theme.of(context).colorScheme.secondary,
                                 ),
                               ),
                               focusedBorder: OutlineInputBorder(
@@ -557,28 +538,25 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                 ],
               ),
             ),
-
             BotaoEstilizadoWidget(
               funcao: () => {_enviarAlteracoes()},
               texto: 'Salvar alterações',
             ),
-
             const SizedBox(height: 24),
-
             _opcaoSimples(
               context,
               'Desativar conta',
-                  () => _mostrarPopup(context, 'Desativar conta'),
+              () => _mostrarPopup(context, 'Desativar conta'),
             ),
             _opcaoSimples(
               context,
               'Excluir conta',
-                  () => _mostrarPopup(context, 'Excluir conta'),
+              () => _mostrarPopup(context, 'Excluir conta'),
             ),
             _opcaoSimples(
               context,
               'Sair',
-                  () => _mostrarPopup(context, 'Sair'),
+              () => _mostrarPopup(context, 'Sair'),
             ),
           ],
         ),
