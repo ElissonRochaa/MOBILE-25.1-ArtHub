@@ -51,8 +51,8 @@ class ApiClient {
     return await _dio.post(endPoint, data: data, options: options);
   }
 
-  Future<Response> delete(String endPoit, Map<String, dynamic> json) async {
-    return await _dio.delete(endPoit, data: json);
+  Future<Response> delete(String endPoit) async {
+    return await _dio.delete(endPoit);
   }
 
   Future<Response> put(
