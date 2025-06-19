@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'dart:typed_data';
 
+import 'package:arthub/services/token_service.dart';
 import 'package:universal_io/io.dart' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:arthub/models/dtos/perfil_editado_DTO.dart';
@@ -24,6 +25,7 @@ class TelaEditarPerfil extends StatefulWidget {
 class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
   final TextEditingController _apelidoController = TextEditingController();
   final TextEditingController _biografiaController = TextEditingController();
+  late int _usuarioId;
 
   File? _novaFotoPerfil;
   Uint8List? _novaFotoPerfilWeb;
@@ -37,6 +39,11 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
   void initState() {
     super.initState();
     _carregarImagensIniciais();
+    _getUsuarioId();
+  }
+
+  Future<void> _getUsuarioId() async {
+    _usuarioId = (await UsuarioService.getUsuarioId())!;
   }
 
   Future<void> _carregarImagensIniciais() async {
@@ -112,9 +119,8 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
   }
 
   Future<void> _enviarAlteracoes() async {
-    final usuarioId = await UsuarioService.getUsuarioId();
-    final usuario = await UsuarioService.getUsuarioById(usuarioId!);
-    final perfil = await PerfilService.getPerfilByUsuarioId(usuarioId);
+    final usuario = await UsuarioService.getUsuarioById(_usuarioId);
+    final perfil = await PerfilService.getPerfilByUsuarioId(_usuarioId);
 
     final perfilEditado = PerfilEditadoDTO(
       apelido:
@@ -127,7 +133,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
               : perfil.biografia!,
     );
 
-    await PerfilService.putPerfil(perfilEditado, usuarioId);
+    await PerfilService.putPerfil(perfilEditado, _usuarioId);
 
     if (_novaFotoPerfil != null || _novaFotoPerfilWeb != null) {
       await PerfilService.uploadImagem(
@@ -298,7 +304,17 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                         ),
                       ),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        if (titulo == 'Desativar conta'){
+                          print('O botão de desativar conta foi clicado');
+                        } else if (titulo == 'Excluir conta'){
+                          UsuarioService.deleteUsuario(_usuarioId);
+                          Navigator.popUntil(context, (route) => route.settings.name == '/login');
+                          showCustomSnackBar(context, 'Conta excluída com sucesso');
+                        } else {
+                          TokenService.removeToken();
+                          Navigator.popUntil(context, (route) => route.settings.name == '/login');
+                          showCustomSnackBar(context, 'Você saiu da conta com sucesso');
+                        }
                       },
                       child: const Text('Sim'),
                     ),
