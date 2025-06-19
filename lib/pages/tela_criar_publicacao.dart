@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
-import 'package:arthub/widgets/lista_filtros_widget.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -81,7 +80,6 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
                 ),
               ),
             ),
-            ListaFiltrosWidget(),
             SizedBox(height: 5,),
             // Campo para colocar o título da publicação
             _input('Qual o título da publicação?'),
