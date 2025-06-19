@@ -351,7 +351,7 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0),
             child: Text(
-              '@${widget.publicacao.perfil.usuario.apelido ?? "Usuário desconhecido"}',
+              widget.publicacao.perfil.usuario.apelido,
               style: TextStyle(color: Theme.of(context).colorScheme.onPrimary),
             ),
           ),
