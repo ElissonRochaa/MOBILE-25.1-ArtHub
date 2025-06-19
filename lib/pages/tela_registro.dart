@@ -61,6 +61,7 @@ class _TelaRegistroState extends State<TelaRegistro> {
 
   if (_senhaController.text != _confirmacaoSenhaController.text){
     showCustomSnackBar(context, 'A confirmação de senha deve ser igual à senha');
+    return;
   }
 
   try {
