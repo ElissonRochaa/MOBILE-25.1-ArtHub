@@ -6,6 +6,7 @@ import 'package:arthub/services/publicacao_service.dart';
 import 'package:arthub/services/token_service.dart';
 import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
+import 'package:arthub/widgets/stackbar.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
@@ -315,9 +316,7 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
             BotaoEstilizadoWidget(
               funcao: () async {
                 if (_categoriaSelecionada == null) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Selecione uma categoria!')),
-                  );
+                  showCustomSnackBar(context, 'Selecione uma categoria!');
                   return;
                 }
                 try {
@@ -356,14 +355,10 @@ class _TelaCriarPublicacaoState extends State<TelaCriarPublicacao> {
                       'arquivo.$_fileExtension',
                     );
                   }
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Publicação criada com sucesso!')),
-                  );
+                  showCustomSnackBar(context, 'Publicação criada com sucesso!');
                   Navigator.pushNamed(context, '/home');
                 } catch (e) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text('Erro ao criar publicação: $e')),
-                  );
+                  showCustomSnackBar(context, 'Erro ao criar publicação');
                 }
               },
               texto: 'Compartilhar Publicação',
