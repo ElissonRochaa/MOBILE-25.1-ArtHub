@@ -1,6 +1,6 @@
 class PerfilEditadoDTO {
-  final String apelido;
-  final String biografia;
+  final String? apelido;
+  final String? biografia;
 
   PerfilEditadoDTO({
     required this.apelido,
