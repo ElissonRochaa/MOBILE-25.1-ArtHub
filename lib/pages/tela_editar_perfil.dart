@@ -125,7 +125,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
     final perfilEditado = PerfilEditadoDTO(
       apelido:
           _apelidoController.text.isNotEmpty
-              ? '@${_apelidoController.text.trim().replaceAll(' ', '')}'
+              ? _apelidoController.text.trim().replaceAll(' ', '')
               : usuario.apelido,
       biografia:
           _biografiaController.text.isNotEmpty

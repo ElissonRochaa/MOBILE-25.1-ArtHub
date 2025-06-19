@@ -83,7 +83,7 @@ class _TelaProprioPerfilState extends State<TelaProprioPerfil> {
             ),
           ),
           Text(
-            perfil.usuario.apelido,
+            '@' + perfil.usuario.apelido,
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
               color: Theme.of(context).colorScheme.onPrimary,
             ),
