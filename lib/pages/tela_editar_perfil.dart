@@ -1,5 +1,8 @@
 import 'dart:io';
+import 'dart:typed_data';
 
+import 'package:universal_io/io.dart' show Platform;
+import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:arthub/models/dtos/perfil_editado_DTO.dart';
 import 'package:arthub/provider/modo_tema_provider.dart';
 import 'package:arthub/services/perfil_service.dart';
@@ -7,6 +10,7 @@ import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/rodape_widget.dart';
 import 'package:arthub/widgets/botao_estilizado_widget.dart';
 import 'package:arthub/widgets/stackbar.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -20,40 +24,137 @@ class TelaEditarPerfil extends StatefulWidget {
 class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
   final TextEditingController _apelidoController = TextEditingController();
   final TextEditingController _biografiaController = TextEditingController();
+
   File? _novaFotoPerfil;
+  Uint8List? _novaFotoPerfilWeb;
   File? _novoBanner;
+  Uint8List? _novoBannerWeb;
+
+  ImageProvider? _fotoPerfilProvider;
+  ImageProvider? _bannerProvider;
 
   @override
-  void dispose(){
+  void initState() {
+    super.initState();
+    _carregarImagensIniciais();
+  }
+
+  Future<void> _carregarImagensIniciais() async {
+    final usuarioId = await UsuarioService.getUsuarioId();
+    final fotoPerfil = await PerfilService.getImagePerfil(
+      usuarioId!,
+    ).catchError((_) => null);
+    final bannerPerfil = await PerfilService.getImageBanner(
+      usuarioId,
+    ).catchError((_) => null);
+
+    setState(() {
+      _fotoPerfilProvider =
+          fotoPerfil ?? const AssetImage('assets/images/perfil_default.jpg');
+      _bannerProvider =
+          bannerPerfil ?? const AssetImage('assets/images/banner_default.png');
+    });
+  }
+
+  @override
+  void dispose() {
     _apelidoController.dispose();
     _biografiaController.dispose();
     super.dispose();
   }
 
-  Future<void> _enviarAlteracoes() async {
-    try {
-      final usuarioId = await UsuarioService.getUsuarioId();
-      final usuario = await UsuarioService.getUsuarioById(usuarioId!);
-      final perfil = await PerfilService.getPerfilByUsuarioId(usuarioId);
+  bool get isMobile => !kIsWeb && (Platform.isAndroid || Platform.isIOS);
 
-      final perfilEditado = PerfilEditadoDTO(
-        apelido: _apelidoController.text.isNotEmpty ?
-                _apelidoController.text : usuario.apelido,
-        biografia: _biografiaController.text.isNotEmpty ?
-                _biografiaController.text : perfil.biografia!,
+  Future<void> _selecionarFotoPerfil() async {
+    try {
+      FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
       );
 
-      await PerfilService.putPerfil(perfilEditado, usuarioId);
-
-      Navigator.pop(context);
-      showCustomSnackBar(context, 'Alteraçõe realizadas com sucesso');
-    }
-    catch (e) {
-      showCustomSnackBar(context, 'Algo de errado ocorreu ao atualizar o perfil');
+      if (arquivoEscolhido != null) {
+        setState(() {
+          if (isMobile) {
+            _novaFotoPerfil = File(arquivoEscolhido.files.single.path!);
+            _fotoPerfilProvider = FileImage(_novaFotoPerfil!);
+          } else {
+            _novaFotoPerfilWeb = arquivoEscolhido.files.single.bytes;
+            _fotoPerfilProvider = MemoryImage(_novaFotoPerfilWeb!);
+          }
+        });
+      }
+    } catch (e) {
+      throw Exception('Erro ao selecionar foto de perfil');
     }
   }
 
-  Widget _campo(BuildContext context, String label, TextEditingController controller) {
+  Future<void> _selecionarBanner() async {
+    try {
+      FilePickerResult? arquivoEscolhido = await FilePicker.platform.pickFiles(
+        type: FileType.image,
+        allowMultiple: false,
+      );
+
+      if (arquivoEscolhido != null) {
+        setState(() {
+          if (isMobile) {
+            _novoBanner = File(arquivoEscolhido.files.single.path!);
+            _bannerProvider = FileImage(_novoBanner!);
+          } else {
+            _novoBannerWeb = arquivoEscolhido.files.single.bytes;
+            _bannerProvider = MemoryImage(_novoBannerWeb!);
+          }
+        });
+      }
+    } catch (e) {
+      throw Exception('Erro ao selecionar banner');
+    }
+  }
+
+  Future<void> _enviarAlteracoes() async {
+    final usuarioId = await UsuarioService.getUsuarioId();
+    final usuario = await UsuarioService.getUsuarioById(usuarioId!);
+    final perfil = await PerfilService.getPerfilByUsuarioId(usuarioId);
+
+    final perfilEditado = PerfilEditadoDTO(
+      apelido:
+          _apelidoController.text.isNotEmpty
+              ? '@${_apelidoController.text.trim().replaceAll(' ', '')}'
+              : usuario.apelido,
+      biografia:
+          _biografiaController.text.isNotEmpty
+              ? _biografiaController.text
+              : perfil.biografia!,
+    );
+
+    await PerfilService.putPerfil(perfilEditado, usuarioId);
+
+    if (_novaFotoPerfil != null || _novaFotoPerfilWeb != null) {
+      await PerfilService.uploadImagem(
+        perfil.id,
+        _novaFotoPerfil,
+        _novaFotoPerfilWeb,
+        true,
+      );
+    }
+    if (_novoBanner != null || _novoBannerWeb != null) {
+      await PerfilService.uploadImagem(
+        perfil.id,
+        _novoBanner,
+        _novoBannerWeb,
+        false,
+      );
+    }
+
+    Navigator.pop(context);
+    showCustomSnackBar(context, 'Alterações realizadas com sucesso');
+  }
+
+  Widget _campo(
+    BuildContext context,
+    String label,
+    TextEditingController controller,
+  ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Material(
@@ -82,7 +183,6 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                 color: Theme.of(context).colorScheme.secondary,
               ),
             ),
-
             focusedBorder: OutlineInputBorder(
               borderSide: BorderSide(
                 color: Theme.of(context).colorScheme.secondary,
@@ -283,21 +383,19 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                 color: Theme.of(context).colorScheme.onPrimary,
               ),
             ),
-
-            SizedBox(height: 12),
+            const SizedBox(height: 12),
+            // Foto de perfil (preview imediato)
             Stack(
               alignment: Alignment.bottomRight,
               children: [
                 CircleAvatar(
                   radius: 40,
-                  backgroundImage: AssetImage('assets/images/hannah.jpg'),
+                  backgroundImage:
+                      _fotoPerfilProvider ??
+                      const AssetImage('assets/images/perfil_default.jpg'),
                 ),
                 InkWell(
-                  onTap: () {
-                    {
-                      print("Ícone de edição foto de perfil clicado");
-                    }
-                  },
+                  onTap: _selecionarFotoPerfil,
                   child: CircleAvatar(
                     radius: 14,
                     backgroundColor: Theme.of(context).colorScheme.onPrimary,
@@ -310,12 +408,8 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                 ),
               ],
             ),
-
             const SizedBox(height: 16),
-
-            // Campos de input
             _campo(context, 'Apelido', _apelidoController),
-
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
               child: Row(
@@ -344,7 +438,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                             color: Theme.of(context).colorScheme.onPrimary,
                           ),
                         ),
-                        SizedBox(height: 3),
+                        const SizedBox(height: 3),
                         Stack(
                           alignment: Alignment.topRight,
                           children: [
@@ -354,25 +448,27 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                               decoration: BoxDecoration(
                                 color: Colors.grey[300],
                                 borderRadius: BorderRadius.circular(8),
-                                image: const DecorationImage(
-                                  image: AssetImage(
-                                    'assets/images/gato_horizontal.jpg',
-                                  ),
+                                image: DecorationImage(
+                                  image:
+                                      _bannerProvider ??
+                                      const AssetImage(
+                                        'assets/images/banner_default.png',
+                                      ),
                                   fit: BoxFit.cover,
                                 ),
                               ),
                             ),
                             InkWell(
-                              onTap: () {
-                                {
-                                  print("Ícone de edição banner clicado");
-                                }
-                              },
+                              onTap: _selecionarBanner,
                               child: CircleAvatar(
                                 radius: 14,
                                 backgroundColor:
-                                    Theme.of(context).colorScheme.primary,
-                                child: Icon(Icons.edit, size: 16),
+                                    Theme.of(context).colorScheme.onPrimary,
+                                child: Icon(
+                                  Icons.edit,
+                                  size: 16,
+                                  color: Theme.of(context).colorScheme.surface,
+                                ),
                               ),
                             ),
                           ],
@@ -380,9 +476,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                       ],
                     ),
                   ),
-
                   const SizedBox(width: 16),
-
                   Expanded(
                     child: Container(
                       padding: const EdgeInsets.all(8),
@@ -415,6 +509,7 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                               filled: true,
                               fillColor:
                                   Theme.of(context).colorScheme.secondary,
+                              contentPadding: const EdgeInsets.all(12),
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(5),
                                 borderSide: BorderSide(
@@ -443,14 +538,11 @@ class _TelaEditarPerfilState extends State<TelaEditarPerfil> {
                 ],
               ),
             ),
-
             BotaoEstilizadoWidget(
               funcao: () => {_enviarAlteracoes()},
               texto: 'Salvar alterações',
             ),
-
             const SizedBox(height: 24),
-
             _opcaoSimples(
               context,
               'Desativar conta',
