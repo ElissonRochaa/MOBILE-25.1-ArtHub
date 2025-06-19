@@ -4,7 +4,7 @@ import 'package:arthub/services/email_service.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
 
 class TelaEsqueceuSenha extends StatefulWidget {
-  const TelaEsqueceuSenha({Key? key}) : super(key: key);
+  const TelaEsqueceuSenha({super.key});
 
   @override
   State<TelaEsqueceuSenha> createState() => _TelaEsqueceuSenhaState();
@@ -23,9 +23,10 @@ class _TelaEsqueceuSenhaState extends State<TelaEsqueceuSenha> {
     }
 
     setState(() => _isLoading = true);
-    await EmailService.solicitarRecuperacaoSenha(email);
+    
+    final resposta = await EmailService.solicitarRecuperacaoSenha(email);
 
-    showCustomSnackBar(context, "Verifique sua caixa de entrada.");
+    showCustomSnackBar(context, resposta);
 
     setState(() => _isLoading = false);
   }

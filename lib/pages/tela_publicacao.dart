@@ -2,13 +2,15 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:arthub/enums/tipo_arquivo_enum.dart';
 import 'package:arthub/enums/categoria_enum.dart';
+import 'package:arthub/models/comentario_model.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
+import 'package:arthub/services/comentario_service.dart';
 import 'package:arthub/services/publicacao_service.dart';
 import 'package:arthub/services/token_service.dart';
+import 'package:arthub/services/usuario_service.dart';
 import 'package:arthub/widgets/barra_pesquisa_widget.dart';
 import 'package:arthub/widgets/botao_voltar_widget.dart';
-import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:chewie/chewie.dart';
 import 'package:flutter/material.dart';
 import 'package:just_audio/just_audio.dart';
@@ -54,6 +56,9 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
     _videoPlayerController.dispose();
     _chewieController?.dispose();
     _tempVideoFile?.delete();
+    _carregarUsuarioLogado();
+    _buscarPublicacaoAtualizada();
+    _carregarComentarios();
     super.dispose();
   }
 
@@ -66,14 +71,14 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   bool isCurtido = false;
   bool isImagemAberta = false;
   bool lertudo = false;
-  List<String> comentarios = [];
+  List<ComentarioModel> comentarios = [];
 
   Uint8List? _fetchedMediaBytes;
   bool _isLoadingMedia = true;
   String? _mediaError;
 
   final _audioPlayer = AudioPlayer();
-  String? _userEmailLogado;
+  late String _userEmailLogado;
   late PublicacaoModel _publicacaoAtual;
 
   String categoriaToTexto(CategoriaEnum categoria) {
@@ -131,7 +136,21 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
     _publicacaoAtual = widget.publicacao;
     _buscarPublicacaoAtualizada();
     _carregarUsuarioLogado();
+    _carregarComentarios();
   }
+
+  Future<void> _carregarComentarios() async {
+  try {
+    final lista = await ComentarioService.getComentarios(_publicacaoAtual.id);
+    if (mounted) {
+      setState(() {
+        comentarios = lista;
+      });
+    }
+  } catch (e) {
+    print("Erro ao carregar comentários: $e");
+  }
+}
 
   Future<void> _buscarPublicacaoAtualizada() async {
     try {
@@ -165,11 +184,8 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
     if (mounted) setState(() => _isLoadingMedia = true);
 
     try {
-      if (widget.publicacao.id == null) {
-        throw Exception("ID da publicação é nulo.");
-      }
       final videoBytes = await PublicacaoService.getBytes(
-        widget.publicacao.id!.toString(),
+        widget.publicacao.id.toString(),
       );
       if (videoBytes.isEmpty) {
         throw Exception("Os bytes do vídeo retornaram vazios.");
@@ -191,10 +207,10 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
         _videoPlayerController = VideoPlayerController.file(_tempVideoFile!);
       }
 
-      await _videoPlayerController!.initialize();
+      await _videoPlayerController.initialize();
 
       _chewieController = ChewieController(
-        videoPlayerController: _videoPlayerController!,
+        videoPlayerController: _videoPlayerController,
         autoPlay: true,
       );
 
@@ -218,12 +234,8 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       });
     }
     try {
-      if (widget.publicacao.id == null) {
-        throw Exception("ID da publicação é nulo.");
-      }
-
       final bytes = await PublicacaoService.getBytes(
-        widget.publicacao.id!.toString(),
+        widget.publicacao.id.toString(),
       );
 
       final audioSource = MyCustomAudioSource(bytes);
@@ -255,11 +267,8 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       });
     }
     try {
-      if (_publicacaoAtual.id == null) {
-        throw Exception("ID da publicação é nulo.");
-      }
       final bytes = await PublicacaoService.getBytes(
-        _publicacaoAtual.id!.toString(),
+        _publicacaoAtual.id.toString(),
       );
       if (mounted) {
         setState(() {
@@ -682,11 +691,15 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                                     ),
                                   ),
                                   ElevatedButton(
-                                    onPressed: () {
+                                    onPressed: () async {
                                       if (controller.text.isNotEmpty) {
-                                        setState(() {
-                                          comentarios.add(controller.text);
-                                        });
+                                        final usuarioLogado = await UsuarioService.getUsuarioByEmail(_userEmailLogado);
+                                        await ComentarioService.postarComentario(
+                                          _publicacaoAtual.id,
+                                          usuarioLogado.id,
+                                          controller.text,
+                                        );
+                                        await _carregarComentarios();
                                       }
                                       Navigator.of(context).pop();
                                     },
@@ -738,46 +751,42 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
     );
   }
 
-  Widget _comentario(BuildContext context, String texto) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 10, left: 33, right: 33),
-      child: Container(
-        constraints: BoxConstraints(minHeight: 69),
-        decoration: BoxDecoration(
-          boxShadow: [
-            BoxShadow(
-              color: Theme.of(context).colorScheme.onTertiary,
-              spreadRadius: 2,
-              blurRadius: 2,
-              offset: Offset(0, 3),
+  Widget _comentario(BuildContext context, ComentarioModel comentario) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 10, left: 33, right: 33),
+    child: Container(
+      constraints: BoxConstraints(minHeight: 69),
+      decoration: BoxDecoration(
+        boxShadow: [
+          BoxShadow(
+            color: Theme.of(context).colorScheme.onTertiary,
+            spreadRadius: 2,
+            blurRadius: 2,
+            offset: Offset(0, 3),
+          ),
+        ],
+        color: Theme.of(context).colorScheme.secondary,
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Padding(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            SizedBox(height: 10),
+            Text(
+              comentario.conteudo,
+              style: TextStyle(
+                color: Theme.of(context).colorScheme.onPrimary,
+              ),
             ),
           ],
-          color: Theme.of(context).colorScheme.secondary,
-          borderRadius: BorderRadius.circular(5),
-        ),
-        child: Padding(
-          padding: EdgeInsets.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Text('@mikeymouse'),
-              SizedBox(height: 10),
-              Text(
-                texto,
-                softWrap: true,
-                overflow: TextOverflow.visible,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
-              ),
-            ],
-          ),
         ),
       ),
-    );
-  }
+    ),
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
@@ -809,8 +818,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                   itemBuilder: (context, index) {
                     return _comentario(context, comentarios[index]);
                   },
-                ),
-                SizedBox(height: 20),
+                )
               ],
             ),
           ),
@@ -841,6 +849,7 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                 ),
               ),
             ),
+            
           if (isDono == true && !isImagemAberta)
             Positioned(
               bottom: 32,

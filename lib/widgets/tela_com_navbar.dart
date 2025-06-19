@@ -1,7 +1,6 @@
 import 'package:arthub/pages/tela_criar_publicacao.dart';
 import 'package:arthub/pages/tela_principal.dart';
 import 'package:arthub/pages/tela_proprio_perfil.dart';
-import 'package:arthub/widgets/perfil_pesquisa_widget.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';

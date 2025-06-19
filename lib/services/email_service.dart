@@ -1,5 +1,4 @@
 import '../api/api_client.dart';
-import 'package:arthub/models/dtos/email_dto.dart';
 
 class EmailService {
   static final ApiClient _apiClient = ApiClient();
@@ -11,7 +10,7 @@ class EmailService {
       });
 
       if (response.statusCode == 200) {
-        return 'Verifique seu e-mail para redefinir sua senha.';
+        return 'Verifique sua caixa de entrada.';
       } else {
         return 'Erro: ${response.statusCode}';
       }

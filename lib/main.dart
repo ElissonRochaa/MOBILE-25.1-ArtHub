@@ -8,6 +8,7 @@ import 'package:arthub/pages/tela_proprio_perfil.dart';
 import 'package:arthub/pages/tela_publicacao.dart';
 import 'package:arthub/pages/tela_registro.dart';
 import 'package:arthub/pages/tela_outro_perfil.dart';
+import 'package:arthub/pages/tela_resetar_senha.dart';
 import 'package:arthub/provider/barra_pesquisa_provider.dart';
 import 'package:arthub/provider/modo_tema_provider.dart';
 import 'package:arthub/widgets/tela_com_navbar.dart';
@@ -38,23 +39,32 @@ class MyApp extends StatelessWidget {
           debugShowCheckedModeBanner: false,
           title: 'ArtHub',
           theme: ThemeAppProvider.themeData,
-          home: TelaLogotipo(),
           initialRoute: '/',
           onGenerateRoute: (settings) {
-            switch (settings.name) {
+            final uri = Uri.parse(settings.name ?? '/');
+
+            print(
+              '🔍 Rota solicitada: ${uri.path}',
+            ); // Agora mostra só o caminho, sem query
+
+            switch (uri.path) {
+              case '/':
+                return buildPageRoute(const TelaLogotipo(), settings);
               case '/registro':
                 return buildPageRoute(const TelaRegistro(), settings);
               case '/publicacao':
                 final args = settings.arguments;
                 if (args != null && args is PublicacaoModel) {
-                  final publicacao = args;
                   return buildPageRoute(
-                    TelaPublicacao(publicacao: publicacao),
+                    TelaPublicacao(publicacao: args),
                     settings,
                   );
                 }
+                break;
               case '/esqueceu-senha':
                 return buildPageRoute(const TelaEsqueceuSenha(), settings);
+              case '/resetar-senha':
+                return buildPageRoute(const TelaResetarSenha(), settings);
               case '/login':
                 return buildPageRoute(const TelaLogin(), settings);
               case '/home':
@@ -68,16 +78,16 @@ class MyApp extends StatelessWidget {
               case '/tela_editar_publicacao':
                 final args = settings.arguments;
                 if (args != null && args is PublicacaoModel) {
-                  final publicacao = args;
                   return buildPageRoute(
-                    TelaEditarPublicacao(publicacao: publicacao),
+                    TelaEditarPublicacao(publicacao: args),
                     settings,
                   );
                 }
-              default:
-                return null;
+                break;
             }
-            return null;
+
+            // Se nada foi encontrado, redireciona para uma tela padrão (ex: logotipo)
+            return buildPageRoute(const TelaLogotipo(), settings);
           },
         );
       },

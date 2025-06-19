@@ -8,10 +8,14 @@ class AuthService {
   static final ApiClient _apiClient = ApiClient();
 
   static Future<String> login(LoginDTO login) async {
+    print('Auth Service: Iniciando o tentando logar com: ${login.email} - ${login.senha}');
+
     final response = await _apiClient.post('/auth/login', {
       'email': login.email,
       'senha': login.senha,
     });
+    
+    print('📡 Resposta recebida: ${response.statusCode}');
 
      if (response.statusCode == 200) {
     final token = response.data;
@@ -41,15 +45,18 @@ class AuthService {
     }
   }
 
-   static Future<String> redefinirSenha(String email, String novaSenha) async {
+   static Future<Object> redefinirSenha(String email, String novaSenha) async {
     try {
       final response = await _apiClient.post('/email/resetar-senha', {
         'email': email,
         'novaSenha': novaSenha,
       });
 
+      print(email);
+      print(novaSenha);
+
       if (response.statusCode == 200) {
-        return 'Senha redefinida com sucesso!';
+        return response;
       } else {
         return 'Erro: ${response.statusCode}';
       }

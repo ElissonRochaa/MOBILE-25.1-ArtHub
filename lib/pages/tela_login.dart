@@ -34,13 +34,17 @@ class _TelaLoginState extends State<TelaLogin> {
     return;
   }
 
+  print('Tela_login: Tentando logar com: ${_emailController.text} - ${_senhaController.text}');
+
   final usuarioLogin = LoginDTO(
     email: _emailController.text,
     senha: _senhaController.text,
   );
 
+  print('Tela_login: DTO criado');
   try {
     final response = await AuthService.login(usuarioLogin);
+    print('Chamei o auth service');
 
     if (response.isNotEmpty) {
       final email = await TokenService.decodeToken();
@@ -57,8 +61,6 @@ class _TelaLoginState extends State<TelaLogin> {
     showCustomSnackBar(context, 'Falha ao fazer login! Tente novamente.');
   }
 }
-
-
 
   @override
   Widget build(BuildContext context) {

@@ -15,7 +15,7 @@ class ComentarioModel {
     return ComentarioModel(
       id: json['id'], 
       curtidas: json['curtidas'], 
-      dataPublicacao: json['dataPublicacao'], 
+      dataPublicacao: DateTime.parse(json['dataPublicacao']),
       conteudo: json['conteudo'],
       );
   }

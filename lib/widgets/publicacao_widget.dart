@@ -30,14 +30,10 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
   void initState() {
     super.initState();
     if (widget.publicacao.tipoArquivo == TipoArquivoEnum.imagem) {
-      if (widget.publicacao.id != null) {
-        _fetchMediaContent();
-      }
-    } else if (widget.publicacao.tipoArquivo == TipoArquivoEnum.video) {
-      if (widget.publicacao.id != null) {
-        _initVideoPreview();
-      }
-    }
+      _fetchMediaContent();
+        } else if (widget.publicacao.tipoArquivo == TipoArquivoEnum.video) {
+      _initVideoPreview();
+        }
   }
 
   Future<void> _initVideoPreview() async {
@@ -47,7 +43,7 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
     });
     try {
       final videoBytes = await PublicacaoService.getBytes(
-        widget.publicacao.id!.toString(),
+        widget.publicacao.id.toString(),
       );
 
       if (kIsWeb) {
@@ -93,11 +89,8 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
       });
     }
     try {
-      if (widget.publicacao.id == null) {
-        throw Exception("ID da publicação é nulo.");
-      }
       final bytes = await PublicacaoService.getBytes(
-        widget.publicacao.id!.toString(),
+        widget.publicacao.id.toString(),
       );
       if (mounted) {
         setState(() {
