@@ -30,4 +30,17 @@ class UsuarioService {
     }
     throw Exception('Algo deu errado ao buscar o usuário por id');
   }
+
+  static Future<bool> deleteUsuario(int id) async {
+    try {
+      final response = await _apiClient.delete('/usuarios/remover/$id');
+
+      if (response.statusCode == 204){
+        return true;
+      }
+      return false;
+    } catch (e) {
+      throw Exception('Algo deu errado ao deletar o usuário $e');
+    }
+  }
 }
