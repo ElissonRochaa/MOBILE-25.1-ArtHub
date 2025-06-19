@@ -1,12 +1,13 @@
+import 'package:arthub/enums/categoria_enum.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/services/publicacao_service.dart';
-import 'package:arthub/widgets/lista_filtros_widget.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';
+import 'package:arthub/widgets/stackbar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
 class TelaPrincipal extends StatefulWidget {
-  TelaPrincipal({super.key});
+  const TelaPrincipal({super.key});
 
   @override
   State<TelaPrincipal> createState() => _TelaPrincipalState();
@@ -14,6 +15,8 @@ class TelaPrincipal extends StatefulWidget {
 
 class _TelaPrincipalState extends State<TelaPrincipal> {
   bool _carregando = true;
+  String? _filtroAtual;
+
   List<PublicacaoModel> _publicacoes = [];
 
   @override
@@ -183,7 +186,7 @@ class _TelaPrincipalState extends State<TelaPrincipal> {
           child: CustomScrollView(
             slivers: [
               SliverList(
-                delegate: SliverChildListDelegate([ListaFiltrosWidget()]),
+                delegate: SliverChildListDelegate([_listaDeFiltros()]),
               ),
               if (_carregando)
                 SliverFillRemaining(
