@@ -31,9 +31,9 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
     super.initState();
     if (widget.publicacao.tipoArquivo == TipoArquivoEnum.imagem) {
       _fetchMediaContent();
-        } else if (widget.publicacao.tipoArquivo == TipoArquivoEnum.video) {
+    } else if (widget.publicacao.tipoArquivo == TipoArquivoEnum.video) {
       _initVideoPreview();
-        }
+    }
   }
 
   Future<void> _initVideoPreview() async {
@@ -352,7 +352,7 @@ class _PublicacaoWidgetState extends State<PublicacaoWidget> {
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 4.0),
               child: Text(
-                widget.publicacao.perfil.usuario.apelido,
+                '@${widget.publicacao.perfil.usuario.apelido}',
                 style: TextStyle(
                   color: Theme.of(context).colorScheme.onPrimary,
                 ),
