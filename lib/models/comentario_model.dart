@@ -5,7 +5,7 @@ class ComentarioModel {
   final int curtidas;
   final DateTime dataPublicacao;
   final String conteudo;
-  final PerfilModel perfil;
+  final PerfilModel? perfil;
 
   ComentarioModel({
     required this.id,
@@ -21,7 +21,7 @@ class ComentarioModel {
       curtidas: json['curtidas'],
       dataPublicacao: DateTime.parse(json['dataPublicacao']),
       conteudo: json['conteudo'],
-      perfil: PerfilModel.fromJson(json['perfil']),
+      perfil: PerfilModel.fromJson(json['perfil'] ?? '????'),
     );
   }
 
@@ -31,7 +31,7 @@ class ComentarioModel {
       'curtidas': curtidas,
       'dataPublicacao': dataPublicacao,
       'conteudo': conteudo,
-      'perfil': perfil.toJson(),
+      'perfil': perfil?.toJson(),
     };
   }
 }
