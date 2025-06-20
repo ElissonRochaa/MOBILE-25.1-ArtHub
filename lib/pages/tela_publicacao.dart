@@ -777,11 +777,24 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 10),
-              Text(
-                comentario.conteudo,
-                style: TextStyle(
-                  color: Theme.of(context).colorScheme.onPrimary,
-                ),
+              Row(
+                children: [
+                  Text(
+                    '@${comentario.perfil.usuario.apelido ?? "????"}: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      comentario.conteudo,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
