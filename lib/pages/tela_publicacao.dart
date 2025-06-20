@@ -786,13 +786,6 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
               SizedBox(height: 10),
               Row(
                 children: [
-                  Text(
-                    '@${comentario.perfil?.usuario.apelido ?? "????"}: ',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      color: Theme.of(context).colorScheme.primary,
-                    ),
-                  ),
                   Expanded(
                     child: Text(
                       comentario.conteudo,
