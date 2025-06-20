@@ -1,6 +1,5 @@
 import 'dart:typed_data';
 import 'package:arthub/api/api_client.dart';
-import 'package:arthub/enums/categoria_enum.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/services/token_service.dart';
 import 'package:arthub/services/usuario_service.dart';

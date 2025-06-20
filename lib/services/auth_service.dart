@@ -47,13 +47,14 @@ class AuthService {
 
    static Future<Object> redefinirSenha(String email, String novaSenha) async {
     try {
-      final response = await _apiClient.post('/email/resetar-senha', {
+      print(email);
+      print(novaSenha);
+
+      final response = await _apiClient.put('/email/resetar-senha', data: {
         'email': email,
         'novaSenha': novaSenha,
       });
 
-      print(email);
-      print(novaSenha);
 
       if (response.statusCode == 200) {
         return response;

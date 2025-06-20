@@ -1,4 +1,3 @@
-import 'package:arthub/enums/categoria_enum.dart';
 import 'package:arthub/models/publicacao_model.dart';
 import 'package:arthub/services/publicacao_service.dart';
 import 'package:arthub/widgets/publicacao_widget.dart';

@@ -791,7 +791,6 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   @override
   Widget build(BuildContext context) {
     final bool isDono =
-        _userEmailLogado != null &&
         _publicacaoAtual.perfil.usuario.email.toString() == _userEmailLogado;
 
     var pesquisa = context.watch<BarraPesquisaProvider>().texto;

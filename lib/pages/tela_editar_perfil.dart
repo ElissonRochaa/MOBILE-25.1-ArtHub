@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'dart:typed_data';
 
-import 'package:universal_io/io.dart' show Platform;
 import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:arthub/models/dtos/perfil_editado_DTO.dart';
 import 'package:arthub/provider/modo_tema_provider.dart';

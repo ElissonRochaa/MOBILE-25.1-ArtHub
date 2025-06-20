@@ -16,6 +16,12 @@ class _TelaResetarSenhaState extends State<TelaResetarSenha> {
   String? email;
 
   @override
+  void dispose() {
+    _senhaController.dispose();
+    super.dispose();
+  }
+
+  @override
   void initState() {
     super.initState();
 
@@ -123,10 +129,14 @@ class _TelaResetarSenhaState extends State<TelaResetarSenha> {
                           InputTexto(label: "Nova Senha", 
                           hintLabel: "Digite sua nova senha:", 
                           inputTipo: TextInputType.visiblePassword,
+                          controller: _senhaController,
                           ),
                           const SizedBox(height: 20),
                           ElevatedButton(
-                            onPressed: _isLoading ? null : _resetarSenha,
+                            onPressed: () => {
+                              _isLoading ? null : _resetarSenha,
+                              Navigator.of(context).pushNamed('/login')
+                            },
                             child:
                                 _isLoading
                                     ? const CircularProgressIndicator(
