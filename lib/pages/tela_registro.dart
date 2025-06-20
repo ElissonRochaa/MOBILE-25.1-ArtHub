@@ -26,6 +26,7 @@ class _TelaRegistroState extends State<TelaRegistro> {
   final TextEditingController _dataNascimentoController =
       TextEditingController();
   final TextEditingController _senhaController = TextEditingController();
+  final TextEditingController _confirmacaoSenhaController = TextEditingController();
 
   @override
   void dispose() {
@@ -35,6 +36,7 @@ class _TelaRegistroState extends State<TelaRegistro> {
     _emailController.dispose();
     _dataNascimentoController.dispose();
     _senhaController.dispose();
+    _confirmacaoSenhaController.dispose();
     super.dispose();
   }
 
@@ -45,7 +47,8 @@ class _TelaRegistroState extends State<TelaRegistro> {
       _telefoneController.text.isEmpty ||
       _emailController.text.isEmpty ||
       _senhaController.text.isEmpty ||
-      _dataNascimentoController.text.isEmpty) {
+      _dataNascimentoController.text.isEmpty ||
+      _confirmacaoSenhaController.text.isEmpty) {
     showCustomSnackBar(context, 'Por favor, preencha todos os campos');
     return;
   }
@@ -53,6 +56,11 @@ class _TelaRegistroState extends State<TelaRegistro> {
   // Validação do email
   if (!isEmailValid(_emailController.text)) {
     showCustomSnackBar(context, 'O email deve terminar com @upe.br');
+    return;
+  }
+
+  if (_senhaController.text != _confirmacaoSenhaController.text){
+    showCustomSnackBar(context, 'A confirmação de senha deve ser igual à senha');
     return;
   }
 
@@ -72,7 +80,8 @@ class _TelaRegistroState extends State<TelaRegistro> {
     Navigator.pushReplacementNamed(context, '/login');
 
   } catch (e) {
-      showCustomSnackBar(context, 'Cadastro não realizado! Algo deu errado!');
+    print(e);
+    showCustomSnackBar(context, 'Cadastro não realizado! Algo deu errado!');
   }
 }
 
@@ -157,7 +166,16 @@ class _TelaRegistroState extends State<TelaRegistro> {
                         label: "Senha",
                         hintLabel: "Digite sua senha",
                         inputTipo: TextInputType.visiblePassword,
+                        ehOculto: true,
                         controller: _senhaController,
+                      ),
+                      const SizedBox(height: 20),
+                      InputTexto(
+                        label: "Confirmação da Senha",
+                        hintLabel: "Redigite sua senha",
+                        inputTipo: TextInputType.visiblePassword,
+                        ehOculto: true,
+                        controller: _confirmacaoSenhaController,
                       ),
                       const SizedBox(height: 40),
                       BotaoEstilizadoWidget(
@@ -180,7 +198,6 @@ class _TelaRegistroState extends State<TelaRegistro> {
                                 context,
                               ).textTheme.titleLarge?.copyWith(
                                 color: Theme.of(context).colorScheme.surface,
-                                decoration: TextDecoration.underline,
                               ),
                               recognizer:
                                   TapGestureRecognizer()

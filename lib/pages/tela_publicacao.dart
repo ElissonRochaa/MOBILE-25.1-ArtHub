@@ -140,17 +140,17 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   }
 
   Future<void> _carregarComentarios() async {
-  try {
-    final lista = await ComentarioService.getComentarios(_publicacaoAtual.id);
-    if (mounted) {
-      setState(() {
-        comentarios = lista;
-      });
+    try {
+      final lista = await ComentarioService.getComentarios(_publicacaoAtual.id);
+      if (mounted) {
+        setState(() {
+          comentarios = lista;
+        });
+      }
+    } catch (e) {
+      print("Erro ao carregar comentários: $e");
     }
-  } catch (e) {
-    print("Erro ao carregar comentários: $e");
   }
-}
 
   Future<void> _buscarPublicacaoAtualizada() async {
     try {
@@ -693,7 +693,10 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                                   ElevatedButton(
                                     onPressed: () async {
                                       if (controller.text.isNotEmpty) {
-                                        final usuarioLogado = await UsuarioService.getUsuarioByEmail(_userEmailLogado);
+                                        final usuarioLogado =
+                                            await UsuarioService.getUsuarioByEmail(
+                                              _userEmailLogado,
+                                            );
                                         await ComentarioService.postarComentario(
                                           _publicacaoAtual.id,
                                           usuarioLogado.id,
@@ -752,41 +755,60 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
   }
 
   Widget _comentario(BuildContext context, ComentarioModel comentario) {
-  return Padding(
-    padding: const EdgeInsets.only(top: 10, left: 33, right: 33),
-    child: Container(
-      constraints: BoxConstraints(minHeight: 69),
-      decoration: BoxDecoration(
-        boxShadow: [
-          BoxShadow(
-            color: Theme.of(context).colorScheme.onTertiary,
-            spreadRadius: 2,
-            blurRadius: 2,
-            offset: Offset(0, 3),
-          ),
-        ],
-        color: Theme.of(context).colorScheme.secondary,
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Padding(
-        padding: EdgeInsets.all(8),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(height: 10),
-            Text(
-              comentario.conteudo,
-              style: TextStyle(
-                color: Theme.of(context).colorScheme.onPrimary,
-              ),
+    return Padding(
+      padding: const EdgeInsets.only(top: 10, left: 33, right: 33),
+      child: Container(
+        constraints: BoxConstraints(minHeight: 69),
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Theme.of(context).colorScheme.onTertiary,
+              spreadRadius: 2,
+              blurRadius: 2,
+              offset: Offset(0, 3),
             ),
           ],
+          color: Theme.of(context).colorScheme.secondary,
+          borderRadius: BorderRadius.circular(5),
+        ),
+        child: Padding(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '@${comentario.perfil?.usuario.apelido ?? "????"}',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+              ),
+              SizedBox(height: 10),
+              Row(
+                children: [
+                  Text(
+                    '@${comentario.perfil?.usuario.apelido ?? "????"}: ',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  Expanded(
+                    child: Text(
+                      comentario.conteudo,
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.onPrimary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
-    ),
-  );
-}
-
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -804,21 +826,23 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
       body: Stack(
         children: [
           // Conteúdo principal
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                const SizedBox(height: 15),
-                _post(context),
-                ListView.builder(
-                  shrinkWrap: true,
-                  physics: NeverScrollableScrollPhysics(),
-                  itemCount: comentarios.length,
-                  itemBuilder: (context, index) {
-                    return _comentario(context, comentarios[index]);
-                  },
-                )
-              ],
+          Positioned.fill(
+            child: SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 15),
+                  _post(context),
+                  ListView.builder(
+                    shrinkWrap: true,
+                    physics: NeverScrollableScrollPhysics(),
+                    itemCount: comentarios.length,
+                    itemBuilder: (context, index) {
+                      return _comentario(context, comentarios[index]);
+                    },
+                  ),
+                ],
+              ),
             ),
           ),
           // Botão voltar
@@ -848,32 +872,34 @@ class _TelaPublicacaoState extends State<TelaPublicacao> {
                 ),
               ),
             ),
-            
+          // Botão editar fixo
           if (isDono == true && !isImagemAberta)
             Positioned(
-              bottom: 32,
               right: 24,
-              child: GestureDetector(
-                onTap: () async {
-                  final editada = await Navigator.pushNamed(
-                    context,
-                    '/tela_editar_publicacao',
-                    arguments: _publicacaoAtual,
-                  );
-                  if (editada != null && mounted) {
-                    setState(() {
-                      _publicacaoAtual = editada as PublicacaoModel;
-                    });
-                    _fetchMediaContent();
-                  }
-                },
-                child: CircleAvatar(
-                  radius: 20,
-                  backgroundColor: Theme.of(context).colorScheme.primary,
-                  child: Icon(
-                    Icons.edit,
-                    color: Theme.of(context).colorScheme.onPrimary,
-                    size: 18,
+              bottom: 32,
+              child: SafeArea(
+                child: GestureDetector(
+                  onTap: () async {
+                    final editada = await Navigator.pushNamed(
+                      context,
+                      '/tela_editar_publicacao',
+                      arguments: _publicacaoAtual,
+                    );
+                    if (editada != null && mounted) {
+                      setState(() {
+                        _publicacaoAtual = editada as PublicacaoModel;
+                      });
+                      _fetchMediaContent();
+                    }
+                  },
+                  child: CircleAvatar(
+                    radius: 20,
+                    backgroundColor: Theme.of(context).colorScheme.primary,
+                    child: Icon(
+                      Icons.edit,
+                      color: Theme.of(context).colorScheme.onPrimary,
+                      size: 18,
+                    ),
                   ),
                 ),
               ),

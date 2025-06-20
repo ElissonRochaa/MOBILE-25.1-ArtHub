@@ -32,16 +32,18 @@ class AuthService {
 
   // Aqui o método do Cadastro
   static Future<void> cadastrarUsuario(CadastroModel cadastro) async {
-    final response = await _apiClient.post('/auth/registrar', {
-      'nome': cadastro.nome,
-      'apelido': cadastro.apelido,
-      'email': cadastro.email,
-      'senha': cadastro.senha,
-      'telefone': cadastro.telefone,
-      'dataNascimento': cadastro.dataNascimento,
-    });
-    if (response.statusCode != 201) {
-      throw Exception('Falha ao cadastrar usuário');
+    try{
+      await _apiClient.post('/auth/registrar', {
+        'nome': cadastro.nome,
+        'apelido': cadastro.apelido,
+        'email': cadastro.email,
+        'senha': cadastro.senha,
+        'telefone': cadastro.telefone,
+        'dataNascimento': cadastro.dataNascimento,
+      });
+    }
+    catch (e) {
+      throw Exception('Falha ao cadastrar usuário: $e');
     }
   }
 
